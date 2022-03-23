@@ -18,12 +18,42 @@
                 </button>
                 @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
             </div>
+
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Home", "Index", "Home")</li>
                     <li>@Html.ActionLink("About", "About", "Home")</li>
                     <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
                 </ul>
+
+                @if (Convert.ToString(Session["UserID"]) == "")
+                {
+                    <ul style="float: right;margin-right:100px; font-size: 15px" class="nav navbar-nav navbar-right">
+                        <li><a href="@(@Url.Action("Registracija", "Home"))">Registracija</a></li>
+                        <li><a href="@(@Url.Action("Prisijungti", "Home"))">Prisijungimas</a></li>
+                        <li class="dropdown">
+                        </li>
+                    </ul>
+                }
+                else
+                {
+                    <div class="btn-group navbar-header" style="float: right;text-align: center">
+                        <button type="button" style="font-size: 15px;" class="btn btn-lg btn-default ">Sveiki, @Session["UserName"]</button>
+                        <button type="button" style="font-size: 15px" class="btn btn-lg btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="caret"></span><span class="sr-only">Toggle Dropdown</span></button>
+                        <ul class="dropdown-menu">
+                            <li role="presentation"><a href="@(@Url.Action("ProfilioPerziura", "Vartotojas"))">Mano profilis</a></li>
+                            <li role="presentation"><a href="@(@Url.Action("ProfilioValdymas", "Vartotojas"))">Profilio Valdymas</a></li>
+                            @if (Convert.ToString(Session["Role"]) == "Administratorius")
+                            {
+                                <li role="presentation" class="divider"></li>
+                                <li role="presentation"><a href="@(@Url.Action("AdminValdymas", "Vartotojas"))">Svetainės kontrolė</a></li>
+                            }
+                            <li role="presentation" class="divider"></li>
+                            <li role="presentation"><a href="@(@Url.Action("Atsijungti", "Home"))">Atsijungti</a></li>
+
+                        </ul>
+                    </div>
+                }
             </div>
         </div>
     </div>

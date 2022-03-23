@@ -1,0 +1,99 @@
+﻿@model PVP_K180.Models.Vartotojas
+
+@{
+    ViewBag.Title = "ProfilioPerziura";
+}
+
+<h2>ProfilioPerziura</h2>
+
+<div>
+    <h4>Vartotojas</h4>
+    <hr />
+    <dl class="dl-horizontal">
+
+        <dt>
+            @Html.DisplayNameFor(model => model.slapyvardis)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.slapyvardis)
+        </dd>
+
+
+        <dt>
+            @Html.DisplayNameFor(model => model.el_pastas)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.el_pastas)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.gimimo_data)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.gimimo_data)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.nuotrauka)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.nuotrauka)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.vardas)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.vardas)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.pavarde)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.pavarde)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.tel_nr)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tel_nr)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.sukurimo_data)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.sukurimo_data)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.roles_informacija)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.roles_informacija.name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.vartotojo_busena)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.vartotojo_busena)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Back to List", "Index", "Home");
+</p>

@@ -1,0 +1,57 @@
+﻿@model IEnumerable<PVP_K180.Models.Naujiena>
+
+@{
+    ViewBag.Title = "GautiNaujienas";
+}
+
+<h2>GautiNaujienas</h2>
+
+<p>
+    @Html.ActionLink("Create New", "NaujienosKurimas")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.id_Naujiena)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.pavadinimas)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.naujienos_tekstas)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.naujienos_sukurimo_data)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.naujienos_kurejo_ID)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.id_Naujiena)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.pavadinimas)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.naujienos_tekstas)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.naujienos_sukurimo_data)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.naujienos_kurejo_ID)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "RedaguotiNaujiena", new { id = item.id_Naujiena }) |
+                @Html.ActionLink("Delete", "TrintiNaujiena", new { id = item.id_Naujiena })
+            </td>
+        </tr>
+    }
+
+</table>
