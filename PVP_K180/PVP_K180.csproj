@@ -161,17 +161,22 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\BalsavimasController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\NaujienaController.cs" />
     <Compile Include="Controllers\VartotojasController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\Balsavimas.cs" />
+    <Compile Include="Models\Balsavimo_Busena.cs" />
+    <Compile Include="Models\Balsavimo_Variantas.cs" />
     <Compile Include="Models\Naujiena.cs" />
     <Compile Include="Models\Role.cs" />
     <Compile Include="Models\Vartotojas.cs" />
     <Compile Include="ModelView\Prisijungimo_Duomenys.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repos\Balsavimas_Repos.cs" />
     <Compile Include="Repos\Naujiena_Repos.cs" />
     <Compile Include="Repos\Role_Repos.cs" />
     <Compile Include="Repos\Vartotojas_Repos.cs" />
@@ -220,6 +225,7 @@
     <Content Include="Views\Vartotojas\ProfilioValdymas.cshtml" />
     <Content Include="Views\Vartotojas\AdminValdymas.cshtml" />
     <Content Include="Views\Vartotojas\ProfilioPerziura.cshtml" />
+    <Content Include="Views\Balsavimas\KurtiBalsavima.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
