@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -12,6 +13,7 @@ namespace PVP_K180.Controllers
     public class NaujienaController : Controller
     {
         Naujiena naujiena = new Naujiena();
+        Nuotrauka_Repos nuotrauka_Repos = new Nuotrauka_Repos();
 
 
         // GET: Naujiena
@@ -34,14 +36,35 @@ namespace PVP_K180.Controllers
         }
 
         [HttpPost]
-        public ActionResult NaujienosKurimas(Naujiena naujiena)
+        public ActionResult NaujienosKurimas(Naujienos_duomenys naujienos_Duomenys)
         {
             Naujiena_Repos naujiena_Repos = new Naujiena_Repos();
-            naujiena.naujienos_kurejo_ID = (int)Session["UserID"];
-            naujiena.naujienos_sukurimo_data = DateTime.Now;
-            bool flag = naujiena_Repos.Sukurti_Naujiena(naujiena);
+            naujienos_Duomenys.naujiena.naujienos_kurejo_ID = (int)Session["UserID"];
+            naujienos_Duomenys.naujiena.naujienos_sukurimo_data = DateTime.Now;
+            bool flag = naujiena_Repos.Sukurti_Naujiena(naujienos_Duomenys.naujiena);
             if (flag)
             {
+                int lastIndex = naujiena_Repos.Gauti_Paskutini_Prideto_Index();
+
+                foreach(HttpPostedFileBase file in naujienos_Duomenys.nuotraukos)
+                {
+                    if (file != null)
+                    {
+                        var InputFileName = Path.GetFileName(file.FileName);
+                        var random = Guid.NewGuid() + InputFileName;
+                        var ServerSavePath = Path.Combine(Server.MapPath("~/Nuotraukos/") + random);
+
+
+                        file.SaveAs(ServerSavePath);
+                        Nuotrauka nuotrauka = new Nuotrauka();
+                        nuotrauka.nuotraukos_nuoroda = random;
+                        nuotrauka.priskirtas_id = lastIndex;
+                        nuotrauka_Repos.Prideti_Naujienos_Nuotraukas(nuotrauka);
+
+
+                    }
+                }
+
                 Response.Write("<script type='text/javascript' language='javascript'> alert('Naujiena sėkmingai sukurta!')</script>");
             }
             else
