@@ -175,6 +175,7 @@
     <Compile Include="Models\Nuotrauka.cs" />
     <Compile Include="Models\Role.cs" />
     <Compile Include="Models\Vartotojas.cs" />
+    <Compile Include="ModelView\Nuotrauku_Duomenys.cs" />
     <Compile Include="ModelView\Prisijungimo_Duomenys.cs" />
     <Compile Include="ModelView\Naujienos_duomenys.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -229,6 +230,7 @@
     <Content Include="Views\Vartotojas\AdminValdymas.cshtml" />
     <Content Include="Views\Vartotojas\ProfilioPerziura.cshtml" />
     <Content Include="Views\Balsavimas\KurtiBalsavima.cshtml" />
+    <Content Include="Views\Naujiena\PridetiNuotrauku.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

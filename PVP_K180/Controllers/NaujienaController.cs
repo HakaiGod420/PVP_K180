@@ -38,6 +38,7 @@ namespace PVP_K180.Controllers
         [HttpPost]
         public ActionResult NaujienosKurimas(Naujienos_duomenys naujienos_Duomenys)
         {
+            List<string> posiblesExtensions = new List<string>() { ".jpg", ".png", ".JPG", ".PNG", ".jpeg", ".JPEG" };
             Naujiena_Repos naujiena_Repos = new Naujiena_Repos();
             naujienos_Duomenys.naujiena.naujienos_kurejo_ID = (int)Session["UserID"];
             naujienos_Duomenys.naujiena.naujienos_sukurimo_data = DateTime.Now;
@@ -51,6 +52,14 @@ namespace PVP_K180.Controllers
                     if (file != null)
                     {
                         var InputFileName = Path.GetFileName(file.FileName);
+
+                        var extension = Path.GetExtension(file.FileName);
+                        if (!posiblesExtensions.Contains(extension))
+                        {
+                            Response.Write("<script type='text/javascript' language='javascript'> alert('Įkeltas su netinkamu formatu')</script>");
+                            return View();
+                        }
+
                         var random = Guid.NewGuid() + InputFileName;
                         var ServerSavePath = Path.Combine(Server.MapPath("~/Nuotraukos/") + random);
 
@@ -60,7 +69,6 @@ namespace PVP_K180.Controllers
                         nuotrauka.nuotraukos_nuoroda = random;
                         nuotrauka.priskirtas_id = lastIndex;
                         nuotrauka_Repos.Prideti_Naujienos_Nuotraukas(nuotrauka);
-
 
                     }
                 }
@@ -123,6 +131,71 @@ namespace PVP_K180.Controllers
 
             }
             return View(naujiena);
+        }
+
+        public ActionResult PridetiNuotrauku(int id)
+        {
+            if (Session["UserID"] == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            else if (!Session["Role"].Equals("Administratorius"))
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            Nuotrauku_Duomenys nuotrauku_Duomenys = new Nuotrauku_Duomenys();
+            Session["NaujienosID"] = id;
+            return View(nuotrauku_Duomenys);
+        }
+
+        [HttpPost]
+        public ActionResult PridetiNuotrauku(Nuotrauku_Duomenys nuotrauku_Duomenys)
+        {
+            List<string> posiblesExtensions = new List<string>() {".jpg", ".png", ".JPG", ".PNG", ".jpeg", ".JPEG"};
+            nuotrauku_Duomenys.priskirtas_id = Convert.ToInt32(Session["NaujienosID"]);
+            Session.Remove("NaujienosID");
+
+            int photoCount = 0;
+            foreach (HttpPostedFileBase file in nuotrauku_Duomenys.nuotraukos)
+            {
+                if (file != null)
+                {
+                    photoCount++;
+                    var InputFileName = Path.GetFileName(file.FileName);
+                    var extension = Path.GetExtension(file.FileName);
+
+                    if(!posiblesExtensions.Contains(extension))
+                    {
+                        Response.Write("<script type='text/javascript' language='javascript'> alert('Įkeltas su netinkamu formatu')</script>");
+                        return View();
+                    }
+
+                    var random = Guid.NewGuid() + InputFileName;
+                    var ServerSavePath = Path.Combine(Server.MapPath("~/Nuotraukos/") + random);
+
+
+                    file.SaveAs(ServerSavePath);
+                    Nuotrauka nuotrauka = new Nuotrauka();
+                    nuotrauka.nuotraukos_nuoroda = random;
+                    nuotrauka.priskirtas_id = nuotrauku_Duomenys.priskirtas_id;
+                    nuotrauka_Repos.Prideti_Naujienos_Nuotraukas(nuotrauka);
+
+
+                }
+            }
+
+            if(photoCount == 0)
+            {
+                Response.Write("<script type='text/javascript' language='javascript'> alert('Turi būti pridėta bent viena nuotrauką')</script>");
+            }
+            else
+            {
+                Response.Write("<script type='text/javascript' language='javascript'> alert('Nuotraukos sėkmingai pridėtos!')</script>");
+            }
+           
+
+            return View();
         }
     }
 }
