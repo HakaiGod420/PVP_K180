@@ -1,4 +1,4 @@
-﻿@model PVP_K180.Models.Naujiena
+﻿@model PVP_K180.ModelView.Naujienos_duomenys
 
 @{
     ViewBag.Title = "NaujienosKurimas";
@@ -6,7 +6,7 @@
 
 <h2>NaujienosKurimas</h2>
 
-@using (Html.BeginForm())
+@using (Html.BeginForm("NaujienosKurimas", "Naujiena", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
 
@@ -17,18 +17,27 @@
 
 
         <div class="form-group">
-            @Html.LabelFor(model => model.pavadinimas, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.naujiena.pavadinimas, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.pavadinimas, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.pavadinimas, "", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.naujiena.pavadinimas, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.naujiena.pavadinimas, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.naujienos_tekstas, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.naujiena.naujienos_tekstas, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.naujienos_tekstas, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.naujienos_tekstas, "", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.naujiena.naujienos_tekstas, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.naujiena.naujienos_tekstas, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.nuotraukos, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.nuotraukos, "", new { @type = "file", @multiple = "multiple" })
+                @Html.ValidationMessageFor(model => model.nuotraukos, "", new { @class = "text-danger" })
             </div>
         </div>
 
@@ -43,3 +52,7 @@
 <div>
     @Html.ActionLink("Back to List", "GautiNaujienas")
 </div>
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script> 

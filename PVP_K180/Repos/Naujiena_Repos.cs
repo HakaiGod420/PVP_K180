@@ -123,5 +123,32 @@ namespace PVP_K180.Repos
                 return false;
             }
         }
+
+        public int Gauti_Paskutini_Prideto_Index()
+        {
+            try
+            {
+                int index = -1;
+                string conn = ConfigurationManager.ConnectionStrings["MysqlConnection"].ConnectionString;
+                MySqlConnection mySqlConnection = new MySqlConnection(conn);
+                string sqlquery = "SELECT MAX(id_Naujiena) as 'max_id' FROM `Naujiena`";
+                MySqlCommand mySqlCommand = new MySqlCommand(sqlquery, mySqlConnection);
+                mySqlConnection.Open();
+                MySqlDataAdapter mda = new MySqlDataAdapter(mySqlCommand);
+                DataTable dt = new DataTable();
+                mda.Fill(dt);
+                mySqlConnection.Close();
+
+                foreach (DataRow item in dt.Rows)
+                {
+                    index = Convert.ToInt32(item["max_id"]);
+                }
+                return index;
+            }
+            catch (Exception ex)
+            {
+                return -1;
+            }
+        }
     }
 }
