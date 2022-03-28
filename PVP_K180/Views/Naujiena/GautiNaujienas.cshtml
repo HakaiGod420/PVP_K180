@@ -49,7 +49,8 @@
             </td>
             <td>
                 @Html.ActionLink("Edit", "RedaguotiNaujiena", new { id = item.id_Naujiena }) |
-                @Html.ActionLink("Delete", "TrintiNaujiena", new { id = item.id_Naujiena })
+                @Html.ActionLink("Delete", "TrintiNaujiena", new { id = item.id_Naujiena }) |
+                @Html.ActionLink("Pridėti nuotraukų", "PridetiNuotrauku", new { id = item.id_Naujiena })
             </td>
         </tr>
     }
