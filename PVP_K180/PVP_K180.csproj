@@ -229,10 +229,12 @@
     <Content Include="Views\Vartotojas\ProfilioPerziura.cshtml" />
     <Content Include="Views\Balsavimas\KurtiBalsavima.cshtml" />
     <Content Include="Views\Naujiena\PridetiNuotrauku.cshtml" />
+    <Content Include="Views\Balsavimas\ZiuretiBalsavimus.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Nuotraukos\" />
+    <Folder Include="Styles\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
