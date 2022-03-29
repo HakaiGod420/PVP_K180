@@ -22,13 +22,13 @@ table {
 }
 </style>
 
-
-<h2>ZiuretiBalsavimus</h2>
-
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
-<table >
+
+<h2>ZiuretiBalsavimus</h2>
+
+<table>
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.klausimas)
@@ -85,11 +85,14 @@ table {
             @Html.DisplayFor(modelItem => item.busenos_pavadinimas)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+
+            @Html.ActionLink("Redaguoti", "RedaguotiBalsavima", new {  id=item.id_Balsavimas }) |
+            @Html.ActionLink("Trinti", "TrintiBalsavima", new {  id=item.id_Balsavimas  })
         </td>
     </tr>
 }
 
 </table>
+<div>
+    @Html.ActionLink("Atgal", "AdminValdymas", "Vartotojas")
+</div>

@@ -1,0 +1,47 @@
+﻿@model IEnumerable<PVP_K180.Models.Nuotrauka>
+
+@{
+    ViewBag.Title = "GautiNuotraukas";
+}
+
+<h2>GautiNuotraukas</h2>
+
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.id_Nuotrauka)
+        </th>
+        <th>
+            Nuotrauka
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.priskirtas_id)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.id_Nuotrauka)
+            </td>
+            <td>
+                <img src="@(item.nuotraukos_nuoroda)" />
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.priskirtas_id)
+            </td>
+            <td>
+                @Html.ActionLink("Ištrinti", "TrintiNuotrauka", new { id = item.id_Nuotrauka })
+            </td>
+        </tr>
+
+    }
+
+
+</table>
+<div>
+    @Html.ActionLink("Atgal", "GautiNaujienas")
+</div>
