@@ -79,5 +79,30 @@ namespace PVP_K180.Controllers
             return View(balsavimai);
 
         }
+
+        public ActionResult TrintiBalsavima(int id)
+        {
+            if (Session["UserID"] == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            else if (!Session["Role"].Equals("Administratorius"))
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            bool flag = balsavimas_Repos.Trinti_Balsavima(id);
+
+            if(flag)
+            {
+                Response.Write("<script type='text/javascript' language='javascript'> alert('Balsavimas sėkmingai ištrintas')</script>");
+            }
+            else
+            {
+                Response.Write("<script type='text/javascript' language='javascript'> alert('Balsavimas  neištrintas')</script>");
+            }
+
+            return RedirectToAction("ZiuretiBalsavimus");
+        }
     }
 }
