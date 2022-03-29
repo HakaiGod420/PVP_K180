@@ -1,13 +1,42 @@
 ﻿@model PVP_K180.Models.Vartotojas
 
 @{
-    ViewBag.Title = "ProfilioPerziura";
+    ViewBag.Title = "Profilio peržiura";
 }
+<style>
+body {
+background-color: white;
+}
+</style>
 
-<h2>ProfilioPerziura</h2>
+<style>
+dd { 
+  font-family: verdana;
+  display: inline-block
+  height: 40px;
+  width: 300px;
 
-<div>
-    <h4>Vartotojas</h4>
+}
+</style>
+
+<style>
+dt { 
+  font-family: verdana;
+  display: inline-block
+  margin-right: 40px;
+  font-size: 16px;
+  height: 40px;
+  width: 500px;
+}
+</style>
+
+
+<h2 style="text-align:center">
+Profilio peržiūra
+</h2>
+
+<div >
+    <h4 style="text-align:center">Jums priskirta rolė yra - @Session["Role"]</h4>
     <hr />
     <dl class="dl-horizontal">
 
@@ -19,55 +48,70 @@
             @Html.DisplayFor(model => model.slapyvardis)
         </dd>
 
+        @if (Model.el_pastas != null)
+        {
+            <dt>
+                @Html.DisplayNameFor(model => model.el_pastas)
+            </dt>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.el_pastas)
-        </dt>
+            <dd>
+                @Html.DisplayFor(model => model.el_pastas)
+            </dd>
+        }
 
-        <dd>
-            @Html.DisplayFor(model => model.el_pastas)
-        </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.gimimo_data)
-        </dt>
+        @if (Model.gimimo_data != null)
+        {
+            <dt>
+                @Html.DisplayNameFor(model => model.gimimo_data)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.gimimo_data)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.gimimo_data)
+            </dd>
+        }
 
-        <dt>
-            @Html.DisplayNameFor(model => model.nuotrauka)
-        </dt>
+        @if (Model.nuotrauka != "")
+        {
+            <dt>
+                @Html.DisplayNameFor(model => model.nuotrauka)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.nuotrauka)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.nuotrauka)
+            </dd>
+        }
 
-        <dt>
-            @Html.DisplayNameFor(model => model.vardas)
-        </dt>
+        @if (Model.vardas != "")
+        {
+            <dt>
+                @Html.DisplayNameFor(model => model.vardas)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.vardas)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.vardas)
+            </dd>
+        }
+        @if (Model.pavarde != "")
+        {
+            <dt>
+                @Html.DisplayNameFor(model => model.pavarde)
+            </dt>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.pavarde)
-        </dt>
+            <dd>
+                @Html.DisplayFor(model => model.pavarde)
+            </dd>
+        }
+        @if (Model.tel_nr != "")
+        {
+            <dt>
+                @Html.DisplayNameFor(model => model.tel_nr)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.pavarde)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.tel_nr)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.tel_nr)
-        </dd>
-
+            <dd>
+                @Html.DisplayFor(model => model.tel_nr)
+            </dd>
+        }
         <dt>
             @Html.DisplayNameFor(model => model.sukurimo_data)
         </dt>
@@ -76,24 +120,19 @@
             @Html.DisplayFor(model => model.sukurimo_data)
         </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.roles_informacija)
-        </dt>
+        @if (Model.vartotojo_busena != null)
+        {
+            <dt>
+                @Html.DisplayNameFor(model => model.vartotojo_busena)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.roles_informacija.name)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.vartotojo_busena)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.vartotojo_busena)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.vartotojo_busena)
+            </dd>
+        }
 
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Back to List", "Index", "Home");
+    @Html.ActionLink("Atgal", "Index", "Home")
 </p>

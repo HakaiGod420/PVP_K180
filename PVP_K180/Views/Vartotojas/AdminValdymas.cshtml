@@ -3,10 +3,10 @@
     ViewBag.Title = "Administratoriaus pultas";
 }
 
-<h2>Admin valdymo pultas</h2>
+<h2 style="text-align:center;">Admin Valdymo Pultas</h2>
 
 
-<td>
+<td style="border:1px solid black">
     <h3>-Naujienų valdymas-</h3>
     @Html.ActionLink("Peržiųrėti naujienų sarašą", "GautiNaujienas", "Naujiena")
 </td>
@@ -16,8 +16,12 @@
     @Html.ActionLink("Kurti balsavimą", "KurtiBalsavima", "Balsavimas")
 </td>
 
-<td>
-    <h3>-Nuotrauku valdymas-</h3>
-    @Html.ActionLink("Peržiųrėti nuotraukų sarašą", "GautiNuotraukas", "Naujiena")
+<td style="margin-top:20px">
+    @Html.ActionLink("Peržiūrėti balsavimų sąrašą", "ZiuretiBalsavimus", "Balsavimas")
 </td>
 
+<div style="margin-top:20px">
+    <p>
+        @Html.ActionLink("Atgal", "Index", "Home")
+    </p>
+</div>

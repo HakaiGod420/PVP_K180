@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using PVP_K180.Models;
 
 namespace PVP_K180.Models
 {
@@ -32,6 +33,12 @@ namespace PVP_K180.Models
         public int busena { get; set; }
 
         public int fk_Vartotojasid_Sukurejas { get; set; }
+
+        [DisplayName("Balsavimo kūrėjas")]
+        public string Sukurejas { get; set; }
+
+        [DisplayName("Būsena")]
+        public string busenos_pavadinimas { get; set; }
 
         public List<Balsavimo_Variantas> balsavimo_variantai { get;set;}
     }
