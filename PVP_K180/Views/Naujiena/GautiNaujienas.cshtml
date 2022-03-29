@@ -7,7 +7,7 @@
 <h2>GautiNaujienas</h2>
 
 <p>
-    @Html.ActionLink("Create New", "NaujienosKurimas")
+    @Html.ActionLink("Sukurti naujieną", "NaujienosKurimas")
 </p>
 <table class="table">
     <tr>
@@ -48,8 +48,8 @@
                 @Html.DisplayFor(modelItem => item.naujienos_kurejo_ID)
             </td>
             <td>
-                @Html.ActionLink("Edit", "RedaguotiNaujiena", new { id = item.id_Naujiena }) |
-                @Html.ActionLink("Delete", "TrintiNaujiena", new { id = item.id_Naujiena }) |
+                @Html.ActionLink("Redaguoti", "RedaguotiNaujiena", new { id = item.id_Naujiena }) |
+                @Html.ActionLink("Pašalinti", "TrintiNaujiena", new { id = item.id_Naujiena }) |
                 @Html.ActionLink("Pridėti nuotraukų", "PridetiNuotrauku", new { id = item.id_Naujiena }) |
                 @Html.ActionLink("Nuotraukos", "GautiNuotraukas", new { id = item.id_Naujiena })
             </td>
@@ -57,3 +57,6 @@
     }
 
 </table>
+<div>
+    @Html.ActionLink("Atgal", "AdminValdymas", "Vartotojas" )
+</div>
