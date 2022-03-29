@@ -231,6 +231,7 @@
     <Content Include="Views\Naujiena\PridetiNuotrauku.cshtml" />
     <Content Include="Views\Balsavimas\ZiuretiBalsavimus.cshtml" />
     <Content Include="Views\Naujiena\GautiNuotraukas.cshtml" />
+    <Content Include="Views\Balsavimas\RedaguotiBalsavima.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

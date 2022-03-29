@@ -12,6 +12,7 @@ namespace PVP_K180.Controllers
     public class BalsavimasController : Controller
     {
         Balsavimas_Repos balsavimas_Repos = new Balsavimas_Repos();
+ 
         // GET: Balsavimas
         public ActionResult Index()
         {
@@ -36,7 +37,14 @@ namespace PVP_K180.Controllers
         {
             if(balsavimas.balsavimo_variantai != null)
             {
-                var count = balsavimas.balsavimo_variantai.Count;
+                var count = 0;
+                foreach (var item in balsavimas.balsavimo_variantai)
+                {
+                    if (item.balsavimo_variantas != null)
+                    {
+                        count++;
+                    }
+                }
                 if (count <= 1)
                 {
                     Response.Write("<script type='text/javascript' language='javascript'> alert('Balsavimų variantų turi būti daugiau nei vienas')</script>");
@@ -75,7 +83,21 @@ namespace PVP_K180.Controllers
                 return RedirectToAction("Index", "Home");
             }
 
-            List<Balsavimas> balsavimai = balsavimas_Repos.GautiBalsavimus();
+            if(Session["Message"]!=null)
+            {
+                if(Convert.ToString(Session["Message"]) == "DeleteSucc")
+                {
+                    Response.Write("<script type='text/javascript' language='javascript'> alert('Balsavimas sėkmingai ištrintas')</script>");
+                    Session.Remove("Message");
+                }
+                else
+                {
+                    Session.Remove("Message");
+                    Response.Write("<script type='text/javascript' language='javascript'> alert('Balsavimas  neištrintas')</script>");
+                }
+            }
+
+            List <Balsavimas> balsavimai = balsavimas_Repos.GautiBalsavimus();
             return View(balsavimai);
 
         }
@@ -95,14 +117,78 @@ namespace PVP_K180.Controllers
 
             if(flag)
             {
-                Response.Write("<script type='text/javascript' language='javascript'> alert('Balsavimas sėkmingai ištrintas')</script>");
+                Session["Message"] = "DeleteSucc";
             }
             else
             {
-                Response.Write("<script type='text/javascript' language='javascript'> alert('Balsavimas  neištrintas')</script>");
+                Session["Message"] = "DeleteFail";
             }
 
             return RedirectToAction("ZiuretiBalsavimus");
+        }
+
+        public ActionResult RedaguotiBalsavima(int id)
+        {
+            if (Session["UserID"] == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            else if (!Session["Role"].Equals("Administratorius"))
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            Balsavimas balsavimas = balsavimas_Repos.Gauti_Balsavima(id);
+            balsavimas.balsavimo_variantai = balsavimas_Repos.GautiVariantus(id);
+
+            return View(balsavimas);
+        }
+
+        [HttpPost]
+        public ActionResult RedaguotiBalsavima(int id,Balsavimas balsavimas)
+        {
+            balsavimas.id_Balsavimas = id;
+            balsavimas_Repos.Atnaujinti_Balsavima(balsavimas);
+
+
+            if(balsavimas.balsavimo_variantai != null)
+            {
+                var count = 0;
+                foreach(var item in balsavimas.balsavimo_variantai)
+                {
+                    if (item.balsavimo_variantas != null)
+                    {
+                        count++;
+                    }
+                }
+                if(count > 1)
+                {
+                    List<Balsavimo_Variantas> temp = balsavimas_Repos.GautiVariantus(id);
+
+                    foreach(var item in temp)
+                    {
+                        balsavimas_Repos.Trinti_Variantus(item.id_Balsavimo_Variantas);
+                    }
+
+                    foreach(var item in balsavimas.balsavimo_variantai)
+                    {
+                        item.fk_Balsavimasid_Balsavimas = id;
+                        balsavimas_Repos.Prideti_Varianta(item);
+                    }
+                }
+                else
+                {
+                    Response.Write("<script type='text/javascript' language='javascript'> alert('Balsavime turi būti bent du pasirinkimai')</script>");
+                    return View(balsavimas);
+                }
+            }
+            else
+            {
+                Response.Write("<script type='text/javascript' language='javascript'> alert('Balsavime turi būti bent du pasirinkimai')</script>");
+                return View(balsavimas);
+            }
+            Response.Write("<script type='text/javascript' language='javascript'> alert('Balsavimas sėkmingai redaguotas')</script>");
+            return View(balsavimas);
         }
     }
 }

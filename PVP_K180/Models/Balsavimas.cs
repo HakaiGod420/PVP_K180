@@ -23,11 +23,11 @@ namespace PVP_K180.Models
         public int dalyviu_skaicius { get; set; }
 
         [DisplayName("Balsavimo sukurimo data")]
-        [DisplayFormat(DataFormatString = "{0:yyyy-dd-MM}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime? sukurimo_data { get; set; }
 
         [DisplayName("Balsavimo pabaigos data")]
-        [DisplayFormat(DataFormatString = "{0:yyyy-dd-MM}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime? pabaigos_data { get; set; }
 
         public int busena { get; set; }
