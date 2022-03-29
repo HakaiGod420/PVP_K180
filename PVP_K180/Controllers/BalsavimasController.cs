@@ -63,5 +63,21 @@ namespace PVP_K180.Controllers
             Response.Write("<script type='text/javascript' language='javascript'> alert('Balsavimas sėkmingai sukurtas')</script>");
             return View();
         }
+
+        public ActionResult ZiuretiBalsavimus()
+        {
+            if (Session["UserID"] == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            else if (!Session["Role"].Equals("Administratorius"))
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            List<Balsavimas> balsavimai = balsavimas_Repos.GautiBalsavimus();
+            return View(balsavimai);
+
+        }
     }
 }
