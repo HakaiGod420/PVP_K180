@@ -21,21 +21,27 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.id_Nuotrauka)
-        </td>
-        <td>
-            <img src="@(item.nuotraukos_nuoroda)" />
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.priskirtas_id)
-        </td>
-        <td>
-            @Html.ActionLink("Delete", "TrintiNuotrauka", new { id = item.id_Nuotrauka })
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.id_Nuotrauka)
+            </td>
+            <td>
+                <img src="@(item.nuotraukos_nuoroda)" />
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.priskirtas_id)
+            </td>
+            <td>
+                @Html.ActionLink("Ištrinti", "TrintiNuotrauka", new { id = item.id_Nuotrauka })
+            </td>
+        </tr>
+
+    }
+
 
 </table>
+<div>
+    @Html.ActionLink("Atgal", "GautiNaujienas")
+</div>
