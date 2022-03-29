@@ -181,6 +181,7 @@ namespace PVP_K180.Repos
             }
         }
 
+
         public List<Balsavimo_Variantas> GautiVariantus(int id)
         {
             try

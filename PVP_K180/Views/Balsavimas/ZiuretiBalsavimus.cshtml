@@ -4,9 +4,31 @@
     ViewBag.Title = "Balsavimų sąrašas";
 }
 
+<style>
+table, th, td, tr {
+  border: 1px solid black;
+  border-collapse: collapse;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 5px;
+}
+</style>
+
+<style>
+table {
+  width: 100%;
+  max-width: 100%;
+
+}
+</style>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+
 <h2>ZiuretiBalsavimus</h2>
 
-<table class="table">
+<table>
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.klausimas)
@@ -63,6 +85,7 @@
             @Html.DisplayFor(modelItem => item.busenos_pavadinimas)
         </td>
         <td>
+
             @Html.ActionLink("Redaguoti", "RedaguotiBalsavima", new {  id=item.id_Balsavimas }) |
             @Html.ActionLink("Trinti", "TrintiBalsavima", new {  id=item.id_Balsavimas  })
         </td>

@@ -3,13 +3,33 @@
 @{
     ViewBag.Title = "GautiNaujienas";
 }
+<style>
+table, th, td, tr {
+  border: 1px inset black;
+  border-collapse: collapse;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 5px;
+}
+</style>
+
+<style>
+table {
+  width: 100%;
+  max-width: 100%;
+  margin-bottom: 20px; 
+
+}
+</style>
 
 <h2>GautiNaujienas</h2>
 
 <p>
     @Html.ActionLink("Sukurti naujieną", "NaujienosKurimas")
 </p>
-<table class="table">
+
+<table >
+
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.id_Naujiena)
