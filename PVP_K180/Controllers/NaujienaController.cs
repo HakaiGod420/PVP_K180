@@ -99,12 +99,51 @@ namespace PVP_K180.Controllers
             return View(naujienos);
         }
 
+        public ActionResult GautiNuotraukas()
+        {
+            if (Session["UserID"] == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            else if (!Session["Role"].Equals("Administratorius"))
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            Nuotrauka_Repos nuotrauka_Repos = new Nuotrauka_Repos();
+            List<Nuotrauka> nuotraukos = nuotrauka_Repos.Gauti_Nuotraukas();
+            foreach (var item in nuotraukos)
+            {
+                item.nuotraukos_nuoroda = Path.Combine(("../Nuotraukos/") + item.nuotraukos_nuoroda);
+            }
+
+            return View(nuotraukos);
+
+        }
+
 
         public ActionResult TrintiNaujiena(int id)
         {
             Naujiena_Repos naujiena_Repos = new Naujiena_Repos();
             bool flag = naujiena_Repos.Trinti_Naujiena(id);
             return RedirectToAction("GautiNaujienas");
+        }
+
+        public ActionResult TrintiNuotrauka(int id)
+        {
+            Nuotrauka_Repos nuotrauka_Repos = new Nuotrauka_Repos();
+            Nuotrauka nuotrauka = nuotrauka_Repos.Gauti_Nuotrauka(id);
+            var ServerSavePath = Path.Combine(Server.MapPath("~/Nuotraukos/") + nuotrauka.nuotraukos_nuoroda);
+            if (System.IO.File.Exists(ServerSavePath))
+            {
+                System.IO.File.Delete(ServerSavePath);
+                bool flag = nuotrauka_Repos.Trinti_Nuotrauka(id);
+            }
+            else
+            {
+                Response.Write("<script type='text/javascript' language='javascript'> alert('Tokia nuotrauka neegzistuoja!')</script>");
+            }
+            return RedirectToAction("GautiNuotraukas");
         }
 
         public ActionResult RedaguotiNaujiena(int id)
