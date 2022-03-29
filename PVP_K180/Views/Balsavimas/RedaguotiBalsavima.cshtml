@@ -1,18 +1,17 @@
 ﻿@model PVP_K180.Models.Balsavimas
 
 @{
-    ViewBag.Title = "RedaguotiBalsavima";
+    ViewBag.Title = "Balsavimo redagavimas";
     var psl_k_count = 0;
 }
 
-<h2>RedaguotiBalsavima</h2>
+<h2>Redaguoti balsavimą</h2>
 
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
 
     <div class="form-horizontal">
-        <h4>Balsavimas</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
