@@ -66,9 +66,8 @@
             @Html.DisplayFor(modelItem => item.busenos_pavadinimas)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+            @Html.ActionLink("Redaguoti", "RedaguotiBalsavima", new {  id=item.id_Balsavimas }) |
+            @Html.ActionLink("Trinti", "TrintiBalsavima", new {  id=item.id_Balsavimas  })
         </td>
     </tr>
 }

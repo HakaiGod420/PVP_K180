@@ -17,12 +17,13 @@ namespace PVP_K180.Repos
             {
                 string conn = ConfigurationManager.ConnectionStrings["MysqlConnection"].ConnectionString;
                 MySqlConnection mySqlConnection = new MySqlConnection(conn);
-                string sqlquery = "INSERT INTO `Balsavimas`(`balsavimo_aprasymas`, `klausimas`, `sukurimo_data`, `busena`," +
-                    " `fk_Vartotojasid_Sukurejas`) VALUES (?balsavimo_aprasymas,?klausimas,?sukurimo_Data,?busena,?fk_Vartotojasid_Sukurejas)";
+                string sqlquery = "INSERT INTO `Balsavimas`(`balsavimo_aprasymas`, `klausimas`, `sukurimo_data`,`pabaigos_data`, `busena`," +
+                    " `fk_Vartotojasid_Sukurejas`) VALUES (?balsavimo_aprasymas,?klausimas,?sukurimo_Data,?pabaigos_data,?busena,?fk_Vartotojasid_Sukurejas)";
                 MySqlCommand mySqlCommand = new MySqlCommand(sqlquery, mySqlConnection);
                 mySqlCommand.Parameters.Add("?balsavimo_aprasymas", MySqlDbType.VarChar).Value = balsavimas.balsavimo_aprasymas;
                 mySqlCommand.Parameters.Add("?klausimas", MySqlDbType.VarChar).Value = balsavimas.klausimas;
-                mySqlCommand.Parameters.Add("?sukurimo_data", MySqlDbType.DateTime).Value = balsavimas.sukurimo_data;
+                mySqlCommand.Parameters.Add("?sukurimo_Data", MySqlDbType.DateTime).Value = balsavimas.sukurimo_data;
+                mySqlCommand.Parameters.Add("?pabaigos_data", MySqlDbType.DateTime).Value = balsavimas.pabaigos_data;
                 mySqlCommand.Parameters.Add("?busena", MySqlDbType.Int32).Value = balsavimas.busena;
                 mySqlCommand.Parameters.Add("?fk_Vartotojasid_Sukurejas", MySqlDbType.Int32).Value = balsavimas.fk_Vartotojasid_Sukurejas;
                 mySqlConnection.Open();
@@ -111,7 +112,8 @@ namespace PVP_K180.Repos
                         balsavimo_aprasymas = Convert.ToString(item["balsavimo_aprasymas"]),
                         klausimas = Convert.ToString(item["klausimas"]),
                         dalyviu_skaicius = Convert.ToInt32(item["dalyviu_skaicius"]),
-                        sukurimo_data = CheckIfDateNull(item),
+                        sukurimo_data = Convert.ToDateTime(item["sukurimo_data"]),
+                        pabaigos_data = CheckIfDateNull(item),
                         busenos_pavadinimas = Convert.ToString(item["busena"]),
                         Sukurejas = Convert.ToString(item["kurejas"])
                     }); ;
@@ -125,9 +127,9 @@ namespace PVP_K180.Repos
             }
         }
 
-        public DateTime? CheckIfDateNull(DataRow data)
+        private DateTime? CheckIfDateNull(DataRow data)
         {
-            if(data["sukurimo_data"] == DBNull.Value)
+            if(data["pabaigos_data"] == DBNull.Value)
             {
                 return null;
             }
@@ -135,6 +137,19 @@ namespace PVP_K180.Repos
             {
                 return Convert.ToDateTime(data["sukurimo_data"]);
             }
+        }
+
+        public bool Trinti_Balsavima(int id)
+        {
+            string conn = ConfigurationManager.ConnectionStrings["MysqlConnection"].ConnectionString;
+            MySqlConnection mySqlConnection = new MySqlConnection(conn);
+            string sqlquery = "DELETE FROM `Balsavimas` WHERE id_Balsavimas=?id";
+            MySqlCommand mySqlCommand = new MySqlCommand(sqlquery, mySqlConnection);
+            mySqlCommand.Parameters.Add("?id", MySqlDbType.Int32).Value = Convert.ToInt32(id);
+            mySqlConnection.Open();
+            mySqlCommand.ExecuteNonQuery();
+            mySqlConnection.Close();
+            return true;
         }
     }
 }
