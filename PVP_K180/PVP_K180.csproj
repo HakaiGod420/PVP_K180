@@ -229,8 +229,8 @@
     <Content Include="Views\Vartotojas\ProfilioPerziura.cshtml" />
     <Content Include="Views\Balsavimas\KurtiBalsavima.cshtml" />
     <Content Include="Views\Naujiena\PridetiNuotrauku.cshtml" />
-    <Content Include="Views\Naujiena\GautiNuotraukas.cshtml" />
     <Content Include="Views\Balsavimas\ZiuretiBalsavimus.cshtml" />
+    <Content Include="Views\Naujiena\GautiNuotraukas.cshtml" />
     <Content Include="Views\Balsavimas\RedaguotiBalsavima.cshtml" />
   </ItemGroup>
   <ItemGroup>

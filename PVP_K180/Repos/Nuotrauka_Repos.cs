@@ -33,12 +33,12 @@ namespace PVP_K180.Repos
             }
         }
 
-        public List<Nuotrauka> Gauti_Nuotraukas()
+        public List<Nuotrauka> Gauti_Nuotraukas(int id)
         {
             List<Nuotrauka> nuotraukos = new List<Nuotrauka>();
             string conn = ConfigurationManager.ConnectionStrings["MysqlConnection"].ConnectionString;
             MySqlConnection mySqlConnection = new MySqlConnection(conn);
-            string sqlquery = "select * from " + "Nuotrauka";
+            string sqlquery = "select * from `Nuotrauka` where fk_Naujienaid_Naujiena=" + id;
             MySqlCommand mySqlCommand = new MySqlCommand(sqlquery, mySqlConnection);
             mySqlConnection.Open();
             MySqlDataAdapter mda = new MySqlDataAdapter(mySqlCommand);
@@ -52,6 +52,7 @@ namespace PVP_K180.Repos
                 {
                     id_Nuotrauka = Convert.ToInt32(item["id_Nuotrauka"]),
                     nuotraukos_nuoroda = Convert.ToString(item["nuotraukos_nuroda"]),
+                    priskirtas_id = Convert.ToInt32(item["fk_Naujienaid_Naujiena"]),
                 });
             }
             return nuotraukos;
@@ -74,6 +75,7 @@ namespace PVP_K180.Repos
             {
                 nuotrauka.id_Nuotrauka = Convert.ToInt32(item["id_Nuotrauka"]);
                 nuotrauka.nuotraukos_nuoroda = Convert.ToString(item["nuotraukos_nuroda"]);
+                nuotrauka.priskirtas_id = Convert.ToInt32(item["fk_Naujienaid_Naujiena"]);
             }
             
             return nuotrauka;

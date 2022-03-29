@@ -94,12 +94,25 @@ namespace PVP_K180.Controllers
             {
                 return RedirectToAction("Index", "Home");
             }
+            if (Session["Message"] != null)
+            {
+                if (Convert.ToBoolean(Session["Message"]))
+                {
+                    Response.Write("<script type='text/javascript' language='javascript'> alert('Nuotrauka pridėta sėkmingai!')</script>");
+                    Session.Remove("Message");
+                }
+                else
+                {
+                    Response.Write("<script type='text/javascript' language='javascript'> alert('Nuotrauka pridėta nesėkmingai!')</script>");
+                    Session.Remove("Message");      
+                }
+            }
             Naujiena_Repos naujiena_Repos = new Naujiena_Repos();
             List<Naujiena> naujienos = naujiena_Repos.Gauti_Naujienas();
             return View(naujienos);
         }
 
-        public ActionResult GautiNuotraukas()
+        public ActionResult GautiNuotraukas(int id)
         {
             if (Session["UserID"] == null)
             {
@@ -111,10 +124,11 @@ namespace PVP_K180.Controllers
             }
 
             Nuotrauka_Repos nuotrauka_Repos = new Nuotrauka_Repos();
-            List<Nuotrauka> nuotraukos = nuotrauka_Repos.Gauti_Nuotraukas();
+            List<Nuotrauka> nuotraukos = nuotrauka_Repos.Gauti_Nuotraukas(id);
             foreach (var item in nuotraukos)
             {
-                item.nuotraukos_nuoroda = Path.Combine(("../Nuotraukos/") + item.nuotraukos_nuoroda);
+                var path = Path.Combine(("/Nuotraukos/") + item.nuotraukos_nuoroda);
+                item.nuotraukos_nuoroda = path;
             }
 
             return View(nuotraukos);
@@ -139,11 +153,7 @@ namespace PVP_K180.Controllers
                 System.IO.File.Delete(ServerSavePath);
                 bool flag = nuotrauka_Repos.Trinti_Nuotrauka(id);
             }
-            else
-            {
-                Response.Write("<script type='text/javascript' language='javascript'> alert('Tokia nuotrauka neegzistuoja!')</script>");
-            }
-            return RedirectToAction("GautiNuotraukas");
+            return RedirectToAction("GautiNuotraukas", new { id = nuotrauka.priskirtas_id });
         }
 
         public ActionResult RedaguotiNaujiena(int id)
@@ -226,15 +236,16 @@ namespace PVP_K180.Controllers
 
             if(photoCount == 0)
             {
-                Response.Write("<script type='text/javascript' language='javascript'> alert('Turi būti pridėta bent viena nuotrauką')</script>");
+                Session["Message"] = false;
             }
             else
             {
-                Response.Write("<script type='text/javascript' language='javascript'> alert('Nuotraukos sėkmingai pridėtos!')</script>");
+                Session["Message"] = true;
             }
-           
 
-            return View();
+
+            return RedirectToAction("GautiNaujienas");
+
         }
     }
 }
