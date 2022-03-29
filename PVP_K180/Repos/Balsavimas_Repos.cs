@@ -84,5 +84,57 @@ namespace PVP_K180.Repos
                 return false;
             }
         }
+
+        public List<Balsavimas> GautiBalsavimus()
+        {
+            try
+            {
+                List<Balsavimas> balsavimai = new List<Balsavimas>();
+                string conn = ConfigurationManager.ConnectionStrings["MysqlConnection"].ConnectionString;
+                MySqlConnection mySqlConnection = new MySqlConnection(conn);
+                string sqlquery = "SELECT id_Balsavimas,balsavimo_aprasymas,klausimas,dalyviu_skaicius,sukurimo_data,pabaigos_data,Balsavimo_Busena.name as 'busena',Vartotojas.slapyvardis as 'kurejas' FROM `Balsavimas`" +
+                    "LEFT JOIN Balsavimo_Busena on Balsavimas.busena = Balsavimo_Busena.id_Balsavimo_Busena " +
+                    "LEFT JOIN Vartotojas ON Vartotojas.id_Vartotojas = Balsavimas.fk_Vartotojasid_Sukurejas";
+                MySqlCommand mySqlCommand = new MySqlCommand(sqlquery, mySqlConnection);
+                mySqlConnection.Open();
+                MySqlDataAdapter mda = new MySqlDataAdapter(mySqlCommand);
+                DataTable dt = new DataTable();
+                mda.Fill(dt);
+                mySqlConnection.Close();
+
+                foreach (DataRow item in dt.Rows)
+                {
+                    balsavimai.Add(new Balsavimas
+                    {
+                        
+                        id_Balsavimas = Convert.ToInt32(item["id_Balsavimas"]),
+                        balsavimo_aprasymas = Convert.ToString(item["balsavimo_aprasymas"]),
+                        klausimas = Convert.ToString(item["klausimas"]),
+                        dalyviu_skaicius = Convert.ToInt32(item["dalyviu_skaicius"]),
+                        sukurimo_data = CheckIfDateNull(item),
+                        busenos_pavadinimas = Convert.ToString(item["busena"]),
+                        Sukurejas = Convert.ToString(item["kurejas"])
+                    }); ;
+                }
+                return balsavimai;
+            }
+
+            catch(Exception ex)
+            {
+                return null;
+            }
+        }
+
+        public DateTime? CheckIfDateNull(DataRow data)
+        {
+            if(data["sukurimo_data"] == DBNull.Value)
+            {
+                return null;
+            }
+            else
+            {
+                return Convert.ToDateTime(data["sukurimo_data"]);
+            }
+        }
     }
 }

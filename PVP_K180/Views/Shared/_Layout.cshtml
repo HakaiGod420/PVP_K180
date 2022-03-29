@@ -28,9 +28,9 @@
 
                     <li>@Html.ActionLink("Apie seniūnija", "About", "Home")</li>
 
-                    <li>@Html.ActionLink("Naujienos", "GautiNaujienas", "Naujiena")</li>
+                    <li>@Html.ActionLink("Naujienos", "Naujienos", "Naujiena")</li>
 
-					<li>@Html.ActionLink("Balsavimas", "KurtiBalsavima", "Balsavimas")</li>
+					<li>@Html.ActionLink("Balsavimas", "Balsavimai", "Balsavimas")</li>
                 </ul>
 				}
 
@@ -67,11 +67,11 @@
             </div>
         </div>
     </div>
-    <div class="container body-content">
+    <div class="container body-content" >
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+            <p>&copy; @DateTime.Now.Year  K180 - Ką veikia seniūnijos</p>
         </footer>
     </div>
 
