@@ -173,9 +173,12 @@
     <Compile Include="Models\Nuotrauka.cs" />
     <Compile Include="Models\Role.cs" />
     <Compile Include="Models\Vartotojas.cs" />
+    <Compile Include="ModelView\Atnaujinami_Vartotojo_Duomenys.cs" />
     <Compile Include="ModelView\Nuotrauku_Duomenys.cs" />
+    <Compile Include="ModelView\Pasto_duomenys.cs" />
     <Compile Include="ModelView\Prisijungimo_Duomenys.cs" />
     <Compile Include="ModelView\Naujienos_duomenys.cs" />
+    <Compile Include="ModelView\Slaptazodzio_Atnaujinimo_Duomenys.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repos\Balsavimas_Repos.cs" />
     <Compile Include="Repos\Naujiena_Repos.cs" />
@@ -232,6 +235,11 @@
     <Content Include="Views\Balsavimas\ZiuretiBalsavimus.cshtml" />
     <Content Include="Views\Naujiena\GautiNuotraukas.cshtml" />
     <Content Include="Views\Balsavimas\RedaguotiBalsavima.cshtml" />
+    <Content Include="Views\Vartotojas\RedaguotiDuomenys.cshtml" />
+    <Content Include="Views\Vartotojas\Atnaujinti_email.cshtml" />
+    <Content Include="Views\Vartotojas\Atnaujinti_Slaptazodi.cshtml" />
+    <Content Include="Views\Vartotojas\Atnaujinti_Pagrindinius_Duomenis.cshtml" />
+    <Content Include="Views\Vartotojas\KeistiProfilioNuotrauka.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

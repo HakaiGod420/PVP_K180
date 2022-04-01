@@ -131,6 +131,7 @@ namespace PVP_K180.Repos
                     vartotojas.tel_nr = Convert.ToString(item["tel_nr"]);
                     vartotojas.sukurimo_data = Convert.ToDateTime(item["sukurymo_data"]);
                     vartotojas.role = Convert.ToInt32(item["role"]);
+                    vartotojas.el_pastas = Convert.ToString(item["el_pastas"]);
                     if (item["fk_Vartotojo_Busenaid_Vartotojo_Busena"] == DBNull.Value)
                     {
                         vartotojas.vartotojo_busena = null;
@@ -149,6 +150,89 @@ namespace PVP_K180.Repos
 
             }
             return null;
+        }
+
+        public bool AtnaujintiEmail(Pasto_duomenys pasto_Duomenys)
+        {
+            try
+            {
+                string conn = ConfigurationManager.ConnectionStrings["MysqlConnection"].ConnectionString;
+                MySqlConnection mySqlConnection = new MySqlConnection(conn);
+                string sqlquery = "UPDATE `Vartotojas` SET el_pastas=?el_pastas WHERE `id_Vartotojas` = " + pasto_Duomenys.id_vartotojas;
+                MySqlCommand mySqlCommand = new MySqlCommand(sqlquery, mySqlConnection);
+                mySqlCommand.Parameters.Add("?el_pastas", MySqlDbType.VarChar).Value = pasto_Duomenys.el_pastas;
+                mySqlConnection.Open();
+                mySqlCommand.ExecuteNonQuery();
+                mySqlConnection.Close();
+                return true;
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+        }
+
+        public bool AtnaujintiPass(Slaptazodzio_Atnaujinimo_Duomenys passData)
+        {
+            try
+            {
+                string conn = ConfigurationManager.ConnectionStrings["MysqlConnection"].ConnectionString;
+                MySqlConnection mySqlConnection = new MySqlConnection(conn);
+                string sqlquery = "UPDATE `Vartotojas` SET slaptazodis=?slaptazodis WHERE `id_Vartotojas` = " + passData.id_Vartotojas;
+                MySqlCommand mySqlCommand = new MySqlCommand(sqlquery, mySqlConnection);
+                mySqlCommand.Parameters.Add("?slaptazodis", MySqlDbType.VarChar).Value = passData.naujas_slaptazodis;
+                mySqlConnection.Open();
+                mySqlCommand.ExecuteNonQuery();
+                mySqlConnection.Close();
+                return true;
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+        }
+
+        public bool AtnaujintiPagrDuomenis(Atnaujinami_Vartotojo_Duomenys duomenys)
+        {
+            try
+            {
+                string conn = ConfigurationManager.ConnectionStrings["MysqlConnection"].ConnectionString;
+                MySqlConnection mySqlConnection = new MySqlConnection(conn);
+                string sqlquery = "UPDATE `Vartotojas` SET gimimo_data=?gimimo_data,vardas=?vardas,pavarde=?pavarde,tel_nr=?tel_nr WHERE `id_Vartotojas` = " + duomenys.id_Vartotojas;
+                MySqlCommand mySqlCommand = new MySqlCommand(sqlquery, mySqlConnection);
+                mySqlCommand.Parameters.Add("?gimimo_data", MySqlDbType.DateTime).Value = duomenys.gimimo_data;
+                mySqlCommand.Parameters.Add("?vardas", MySqlDbType.VarChar).Value = duomenys.vardas;
+                mySqlCommand.Parameters.Add("?pavarde", MySqlDbType.VarChar).Value = duomenys.pavarde;
+                mySqlCommand.Parameters.Add("?tel_nr", MySqlDbType.VarChar).Value = duomenys.tel_nr;
+                mySqlConnection.Open();
+                mySqlCommand.ExecuteNonQuery();
+                mySqlConnection.Close();
+                return true;
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+        }
+
+        public bool AtnaujintiNuotrauka(Nuotrauka nuotrauka)
+        {
+            try
+            {
+                string conn = ConfigurationManager.ConnectionStrings["MysqlConnection"].ConnectionString;
+                MySqlConnection mySqlConnection = new MySqlConnection(conn);
+                string sqlquery = "UPDATE `Vartotojas` SET nuotrauka=?nuotrauka WHERE `id_Vartotojas` = " + nuotrauka.priskirtas_id;
+                MySqlCommand mySqlCommand = new MySqlCommand(sqlquery, mySqlConnection);
+                mySqlCommand.Parameters.Add("?nuotrauka", MySqlDbType.VarChar).Value = nuotrauka.nuotraukos_nuoroda;
+                mySqlConnection.Open();
+                mySqlCommand.ExecuteNonQuery();
+                mySqlConnection.Close();
+                return true;
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
         }
     }
 }

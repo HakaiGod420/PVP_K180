@@ -1,0 +1,30 @@
+﻿
+@{
+    ViewBag.Title = "Redaguoti duomenys";
+}
+
+<h2>Duomenų redagavimas</h2>
+
+
+<td style="margin-top:20px">
+    @Html.ActionLink("Redaguoti elektroninį paštą", "Atnaujinti_email", "Vartotojas")
+</td>
+<hr style="border-top: none; margin-top: 0 !important;" />
+<td style="margin-top:20px">
+    @Html.ActionLink("Atnaujinti slaptažodį", "Atnaujinti_Slaptazodi", "Vartotojas")
+</td>
+<hr style="border-top: none; margin-top: 0 !important;" />
+<td style="margin-top:20px">
+    @Html.ActionLink("Atnaujinti pagrindinius duomenis", "Atnaujinti_Pagrindinius_Duomenis", "Vartotojas")
+</td>
+<hr style="border-top: none; margin-top: 0 !important;" />
+<td style="margin-top:20px">
+    @Html.ActionLink("Atnaujinti profilio nuotrauką", "KeistiProfilioNuotrauka", "Vartotojas")
+</td>
+
+<div style="margin-top:20px; padding-top: 20px;">
+    <p>
+        @Html.ActionLink("Atgal", "ProfilioValdymas", "Vartotojas")
+    </p>
+</div>
+
