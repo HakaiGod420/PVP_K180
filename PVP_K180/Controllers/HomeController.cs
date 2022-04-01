@@ -76,6 +76,7 @@ namespace PVP_K180.Controllers
                         return View();
                     }
                     vartotojas.EncodePassword();
+                    vartotojas.nuotrauka = "profile.jpg";
                     vartotojas_Repos.Registruoti_Vartotoja(vartotojas);
 
 

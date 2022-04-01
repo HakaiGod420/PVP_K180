@@ -35,7 +35,11 @@ dt {
 Profilio peržiūra
 </h2>
 
-<div >
+<div>
+    <div>
+        <img align="bottom" style="max-width:500px" src="@(Model.nuotrauka)" alt="Profilio nuotrauka">
+    </div>
+
     <h4 style="text-align:center">Jums priskirta rolė yra - @Session["Role"]</h4>
     <hr />
     <dl class="dl-horizontal">
@@ -71,16 +75,6 @@ Profilio peržiūra
             </dd>
         }
 
-        @if (Model.nuotrauka != "")
-        {
-            <dt>
-                @Html.DisplayNameFor(model => model.nuotrauka)
-            </dt>
-
-            <dd>
-                @Html.DisplayFor(model => model.nuotrauka)
-            </dd>
-        }
 
         @if (Model.vardas != "")
         {
