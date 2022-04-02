@@ -190,5 +190,65 @@ namespace PVP_K180.Controllers
             Response.Write("<script type='text/javascript' language='javascript'> alert('Balsavimas sėkmingai redaguotas')</script>");
             return View(balsavimas);
         }
+
+        public ActionResult KeistiBalsavimoBusena(int id)
+        {
+            if (Session["UserID"] == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            else if (!Session["Role"].Equals("Administratorius"))
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            BalsavimoBusenaPerziura balsavimoBusenaPerziura = new BalsavimoBusenaPerziura();
+            UzpildytiDuomenis(balsavimoBusenaPerziura);
+            balsavimoBusenaPerziura.balsavimo_Busena = balsavimas_Repos.Gauti_Balsavima(id).busena;
+            return View(balsavimoBusenaPerziura);
+        }
+
+        [HttpPost] 
+        public ActionResult KeistiBalsavimoBusena(int id, BalsavimoBusenaPerziura  balsavimoBusenaPerziura)
+        {
+            if (Session["UserID"] == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            else if (!Session["Role"].Equals("Administratorius"))
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            UzpildytiDuomenis(balsavimoBusenaPerziura);
+
+            var count = balsavimas_Repos.GautiAktyviuSkaiciu();
+
+            if(balsavimoBusenaPerziura.balsavimo_Busena == 2)
+            {
+                if(count >= 1)
+                {
+                    Response.Write("<script type='text/javascript' language='javascript'> alert('Aktyvus balsavimas gali būti tik vienas')</script>");
+                    return View(balsavimoBusenaPerziura);
+                }
+            }
+
+            balsavimas_Repos.Atnaujinti_Balsavimo_Busena(id, balsavimoBusenaPerziura.balsavimo_Busena);
+            Response.Write("<script type='text/javascript' language='javascript'> alert('Balsavimo būsena pakeista')</script>");
+
+            return View(balsavimoBusenaPerziura);
+        }
+
+
+        public void UzpildytiDuomenis(BalsavimoBusenaPerziura balsavimoBusenaPerziura)
+        {
+            var busenos = balsavimas_Repos.GautiBusenas();
+            IList<SelectListItem> busenosList = new List<SelectListItem>();
+
+            foreach(var item in busenos)
+            {
+                busenosList.Add(new SelectListItem { Value = item.id_Balsavimo_busena.ToString(), Text = item.name });
+            }
+            balsavimoBusenaPerziura.Busenos = busenosList;
+        }
     }
 }
