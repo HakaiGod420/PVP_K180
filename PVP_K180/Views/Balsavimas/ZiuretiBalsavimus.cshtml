@@ -86,8 +86,9 @@ table {
         </td>
         <td>
 
-            @Html.ActionLink("Redaguoti", "RedaguotiBalsavima", new {  id=item.id_Balsavimas }) |
-            @Html.ActionLink("Trinti", "TrintiBalsavima", new {  id=item.id_Balsavimas  })
+            @Html.ActionLink("Redaguoti", "RedaguotiBalsavima", new { id = item.id_Balsavimas }) |
+            @Html.ActionLink("Trinti", "TrintiBalsavima", new { id = item.id_Balsavimas }) |
+            @Html.ActionLink("Keisti būseną", "KeistiBalsavimoBusena", new { id = item.id_Balsavimas })
         </td>
     </tr>
 }
