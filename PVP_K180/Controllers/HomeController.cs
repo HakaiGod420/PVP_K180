@@ -13,6 +13,7 @@ namespace PVP_K180.Controllers
     {
         Vartotojas_Repos vartotojas_Repos = new Vartotojas_Repos();
         Role_Repos role_Repos = new Role_Repos();
+        Seniunija_Repos seniunija_Repos = new Seniunija_Repos();
         public ActionResult Index()
         {
             if (Session["Message"] != null)
@@ -36,11 +37,11 @@ namespace PVP_K180.Controllers
             return View();
         }
 
-        public ActionResult About()
+        public ActionResult Apie()
         {
-            ViewBag.Message = "Your application description page.";
+            Seniunija seniunija = seniunija_Repos.Gauti_Seniunija();
 
-            return View();
+            return View(seniunija);
         }
 
         public ActionResult Contact()
