@@ -163,6 +163,7 @@
     <Compile Include="Controllers\BalsavimasController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\NaujienaController.cs" />
+    <Compile Include="Controllers\ProjektasController.cs" />
     <Compile Include="Controllers\VartotojasController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -172,6 +173,7 @@
     <Compile Include="Models\Balsavimo_Variantas.cs" />
     <Compile Include="Models\Naujiena.cs" />
     <Compile Include="Models\Nuotrauka.cs" />
+    <Compile Include="Models\Projektas.cs" />
     <Compile Include="Models\Role.cs" />
     <Compile Include="Models\Seniunija.cs" />
     <Compile Include="Models\Vartotojas.cs" />
@@ -186,6 +188,7 @@
     <Compile Include="Repos\Balsavimas_Repos.cs" />
     <Compile Include="Repos\Naujiena_Repos.cs" />
     <Compile Include="Repos\Nuotrauka_Repos.cs" />
+    <Compile Include="Repos\Projektas_Repos.cs" />
     <Compile Include="Repos\Role_Repos.cs" />
     <Compile Include="Repos\Seniunija_Repos.cs" />
     <Compile Include="Repos\Vartotojas_Repos.cs" />
@@ -574,7 +577,13 @@
     <Content Include="Themes\ckeditor\SECURITY.md" />
     <Content Include="Themes\ckeditor\skins\moono-lisa\readme.md" />
     <Content Include="Views\Home\Apie.cshtml" />
+<<<<<<< Updated upstream
     <Content Include="Views\Admin\VartotojuSarasas.cshtml" />
+=======
+    <Content Include="Views\Projektas\ProjektoKurimas.cshtml" />
+    <Content Include="Views\Projektas\RedaguotiProjekta.cshtml" />
+    <Content Include="Views\Projektas\GautiProjektus.cshtml" />
+>>>>>>> Stashed changes
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
