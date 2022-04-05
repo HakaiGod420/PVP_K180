@@ -1,0 +1,62 @@
+﻿@model IEnumerable<PVP_K180.Models.Projektas>
+
+@{
+    ViewBag.Title = "GautiProjektus";
+}
+
+<h2>GautiProjektus</h2>
+
+<p>
+    @Html.ActionLink("Sukurti naują projektą", "ProjektoKurimas")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.id_Projektas)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.pavadinimas)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.aprasymas)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.busena)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+<tr>
+    <td>
+        @Html.DisplayFor(modelItem => item.id_Projektas)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.pavadinimas)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.aprasymas)
+    </td>
+    <td>
+        @if (item.busena == 1)
+        {
+            @Html.DisplayName("Bus vykdomas")
+        }
+        else if (item.busena == 2)
+        {
+            @Html.DisplayName("Įvykdytas")
+        }
+        else if (item.busena == 3)
+        {
+            @Html.DisplayName("Vykdomas")
+        }
+    </td>
+    <td>
+        @Html.ActionLink("Redaguoti", "RedaguotiProjekta", new { id = item.id_Projektas }) |
+        @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+        @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+    </td>
+</tr>
+}
+
+</table>
