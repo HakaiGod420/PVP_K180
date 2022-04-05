@@ -42,13 +42,13 @@ namespace PVP_K180.Controllers
             return View();
         }
 
-        public ActionResult ProfilioPerziura()
+        public ActionResult ProfilioPerziura(int id)
         {
             if (Session["UserID"] == null)
             {
                 return RedirectToAction("Index", "Home");
             }
-            Vartotojas vartotojas = vartotojas_Repos.Gauti_Vartotoja(Convert.ToInt32(Session["UserID"]));
+            Vartotojas vartotojas = vartotojas_Repos.Gauti_Vartotoja(id);
             vartotojas.roles_informacija = role_Repos.Gauti_Role(vartotojas.role);
             vartotojas.nuotrauka = Path.Combine(("/Nuotraukos/") + vartotojas.nuotrauka);
             return View(vartotojas);

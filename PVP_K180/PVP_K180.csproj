@@ -574,6 +574,7 @@
     <Content Include="Themes\ckeditor\SECURITY.md" />
     <Content Include="Themes\ckeditor\skins\moono-lisa\readme.md" />
     <Content Include="Views\Home\Apie.cshtml" />
+    <Content Include="Views\Admin\VartotojuSarasas.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

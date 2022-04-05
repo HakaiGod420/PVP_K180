@@ -23,18 +23,17 @@
 
             <div class="navbar-collapse collapse">
 
-                @if (Convert.ToString(Session["UserID"]) != "")
-                {
+               
                     <ul class="nav navbar-nav">
 
-                        <li>@Html.ActionLink("Apie seniūnija", "About", "Home")</li>
+                        <li>@Html.ActionLink("Apie seniūnija", "Apie", "Home")</li>
 
                         <li>@Html.ActionLink("Naujienos", "GautiNaujienas", "Naujiena")</li>
 
                         <li>@Html.ActionLink("Balsavimas", "ZiuretiBalsavimus", "Balsavimas")</li>
 
                     </ul>
-                }
+                
 
                 @if (Convert.ToString(Session["UserID"]) == "")
                 {
@@ -51,7 +50,7 @@
                         <button type="button" style="font-size: 15px;" class="btn btn-lg btn-default ">Sveiki, @Session["UserName"]</button>
                         <button type="button" style="font-size: 15px" class="btn btn-lg btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="caret"></span><span class="sr-only">Toggle Dropdown</span></button>
                         <ul class="dropdown-menu">
-                            <li role="presentation"><a href="@(@Url.Action("ProfilioPerziura", "Vartotojas"))">Mano profilis</a></li>
+                            <li role="presentation"><a href="@(@Url.Action("ProfilioPerziura", "Vartotojas", new { id = Session["UserID"] }))">Mano profilis</a></li>
 
                             <li role="presentation"><a href="@(@Url.Action("ProfilioValdymas", "Vartotojas"))">Profilio Valdymas</a></li>
 
