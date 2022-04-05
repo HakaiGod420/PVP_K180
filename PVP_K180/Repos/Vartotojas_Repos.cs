@@ -234,5 +234,129 @@ namespace PVP_K180.Repos
                 return false;
             }
         }
+
+        public List<Vartotojas> GautiVartotojus()
+        {
+            try
+            {
+                List<Vartotojas> vartotojai = new List<Vartotojas>();
+                string conn = ConfigurationManager.ConnectionStrings["MysqlConnection"].ConnectionString;
+                MySqlConnection mySqlConnection = new MySqlConnection(conn);
+                string sqlquery = "SELECT * FROM `Vartotojas`";
+                MySqlCommand mySqlCommand = new MySqlCommand(sqlquery, mySqlConnection);
+                mySqlConnection.Open();
+                MySqlDataAdapter mda = new MySqlDataAdapter(mySqlCommand);
+                DataTable dt = new DataTable();
+                mda.Fill(dt);
+                mySqlConnection.Close();
+
+                foreach (DataRow item in dt.Rows)
+                {
+                    vartotojai.Add(new Vartotojas
+                    {
+
+                        id_Vartotojas = Convert.ToInt32(item["id_Vartotojas"]),
+                        slapyvardis = Convert.ToString(item["slapyvardis"]),
+                        slaptazodis = Convert.ToString(item["slaptazodis"]),
+                        el_pastas = Convert.ToString(item["el_pastas"]),
+                        gimimo_data = CheckIfDateNull(item,"gimimo_data"),
+                        nuotrauka = Convert.ToString(item["nuotrauka"]),
+                        vardas = CheckIfDateNull(item, "vardas"),
+                        pavarde = CheckIfDateNull(item, "pavarde"),
+                        tel_nr = CheckIfDateNull(item, "tel_nr"),
+                        sukurimo_data = Convert.ToDateTime(item["sukurymo_data"]),
+                        role = Convert.ToInt32(item["role"]),
+                        vartotojo_busena = CheckIfDateNull(item, "fk_Vartotojo_Busenaid_Vartotojo_Busena"),
+                    }); ;
+                }
+                return vartotojai;
+            }
+
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+
+        private dynamic CheckIfDateNull(DataRow data, string type)
+        {
+            if (type == "gimimo_data")
+            {
+                if (data["gimimo_data"] == DBNull.Value)
+                {
+                    return null;
+                }
+                else
+                {
+                    return Convert.ToDateTime(data["gimimo_data"]);
+                }
+            }
+
+            if (type == "vardas")
+            {
+                if (data["vardas"] == DBNull.Value)
+                {
+                    return null;
+                }
+                else
+                {
+                    return Convert.ToString(data["vardas"]);
+                }
+            }
+
+            if (type == "pavarde")
+            {
+                if (data["pavarde"] == DBNull.Value)
+                {
+                    return null;
+                }
+                else
+                {
+                    return Convert.ToString(data["pavarde"]);
+                }
+            }
+
+            if (type == "tel_nr")
+            {
+                if (data["tel_nr"] == DBNull.Value)
+                {
+                    return null;
+                }
+                else
+                {
+                    return Convert.ToString(data["tel_nr"]);
+                }
+            }
+
+            if (type == "fk_Vartotojo_Busenaid_Vartotojo_Busena")
+            {
+                if (data["fk_Vartotojo_Busenaid_Vartotojo_Busena"] == DBNull.Value)
+                {
+                    return null;
+                }
+                else
+                {
+                    return Convert.ToInt32(data["fk_Vartotojo_Busenaid_Vartotojo_Busena"]);
+                }
+            }
+
+            return null;
+
+
+        }
+
+
+        public bool TrintiVartotoja(int id)
+        {
+            string conn = ConfigurationManager.ConnectionStrings["MysqlConnection"].ConnectionString;
+            MySqlConnection mySqlConnection = new MySqlConnection(conn);
+            string sqlquery = @"DELETE FROM `Vartotojas` where id_Vartotojas=?id";
+            MySqlCommand mySqlCommand = new MySqlCommand(sqlquery, mySqlConnection);
+            mySqlCommand.Parameters.Add("?id", MySqlDbType.Int32).Value = Convert.ToInt32(id);
+            mySqlConnection.Open();
+            mySqlCommand.ExecuteNonQuery();
+            mySqlConnection.Close();
+            return true;
+        }
     }
 }
