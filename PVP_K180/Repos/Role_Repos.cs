@@ -33,5 +33,38 @@ namespace PVP_K180.Repos
             }
             return role;
         }
+
+        public List<Role> GautiRoles()
+        {
+            try
+            {
+                List<Role> roles = new List<Role>();
+                string conn = ConfigurationManager.ConnectionStrings["MysqlConnection"].ConnectionString;
+                MySqlConnection mySqlConnection = new MySqlConnection(conn);
+                string sqlquery = "SELECT * FROM `Role` WHERE 1";
+                MySqlCommand mySqlCommand = new MySqlCommand(sqlquery, mySqlConnection);
+                mySqlConnection.Open();
+                MySqlDataAdapter mda = new MySqlDataAdapter(mySqlCommand);
+                DataTable dt = new DataTable();
+                mda.Fill(dt);
+                mySqlConnection.Close();
+
+                foreach (DataRow item in dt.Rows)
+                {
+                    roles.Add(new Role
+                    {
+
+                        id_Role = Convert.ToInt32(item["id_Role"]),
+                        name = Convert.ToString(item["name"])
+                    }); ;
+                }
+                return roles;
+            }
+
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
     }
 }

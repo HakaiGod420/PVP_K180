@@ -358,5 +358,78 @@ namespace PVP_K180.Repos
             mySqlConnection.Close();
             return true;
         }
+
+        public List<Vartotojo_Busena> GautiBusenas()
+        {
+            try
+            {
+                List<Vartotojo_Busena> vartotojo_Busenas = new List<Vartotojo_Busena>();
+                string conn = ConfigurationManager.ConnectionStrings["MysqlConnection"].ConnectionString;
+                MySqlConnection mySqlConnection = new MySqlConnection(conn);
+                string sqlquery = "SELECT * FROM `Vartotojo_Busena` WHERE 1";
+                MySqlCommand mySqlCommand = new MySqlCommand(sqlquery, mySqlConnection);
+                mySqlConnection.Open();
+                MySqlDataAdapter mda = new MySqlDataAdapter(mySqlCommand);
+                DataTable dt = new DataTable();
+                mda.Fill(dt);
+                mySqlConnection.Close();
+
+                foreach (DataRow item in dt.Rows)
+                {
+                    vartotojo_Busenas.Add(new Vartotojo_Busena
+                    {
+
+                        id_Vartotojo_Busena = Convert.ToInt32(item["id_Vartotojo_Busena"]),
+                        name = Convert.ToString(item["name"])
+                    }); ;
+                }
+                return vartotojo_Busenas;
+            }
+
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+
+        public bool AtnaujintiVartotojoBusena(int vartotojo_id, int? busenos_id)
+        {
+            try
+            {
+                string conn = ConfigurationManager.ConnectionStrings["MysqlConnection"].ConnectionString;
+                MySqlConnection mySqlConnection = new MySqlConnection(conn);
+                string sqlquery = "UPDATE `Vartotojas` SET `fk_Vartotojo_Busenaid_Vartotojo_Busena`=?busena WHERE id_Vartotojas=" + vartotojo_id;
+                MySqlCommand mySqlCommand = new MySqlCommand(sqlquery, mySqlConnection);
+                mySqlCommand.Parameters.Add("?busena", MySqlDbType.Int32).Value = busenos_id;
+                mySqlConnection.Open();
+                mySqlCommand.ExecuteNonQuery();
+                mySqlConnection.Close();
+                return true;
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+        }
+
+        public bool AtnaujintiVartotojoRole(int vartotojo_id, int roles_id)
+        {
+            try
+            {
+                string conn = ConfigurationManager.ConnectionStrings["MysqlConnection"].ConnectionString;
+                MySqlConnection mySqlConnection = new MySqlConnection(conn);
+                string sqlquery = "UPDATE `Vartotojas` SET `role`=?role WHERE id_Vartotojas=" + vartotojo_id;
+                MySqlCommand mySqlCommand = new MySqlCommand(sqlquery, mySqlConnection);
+                mySqlCommand.Parameters.Add("?role", MySqlDbType.Int32).Value = roles_id;
+                mySqlConnection.Open();
+                mySqlCommand.ExecuteNonQuery();
+                mySqlConnection.Close();
+                return true;
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+        }
     }
 }

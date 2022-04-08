@@ -73,7 +73,9 @@
             </td>
             <td>
                 <a href="@(@Url.Action("ProfilioPerziura", "Vartotojas", new { id = item.id_Vartotojas}))">Profilis</a> |
-                @Html.ActionLink("Trinti", "TrintiVartotoja", new { id = item.id_Vartotojas, onclick = "return DeleteConfirm()" })
+                @Html.ActionLink("Trinti", "TrintiVartotoja", new { id = item.id_Vartotojas, onclick = "return DeleteConfirm()" }) |
+                <a href="@(@Url.Action("KeistiBusena", "Admin", new { id = item.id_Vartotojas}))">Būsenos keitimas</a> |
+                <a href="@(@Url.Action("KeistiROle", "Admin", new { id = item.id_Vartotojas}))">Rolės keitimas</a>
             </td>
         </tr>
     }
