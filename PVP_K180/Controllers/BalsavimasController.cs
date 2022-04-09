@@ -239,6 +239,47 @@ namespace PVP_K180.Controllers
         }
 
 
+        [HttpGet]
+        public ActionResult Balsuoti()
+        {
+            int acviveVote = balsavimas_Repos.Gauti_Aktyvu_Balsavima();
+            Balsavimas balsavimas = balsavimas_Repos.Gauti_Balsavima(acviveVote);
+            balsavimas.balsavimo_variantai = balsavimas_Repos.GautiVariantus(balsavimas.id_Balsavimas);
+
+            if(Session["UserID"] != null)
+            {
+                var check = balsavimas_Repos.PatikrintiPasirinkima(acviveVote, Convert.ToInt32(Session["UserID"]));
+
+                if(check)
+                {
+                    TempData["Voted"] = true;
+                    TempData["ChosenNumb"] = balsavimas_Repos.Gauti_Pasirinkta_Varianta(Convert.ToInt32(Session["UserID"]));
+                }
+                else
+                {
+                    TempData["Voted"] = false;
+                }
+            }
+
+            return View(balsavimas);
+        }
+
+        public ActionResult RinktisVarianta(int id)
+        {
+
+            Varianto_Pasirinkimas varianto_Pasirinkimas = new Varianto_Pasirinkimas();
+            varianto_Pasirinkimas.fk_Balsavimo_Variantasid_Balsavimo_Variantas = id;
+            varianto_Pasirinkimas.fk_Vartotojasid_Vartotojas = Convert.ToInt32(Session["UserID"]);
+            Balsavimo_Variantas variantas = balsavimas_Repos.GautiVarianta(id);
+            varianto_Pasirinkimas.fk_Balsavimo_Id = variantas.fk_Balsavimasid_Balsavimas;
+            balsavimas_Repos.Prideti_Pasirinkta_Varianta(varianto_Pasirinkimas);
+            balsavimas_Repos.AtnaujintiBalsavimoSkaiciu(varianto_Pasirinkimas.fk_Balsavimo_Id);
+            balsavimas_Repos.AtnaujintiVariantoSkaiciu(varianto_Pasirinkimas.fk_Balsavimo_Variantasid_Balsavimo_Variantas);
+            TempData["SuccessVote"] = "Sėkmingai buvo užbalsuota";
+            return RedirectToAction("Balsuoti");
+        }
+
+
         public void UzpildytiDuomenis(BalsavimoBusenaPerziura balsavimoBusenaPerziura)
         {
             var busenos = balsavimas_Repos.GautiBusenas();

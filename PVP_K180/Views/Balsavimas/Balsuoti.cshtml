@@ -1,0 +1,119 @@
+﻿@model PVP_K180.Models.Balsavimas
+
+@{
+    ViewBag.Title = "Balsuoti";
+}
+
+<h2>Balsuoti</h2>
+
+
+<div>
+    <h4>Balsavimas</h4>
+    @if (TempData["SuccessVote"] != null)
+    {
+        <p class="alert alert-success" id="successMessage">@Convert.ToString(TempData["SuccessVote"])</p>
+    }
+    <hr />
+
+@if (Model.sukurimo_data != null)
+{
+    <dl class="dl-horizontal">
+
+        <dt>
+            @Html.DisplayNameFor(model => model.klausimas)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.klausimas)
+        </dd>
+
+
+        @if (Model.balsavimo_aprasymas != "")
+        {
+
+
+            <dt>
+                @Html.DisplayNameFor(model => model.balsavimo_aprasymas)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.balsavimo_aprasymas)
+            </dd>
+        }
+
+        <dt>
+            @Html.DisplayNameFor(model => model.dalyviu_skaicius)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.dalyviu_skaicius)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.sukurimo_data)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.sukurimo_data)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.pabaigos_data)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.pabaigos_data)
+        </dd>
+
+        @using (Html.BeginForm())
+        {
+            <dd>
+                <p style="">Balsavimo variantai</p>
+            </dd>
+            if (Session["UserID"] != null && Convert.ToBoolean(TempData["Voted"]) == false)
+            {
+                foreach (var item in Model.balsavimo_variantai)
+                {
+
+                    <dd>
+                        <form>
+                            <a href="@Url.Action("RinktisVarianta", "Balsavimas", new { id = item.id_Balsavimo_Variantas })" class="btn btn-default btn-xs">
+                                <i class="fa fa-plus"></i>@item.balsavimo_variantas
+                            </a>
+                        </form>
+                    </dd>
+
+                }
+            }
+            else
+            {
+                foreach (var item in Model.balsavimo_variantai)
+                {
+
+                    <dd>
+                        @if (!(Convert.ToInt32(TempData["ChosenNumb"]) == item.id_Balsavimo_Variantas))
+                        {
+                        <p>
+                        @item.balsavimo_variantas | Pasirininkusių skaičius: @item.pasirinkusiu_skaicius 
+                        </p>                          }
+                            else
+                            {
+                             <p>✔️  @item.balsavimo_variantas | Pasirininkusių skaičius: @item.pasirinkusiu_skaicius </p>
+                            }
+                    </dd>
+
+                }
+            }
+
+        }
+
+
+    </dl>
+}
+            else
+            {
+                <p>Aktyvaus balsavimo dabar nėra</p>
+            }
+</div>
+<p>
+    @Html.ActionLink("Atgal", "Index", "Home")
+</p>
