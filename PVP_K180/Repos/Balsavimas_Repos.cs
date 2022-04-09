@@ -336,5 +336,172 @@ namespace PVP_K180.Repos
                 return -1;
             }
         }
+
+        public int Gauti_Aktyvu_Balsavima()
+        {
+            int activeNum = -1;
+            string conn = ConfigurationManager.ConnectionStrings["MysqlConnection"].ConnectionString;
+            MySqlConnection mySqlConnection = new MySqlConnection(conn);
+            string sqlquery = "select * from `Balsavimas` where busena=" + 2;
+            MySqlCommand mySqlCommand = new MySqlCommand(sqlquery, mySqlConnection);
+            mySqlConnection.Open();
+            MySqlDataAdapter mda = new MySqlDataAdapter(mySqlCommand);
+            DataTable dt = new DataTable();
+            mda.Fill(dt);
+            mySqlConnection.Close();
+
+            foreach (DataRow item in dt.Rows)
+            {
+                {
+                    activeNum = Convert.ToInt32(item["id_Balsavimas"]);
+                }
+            }
+            return activeNum;
+        }
+
+        public Balsavimo_Variantas GautiVarianta(int id)
+        {
+            try
+            {
+                Balsavimo_Variantas balsavimo_Variantas = new Balsavimo_Variantas();
+                string conn = ConfigurationManager.ConnectionStrings["MysqlConnection"].ConnectionString;
+                MySqlConnection mySqlConnection = new MySqlConnection(conn);
+                string sqlquery = "SELECT * FROM `Balsavimo_Variantas` WHERE id_Balsavimo_Variantas =" + id;
+                MySqlCommand mySqlCommand = new MySqlCommand(sqlquery, mySqlConnection);
+                mySqlConnection.Open();
+                MySqlDataAdapter mda = new MySqlDataAdapter(mySqlCommand);
+                DataTable dt = new DataTable();
+                mda.Fill(dt);
+                mySqlConnection.Close();
+
+                foreach (DataRow item in dt.Rows)
+                {
+
+                    balsavimo_Variantas.id_Balsavimo_Variantas = Convert.ToInt32(item["id_Balsavimo_Variantas"]);
+                    balsavimo_Variantas.balsavimo_variantas = Convert.ToString(item["balsavimo_variantas"]);
+                    balsavimo_Variantas.pasirinkusiu_skaicius = Convert.ToInt32(item["pasirinkusiu_skaicius"]);
+                    balsavimo_Variantas.fk_Balsavimasid_Balsavimas = Convert.ToInt32(item["fk_Balsavimasid_Balsavimas"]);
+                }
+                return balsavimo_Variantas;
+            }
+
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+
+        public bool Prideti_Pasirinkta_Varianta(Varianto_Pasirinkimas varianto_Pasirinkimas)
+        {
+            try
+            {
+                string conn = ConfigurationManager.ConnectionStrings["MysqlConnection"].ConnectionString;
+                MySqlConnection mySqlConnection = new MySqlConnection(conn);
+                string sqlquery = "INSERT INTO `Varianto_Pasirinkimas`(`fk_Vartotojasid_Vartotojas`, `fk_Balsavimo_Variantasid_Balsavimo_Variantas`, `fk_Balsavimo_Id`) VALUES (?fk_Vartotojasid_Vartotojas,?fk_Balsavimo_Variantasid_Balsavimo_Variantas,?fk_Balsavimo_Id)";
+                MySqlCommand mySqlCommand = new MySqlCommand(sqlquery, mySqlConnection);
+                mySqlCommand.Parameters.Add("?fk_Vartotojasid_Vartotojas", MySqlDbType.Int32).Value = varianto_Pasirinkimas.fk_Vartotojasid_Vartotojas;
+                mySqlCommand.Parameters.Add("?fk_Balsavimo_Variantasid_Balsavimo_Variantas", MySqlDbType.Int32).Value = varianto_Pasirinkimas.fk_Balsavimo_Variantasid_Balsavimo_Variantas;
+                mySqlCommand.Parameters.Add("?fk_Balsavimo_Id", MySqlDbType.Int32).Value = varianto_Pasirinkimas.fk_Balsavimo_Id;
+                mySqlConnection.Open();
+                mySqlCommand.ExecuteNonQuery();
+                mySqlConnection.Close();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
+        public bool AtnaujintiBalsavimoSkaiciu(int id)
+        {
+            try
+            {
+                string conn = ConfigurationManager.ConnectionStrings["MysqlConnection"].ConnectionString;
+                MySqlConnection mySqlConnection = new MySqlConnection(conn);
+                string sqlquery = "UPDATE Balsavimas SET dalyviu_skaicius = dalyviu_skaicius + 1 WHERE id_Balsavimas ="+id;
+                MySqlCommand mySqlCommand = new MySqlCommand(sqlquery, mySqlConnection);
+                mySqlConnection.Open();
+                mySqlCommand.ExecuteNonQuery();
+                mySqlConnection.Close();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
+        public bool AtnaujintiVariantoSkaiciu(int id)
+        {
+            try
+            {
+                string conn = ConfigurationManager.ConnectionStrings["MysqlConnection"].ConnectionString;
+                MySqlConnection mySqlConnection = new MySqlConnection(conn);
+                string sqlquery = "UPDATE Balsavimo_Variantas SET pasirinkusiu_skaicius = pasirinkusiu_skaicius + 1 WHERE id_Balsavimo_Variantas =" + id;
+                MySqlCommand mySqlCommand = new MySqlCommand(sqlquery, mySqlConnection);
+                mySqlConnection.Open();
+                mySqlCommand.ExecuteNonQuery();
+                mySqlConnection.Close();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
+        public bool PatikrintiPasirinkima(int activeVote, int userID)
+        {
+            try
+            {
+                string conn = ConfigurationManager.ConnectionStrings["MysqlConnection"].ConnectionString;
+                MySqlConnection mySqlConnection = new MySqlConnection(conn);
+                string sqlquery = "SELECT * FROM `Varianto_Pasirinkimas` WHERE fk_Vartotojasid_Vartotojas=?userID AND fk_Balsavimo_Id = ?activeVote";
+                MySqlCommand mySqlCommand = new MySqlCommand(sqlquery, mySqlConnection);
+                mySqlCommand.Parameters.Add("?activeVote", MySqlDbType.Int32).Value = activeVote;
+                mySqlCommand.Parameters.Add("?userID", MySqlDbType.Int32).Value = userID;
+                mySqlConnection.Open();
+                MySqlDataAdapter mda = new MySqlDataAdapter(mySqlCommand);
+                DataTable dt = new DataTable();
+                mda.Fill(dt);
+                mySqlConnection.Close();
+
+                if (dt.Rows.Count == 1)
+                {
+                    return true;
+                }
+                else return false;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+
+        }
+
+        public int Gauti_Pasirinkta_Varianta(int userID)
+        {
+            int activeNum = -1;
+            string conn = ConfigurationManager.ConnectionStrings["MysqlConnection"].ConnectionString;
+            MySqlConnection mySqlConnection = new MySqlConnection(conn);
+            string sqlquery = "select * from `Varianto_Pasirinkimas` where fk_Vartotojasid_Vartotojas=" + userID;
+            MySqlCommand mySqlCommand = new MySqlCommand(sqlquery, mySqlConnection);
+            mySqlConnection.Open();
+            MySqlDataAdapter mda = new MySqlDataAdapter(mySqlCommand);
+            DataTable dt = new DataTable();
+            mda.Fill(dt);
+            mySqlConnection.Close();
+
+            foreach (DataRow item in dt.Rows)
+            {
+                {
+                    activeNum = Convert.ToInt32(item["fk_Balsavimo_Variantasid_Balsavimo_Variantas"]);
+                }
+            }
+            return activeNum;
+        }
+
+
     }
 }
