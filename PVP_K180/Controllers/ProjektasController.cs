@@ -76,6 +76,13 @@ namespace PVP_K180.Controllers
             return View(projektas);
         }
 
+        public ActionResult TrintiProjekta(int id)
+        {
+            Projektas_Repos projektas_Repos = new Projektas_Repos();
+            bool flag = projektas_Repos.Trinti_Projekta(id);
+            return RedirectToAction("GautiProjektus");
+        }
+
         public ActionResult GautiProjektus()
         {
 

@@ -24,15 +24,17 @@
             <div class="navbar-collapse collapse">
 
                
-                    <ul class="nav navbar-nav">
+                <ul class="nav navbar-nav">
 
-                        <li>@Html.ActionLink("Apie seniūnija", "Apie", "Home")</li>
+                    <li>@Html.ActionLink("Apie seniūnija", "Apie", "Home")</li>
 
-                        <li>@Html.ActionLink("Naujienos", "GautiNaujienas", "Naujiena")</li>
+                    <li>@Html.ActionLink("Naujienos", "GautiNaujienas", "Naujiena")</li>
 
-                        <li>@Html.ActionLink("Balsavimas", "ZiuretiBalsavimus", "Balsavimas")</li>
+                    <li>@Html.ActionLink("Balsavimas", "ZiuretiBalsavimus", "Balsavimas")</li>
 
-                    </ul>
+                    <li>@Html.ActionLink("Projektai", "GautiProjektus", "Projektas")</li>
+
+                </ul>
                 
 
                 @if (Convert.ToString(Session["UserID"]) == "")
