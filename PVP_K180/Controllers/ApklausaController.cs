@@ -42,13 +42,13 @@ namespace PVP_K180.Controllers
                 }
                 if (count <= 1)
                 {
-                    Response.Write("<script type='text/javascript' language='javascript'> alert('Apklausos klausimų turi būti daugiau nei vienas')</script>");
+                    TempData["FailApklausa"] = "Apklausos klausimų turi būti daugiau nei vienas";
                     return View();
                 }
             }
             else
             {
-                Response.Write("<script type='text/javascript' language='javascript'> alert('Apklauso klausimų turi būti daugiau nei vienas')</script>");
+                TempData["FailApklausa"] = "Apklausos klausimų turi būti daugiau nei vienas";
                 return View();
             }
 
@@ -64,8 +64,24 @@ namespace PVP_K180.Controllers
 
                 apklausa_Repos.Prideti_Klausima(item);
             }
-            Response.Write("<script type='text/javascript' language='javascript'> alert('Apklausa sėkmingai sukurtas')</script>");
+            TempData["SuccsessApklausa"] = "Apklausa sėkmingai sukurtas";
             return View();
+        }
+
+        public ActionResult ZiuretiApklausas()
+        {
+            if (Session["UserID"] == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            else if (!Session["Role"].Equals("Administratorius"))
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            List<Apklausa> apklausos = apklausa_Repos.GautiApklausas();
+            return View(apklausos);
+
         }
     }
 }
