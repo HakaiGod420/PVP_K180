@@ -594,6 +594,7 @@
     <Content Include="Views\Admin\KeistiRole.cshtml" />
     <Content Include="Views\Balsavimas\Balsuoti.cshtml" />
     <Content Include="Views\Apklausa\KurtiApklausa.cshtml" />
+    <Content Include="Views\Apklausa\ZiuretiApklausas.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

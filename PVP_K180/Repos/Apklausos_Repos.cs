@@ -85,5 +85,60 @@ namespace PVP_K180.Repos
             }
         }
 
+        public List<Apklausa> GautiApklausas()
+        {
+            try
+            {
+                List<Apklausa> apklausos = new List<Apklausa>();
+                string conn = ConfigurationManager.ConnectionStrings["MysqlConnection"].ConnectionString;
+                MySqlConnection mySqlConnection = new MySqlConnection(conn);
+                string sqlquery = "SELECT id_Apklausa,aprasymas,dalyviu_skaicius,sukurimo_data,pabaigos_data,Apklausos_Busena.name as 'busena',Vartotojas.slapyvardis as 'kurejas' FROM `Apklausa` " +
+                    "LEFT JOIN Apklausos_Busena on Apklausa.busena = Apklausos_Busena.id_Apklausos_Busena " +
+                    "LEFT JOIN Vartotojas ON Vartotojas.id_Vartotojas = Apklausa.fk_Vartotojasid_Sukurejas";
+                MySqlCommand mySqlCommand = new MySqlCommand(sqlquery, mySqlConnection);
+                mySqlConnection.Open();
+                MySqlDataAdapter mda = new MySqlDataAdapter(mySqlCommand);
+                DataTable dt = new DataTable();
+                mda.Fill(dt);
+                mySqlConnection.Close();
+
+                foreach (DataRow item in dt.Rows)
+                {
+                    apklausos.Add(new Apklausa
+                    {
+
+                        id_Apklausa = Convert.ToInt32(item["id_Apklausa"]),
+                        aprasymas = Convert.ToString(item["aprasymas"]),
+                        dalyviu_skaicius = Convert.ToInt32(item["dalyviu_skaicius"]),
+                        sukurimo_data = Convert.ToDateTime(item["sukurimo_data"]),
+                        pabaigos_data = CheckIfDateNull(item),
+                        busenos_pavadinimas = Convert.ToString(item["busena"]),
+                        Sukurejas = Convert.ToString(item["kurejas"])
+                    }); ;
+                }
+                return apklausos;
+            }
+
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+
+        private DateTime? CheckIfDateNull(DataRow data)
+        {
+            if (data["pabaigos_data"] == DBNull.Value)
+            {
+                return null;
+            }
+            else
+            {
+                return Convert.ToDateTime(data["sukurimo_data"]);
+            }
+        }
+
+
+
+
     }
 }

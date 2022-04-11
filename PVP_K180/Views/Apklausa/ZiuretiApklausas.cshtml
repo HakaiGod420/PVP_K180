@@ -1,0 +1,63 @@
+﻿@model IEnumerable<PVP_K180.Models.Apklausa>
+
+@{
+    ViewBag.Title = "ZiuretiApklausas";
+}
+
+<h2>ZiuretiApklausas</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.aprasymas)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.dalyviu_skaicius)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.sukurimo_data)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.pabaigos_data)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Sukurejas)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.busenos_pavadinimas)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.aprasymas)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.dalyviu_skaicius)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.sukurimo_data)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.pabaigos_data)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Sukurejas)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.busenos_pavadinimas)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+        </td>
+    </tr>
+}
+
+</table>
