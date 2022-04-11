@@ -14,8 +14,8 @@ namespace PVP_K180.Models
 
         [DisplayName("Klausimas")]
         [Required(ErrorMessage = "Privalo būti įvestas klausimas")]
-        public string balsavimo_variantas { get; set; }
+        public string klausimo_tekstas { get; set; }
 
-        public int fk_Balsavimasid_Balsavimas { get; set; }
+        public int fk_Apklausa_Apklausa { get; set; }
     }
 }
