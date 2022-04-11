@@ -6,7 +6,7 @@
     <title>@ViewBag.Title - My ASP.NET Application</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
-	@RenderSection("Styles", false)
+    @RenderSection("Styles", false)
 </head>
 <body>
 
@@ -23,21 +23,19 @@
 
             <div class="navbar-collapse collapse">
 
-               
                 <ul class="nav navbar-nav">
 
                     <li>@Html.ActionLink("Apie seniūnija", "Apie", "Home")</li>
 
                     <li>@Html.ActionLink("Naujienos", "GautiNaujienas", "Naujiena")</li>
-
-                    <li>@Html.ActionLink("Apklausa", "DalyvautiApklausoje", "Apklausa")</li>
-                  
+                    @if (Session["UserID"] != null)
+                    {
+                        <li>@Html.ActionLink("Apklausa", "DalyvautiApklausoje", "Apklausa")</li>
+                    }
                     <li>@Html.ActionLink("Balsavimas", "Balsuoti", "Balsavimas")</li>
 
                     <li>@Html.ActionLink("Projektai", "GautiProjektus", "Projektas")</li>
-
                 </ul>
-                
 
                 @if (Convert.ToString(Session["UserID"]) == "")
                 {
@@ -65,7 +63,6 @@
                             }
                             <li role="presentation" class="divider"></li>
                             <li role="presentation"><a href="@(@Url.Action("Atsijungti", "Home"))">Atsijungti</a></li>
-
                         </ul>
                     </div>
                 }
@@ -85,6 +82,4 @@
     <script src="~/Themes/ckeditor/ckeditor.js"></script>
     @RenderSection("scripts", required: false)
 </body>
-
-
 </html>

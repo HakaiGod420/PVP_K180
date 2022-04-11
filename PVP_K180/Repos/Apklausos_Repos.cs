@@ -221,6 +221,129 @@ namespace PVP_K180.Repos
             }
         }
 
+        public string GautiAtsakyma(int userID, int klausimasId)
+        {
+            try
+            {
+                string atsakymas = "";
+                string conn = ConfigurationManager.ConnectionStrings["MysqlConnection"].ConnectionString;
+                MySqlConnection mySqlConnection = new MySqlConnection(conn);
+                string sqlquery = "SELECT atsakymo_tekstas FROM `Atsakymas` WHERE fk_Vartotojasid_Vartotojas=?userID and fk_Klausimasid_Klausimas =?klausimasId";
+                
+                MySqlCommand mySqlCommand = new MySqlCommand(sqlquery, mySqlConnection);
+                mySqlCommand.Parameters.Add("?userID", MySqlDbType.Int32).Value = userID;
+                mySqlCommand.Parameters.Add("?klausimasId", MySqlDbType.Int32).Value = klausimasId;
+                mySqlConnection.Open();
+                MySqlDataAdapter mda = new MySqlDataAdapter(mySqlCommand);
+                DataTable dt = new DataTable();
+                mda.Fill(dt);
+                mySqlConnection.Close();
+
+                foreach (DataRow item in dt.Rows)
+                {
+                    atsakymas = Convert.ToString(item["atsakymo_tekstas"]);
+                }
+                return atsakymas;
+            }
+
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+
+        public bool Prideti_Atsakyma(Atsakymas atsakymas)
+        {
+            try
+            {
+                string conn = ConfigurationManager.ConnectionStrings["MysqlConnection"].ConnectionString;
+                MySqlConnection mySqlConnection = new MySqlConnection(conn);
+                string sqlquery = "INSERT INTO `Atsakymas`(`atsakymo_tekstas`, `fk_Vartotojasid_Vartotojas`, `fk_Klausimasid_Klausimas`) " +
+                    "VALUES (?atsakymo_tekstas,?fk_Vartotojasid_Vartotojas,?fk_Klausimasid_Klausimas)";
+                MySqlCommand mySqlCommand = new MySqlCommand(sqlquery, mySqlConnection);
+                mySqlCommand.Parameters.Add("?fk_Vartotojasid_Vartotojas", MySqlDbType.Int32).Value = atsakymas.fk_Vartotojasid_Varotojas;
+                mySqlCommand.Parameters.Add("?atsakymo_tekstas", MySqlDbType.VarChar).Value = atsakymas.atsakymo_tekstas;
+                mySqlCommand.Parameters.Add("?fk_Klausimasid_Klausimas", MySqlDbType.Int32).Value = atsakymas.fk_Klausimasid_Klausimas;
+                mySqlConnection.Open();
+                mySqlCommand.ExecuteNonQuery();
+                mySqlConnection.Close();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
+        public bool Atzymeti_Dalyvavima(int userID, int apklausos_id)
+        {
+            try
+            {
+                string conn = ConfigurationManager.ConnectionStrings["MysqlConnection"].ConnectionString;
+                MySqlConnection mySqlConnection = new MySqlConnection(conn);
+                string sqlquery = "INSERT INTO `dalyvauja`(`fk_Vartotojasid_Vartotojas`, `fk_Apklausaid_Apklausa`) VALUES (?fk_Vartotojasid_Vartotojas,?fk_Apklausaid_Apklausa)";
+                MySqlCommand mySqlCommand = new MySqlCommand(sqlquery, mySqlConnection);
+                mySqlCommand.Parameters.Add("?fk_Vartotojasid_Vartotojas", MySqlDbType.Int32).Value = userID;
+                mySqlCommand.Parameters.Add("?fk_Apklausaid_Apklausa", MySqlDbType.Int32).Value = apklausos_id;
+                mySqlConnection.Open();
+                mySqlCommand.ExecuteNonQuery();
+                mySqlConnection.Close();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
+        public bool Patikrinti_Ar_Atsake(int userID, int activeQuestioner)
+        {
+            try
+            {
+                string conn = ConfigurationManager.ConnectionStrings["MysqlConnection"].ConnectionString;
+                MySqlConnection mySqlConnection = new MySqlConnection(conn);
+                string sqlquery = "SELECT * FROM `dalyvauja` WHERE fk_Vartotojasid_Vartotojas = ?fk_Vartotojasid_Vartotojas and fk_Apklausaid_Apklausa = ?fk_Apklausaid_Apklausa";
+                MySqlCommand mySqlCommand = new MySqlCommand(sqlquery, mySqlConnection);
+                mySqlCommand.Parameters.Add("?fk_Apklausaid_Apklausa", MySqlDbType.Int32).Value = activeQuestioner;
+                mySqlCommand.Parameters.Add("?fk_Vartotojasid_Vartotojas", MySqlDbType.Int32).Value = userID;
+                mySqlConnection.Open();
+                MySqlDataAdapter mda = new MySqlDataAdapter(mySqlCommand);
+                DataTable dt = new DataTable();
+                mda.Fill(dt);
+                mySqlConnection.Close();
+
+                if (dt.Rows.Count == 1)
+                {
+                    return true;
+                }
+                else return false;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+
+        }
+
+        public bool AtnaujintiApklausuAtsakusiuSkaiciu(int id)
+        {
+            try
+            {
+                string conn = ConfigurationManager.ConnectionStrings["MysqlConnection"].ConnectionString;
+                MySqlConnection mySqlConnection = new MySqlConnection(conn);
+                string sqlquery = "UPDATE Apklausa SET dalyviu_skaicius = dalyviu_skaicius + 1 WHERE id_Apklausa =" + id;
+                MySqlCommand mySqlCommand = new MySqlCommand(sqlquery, mySqlConnection);
+                mySqlConnection.Open();
+                mySqlCommand.ExecuteNonQuery();
+                mySqlConnection.Close();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
 
     }
 }

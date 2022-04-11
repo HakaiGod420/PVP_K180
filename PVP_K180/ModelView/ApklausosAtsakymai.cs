@@ -11,6 +11,7 @@ namespace PVP_K180.ModelView
         public Apklausa apklausa { get; set; }
         public List<Klausimas> klausimai { get; set; }
         public List<string> atsakymai { get; set; }
+        public List<string> gautiAtsakymai { get; set; }
         public int atsakavo_id { get; set; }
         public int apklausos_id { get; set; }
     }
