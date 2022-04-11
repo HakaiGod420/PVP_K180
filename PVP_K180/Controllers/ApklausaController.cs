@@ -87,27 +87,31 @@ namespace PVP_K180.Controllers
         [HttpGet]
         public ActionResult DalyvautiApklausoje()
         {
+            if (Session["UserID"] == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
             ApklausosAtsakymai apklausosAtsakymai =  new ApklausosAtsakymai();
             int activeQuestioner = apklausa_Repos.Gauti_Aktyvia_Apklausa();
             apklausosAtsakymai.apklausa = apklausa_Repos.Gauti_Apklausa(activeQuestioner);
             apklausosAtsakymai.klausimai = apklausa_Repos.GautiKlausimus(activeQuestioner);
-            /*
-            if (Session["UserID"] != null)
+            var checkIfAnswered = apklausa_Repos.Patikrinti_Ar_Atsake(Convert.ToInt32(Session["UserID"]), activeQuestioner);
+            List<string> atsakymai = new List<string>();
+            
+            if (checkIfAnswered)
             {
-                var check = balsavimas_Repos.PatikrintiPasirinkima(acviveVote, Convert.ToInt32(Session["UserID"]));
-
-                if (check)
+                TempData["Answered"] = true;
+                
+                foreach(var item in apklausosAtsakymai.klausimai)
                 {
-                    TempData["Voted"] = true;
-                    TempData["ChosenNumb"] = balsavimas_Repos.Gauti_Pasirinkta_Varianta(Convert.ToInt32(Session["UserID"]));
-                }
-                else
-                {
-                    TempData["Voted"] = false;
+                    atsakymai.Add(apklausa_Repos.GautiAtsakyma(Convert.ToInt32(Session["UserID"]), item.id_Klausimas));
                 }
             }
-            */
-            ModelState.Clear();
+            else
+            {
+                TempData["Answered"] = false;
+            }
+            apklausosAtsakymai.gautiAtsakymai = atsakymai;
             return View(apklausosAtsakymai);
         }
 
@@ -127,7 +131,14 @@ namespace PVP_K180.Controllers
                 atsakymas.atsakymo_tekstas = apklausosAtsakymai.atsakymai[i];
                 atsakymas.fk_Klausimasid_Klausimas = apklausosAtsakymai.klausimai[i].id_Klausimas;
                 atsakymas.fk_Vartotojasid_Varotojas = Convert.ToInt32(Session["UserID"]);
+                if (atsakymas.atsakymo_tekstas != "")
+                {
+                    apklausa_Repos.Prideti_Atsakyma(atsakymas);
+                }
             }
+            apklausa_Repos.Atzymeti_Dalyvavima(Convert.ToInt32(Session["UserID"]), activeQuestioner);
+            TempData["SuccsessAtsakimas"] = "Sėkmingai atsakyta į apklausą";
+            apklausa_Repos.AtnaujintiApklausuAtsakusiuSkaiciu(activeQuestioner);
             return RedirectToAction("DalyvautiApklausoje");
         }
     }
