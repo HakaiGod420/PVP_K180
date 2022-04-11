@@ -171,6 +171,7 @@
     </Compile>
     <Compile Include="Models\Apklausa.cs" />
     <Compile Include="Models\Apklausos_Busena.cs" />
+    <Compile Include="Models\Atsakymas.cs" />
     <Compile Include="Models\Balsavimas.cs" />
     <Compile Include="Models\Balsavimo_Busena.cs" />
     <Compile Include="Models\Balsavimo_Variantas.cs" />

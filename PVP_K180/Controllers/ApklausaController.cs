@@ -120,6 +120,14 @@ namespace PVP_K180.Controllers
             }
             int activeQuestioner = apklausa_Repos.Gauti_Aktyvia_Apklausa();
             apklausosAtsakymai.klausimai = apklausa_Repos.GautiKlausimus(activeQuestioner);
+
+            for(var i = 0; i < apklausosAtsakymai.atsakymai.Count;i++)
+            {
+                Atsakymas atsakymas = new Atsakymas();
+                atsakymas.atsakymo_tekstas = apklausosAtsakymai.atsakymai[i];
+                atsakymas.fk_Klausimasid_Klausimas = apklausosAtsakymai.klausimai[i].id_Klausimas;
+                atsakymas.fk_Vartotojasid_Varotojas = Convert.ToInt32(Session["UserID"]);
+            }
             return RedirectToAction("DalyvautiApklausoje");
         }
     }

@@ -15,6 +15,6 @@ namespace PVP_K180.Models
         [DisplayName("Atsakovo ID")]
         public int fk_Vartotojasid_Varotojas { get; set; }
         [DisplayName("Klausimo ID")]
-        public string fk_Klausimasid_Klausimas { get; set; }
+        public int fk_Klausimasid_Klausimas { get; set; }
     }
 }
