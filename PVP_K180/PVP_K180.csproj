@@ -183,6 +183,7 @@
     <Compile Include="Models\Varianto_Pasirinkimas.cs" />
     <Compile Include="Models\Vartotojas.cs" />
     <Compile Include="Models\Vartotojo_Busena.cs" />
+    <Compile Include="ModelView\ApklausosAtsakymai.cs" />
     <Compile Include="ModelView\Atnaujinami_Vartotojo_Duomenys.cs" />
     <Compile Include="ModelView\BalsavimoBusenaPerziura.cs" />
     <Compile Include="ModelView\Nuotrauku_Duomenys.cs" />
@@ -595,6 +596,7 @@
     <Content Include="Views\Balsavimas\Balsuoti.cshtml" />
     <Content Include="Views\Apklausa\KurtiApklausa.cshtml" />
     <Content Include="Views\Apklausa\ZiuretiApklausas.cshtml" />
+    <Content Include="Views\Apklausa\DalyvautiApklausoje.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -83,5 +83,44 @@ namespace PVP_K180.Controllers
             return View(apklausos);
 
         }
+
+        [HttpGet]
+        public ActionResult DalyvautiApklausoje()
+        {
+            ApklausosAtsakymai apklausosAtsakymai =  new ApklausosAtsakymai();
+            int activeQuestioner = apklausa_Repos.Gauti_Aktyvia_Apklausa();
+            apklausosAtsakymai.apklausa = apklausa_Repos.Gauti_Apklausa(activeQuestioner);
+            apklausosAtsakymai.klausimai = apklausa_Repos.GautiKlausimus(activeQuestioner);
+            /*
+            if (Session["UserID"] != null)
+            {
+                var check = balsavimas_Repos.PatikrintiPasirinkima(acviveVote, Convert.ToInt32(Session["UserID"]));
+
+                if (check)
+                {
+                    TempData["Voted"] = true;
+                    TempData["ChosenNumb"] = balsavimas_Repos.Gauti_Pasirinkta_Varianta(Convert.ToInt32(Session["UserID"]));
+                }
+                else
+                {
+                    TempData["Voted"] = false;
+                }
+            }
+            */
+            ModelState.Clear();
+            return View(apklausosAtsakymai);
+        }
+
+        [HttpPost]
+        public ActionResult DalyvautiApklausoje(ApklausosAtsakymai apklausosAtsakymai)
+        {
+            if (Session["UserID"] == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            int activeQuestioner = apklausa_Repos.Gauti_Aktyvia_Apklausa();
+            apklausosAtsakymai.klausimai = apklausa_Repos.GautiKlausimus(activeQuestioner);
+            return RedirectToAction("DalyvautiApklausoje");
+        }
     }
 }

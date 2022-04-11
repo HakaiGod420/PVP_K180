@@ -137,7 +137,89 @@ namespace PVP_K180.Repos
             }
         }
 
+        public int Gauti_Aktyvia_Apklausa()
+        {
+            int activeNum = -1;
+            string conn = ConfigurationManager.ConnectionStrings["MysqlConnection"].ConnectionString;
+            MySqlConnection mySqlConnection = new MySqlConnection(conn);
+            string sqlquery = "select * from `Apklausa` where busena=" + 2;
+            MySqlCommand mySqlCommand = new MySqlCommand(sqlquery, mySqlConnection);
+            mySqlConnection.Open();
+            MySqlDataAdapter mda = new MySqlDataAdapter(mySqlCommand);
+            DataTable dt = new DataTable();
+            mda.Fill(dt);
+            mySqlConnection.Close();
 
+            foreach (DataRow item in dt.Rows)
+            {
+                {
+                    activeNum = Convert.ToInt32(item["id_Apklausa"]);
+                }
+            }
+            return activeNum;
+        }
+
+        public Apklausa Gauti_Apklausa(int id)
+        {
+            Apklausa apklausa = new Apklausa();
+            string conn = ConfigurationManager.ConnectionStrings["MysqlConnection"].ConnectionString;
+            MySqlConnection mySqlConnection = new MySqlConnection(conn);
+            string sqlquery = "select * from `Apklausa` where id_Apklausa=" + id;
+            MySqlCommand mySqlCommand = new MySqlCommand(sqlquery, mySqlConnection);
+            mySqlConnection.Open();
+            MySqlDataAdapter mda = new MySqlDataAdapter(mySqlCommand);
+            DataTable dt = new DataTable();
+            mda.Fill(dt);
+            mySqlConnection.Close();
+
+            foreach (DataRow item in dt.Rows)
+            {
+                {
+                    apklausa.id_Apklausa = Convert.ToInt32(item["id_Apklausa"]);
+                    apklausa.aprasymas = Convert.ToString(item["aprasymas"]);
+                    apklausa.dalyviu_skaicius = Convert.ToInt32(item["dalyviu_skaicius"]);
+                    apklausa.sukurimo_data = Convert.ToDateTime(item["sukurimo_data"]);
+                    apklausa.pabaigos_data = CheckIfDateNull(item);
+                    apklausa.busena = Convert.ToInt32(item["busena"]);
+                    apklausa.fk_Vartotojasid_Sukurejas = Convert.ToInt32(item["fk_Vartotojasid_Sukurejas"]); ;
+                }
+            }
+            return apklausa;
+        }
+
+        public List<Klausimas> GautiKlausimus(int id)
+        {
+            try
+            {
+                List<Klausimas> klausimai = new List<Klausimas>();
+                string conn = ConfigurationManager.ConnectionStrings["MysqlConnection"].ConnectionString;
+                MySqlConnection mySqlConnection = new MySqlConnection(conn);
+                string sqlquery = "SELECT * FROM `Klausimas` WHERE fk_Apklausaid_Apklausa=" + id;
+                MySqlCommand mySqlCommand = new MySqlCommand(sqlquery, mySqlConnection);
+                mySqlConnection.Open();
+                MySqlDataAdapter mda = new MySqlDataAdapter(mySqlCommand);
+                DataTable dt = new DataTable();
+                mda.Fill(dt);
+                mySqlConnection.Close();
+
+                foreach (DataRow item in dt.Rows)
+                {
+                    klausimai.Add(new Klausimas
+                    {
+
+                        id_Klausimas = Convert.ToInt32(item["id_Klausimas"]),
+                        klausimo_tekstas = Convert.ToString(item["klausimo_tekstas"]),
+                        fk_Apklausa_Apklausa = Convert.ToInt32(item["fk_Apklausaid_Apklausa"]),
+                    }); ;
+                }
+                return klausimai;
+            }
+
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
 
 
     }
