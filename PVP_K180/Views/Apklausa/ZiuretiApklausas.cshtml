@@ -7,7 +7,7 @@
 <h2>ZiuretiApklausas</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Sukurti nauja apklausa", "KurtiApklausa")
 </p>
 <table class="table">
     <tr>
@@ -53,9 +53,9 @@
             @Html.DisplayFor(modelItem => item.busenos_pavadinimas)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+            @Html.ActionLink("Redaguoti", "RedaguotiApklausa", new { id = item.id_Apklausa}) |
             @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+            @Html.ActionLink("Ištrinti", "TrintiApklausa", new { id = item.id_Apklausa })
         </td>
     </tr>
 }

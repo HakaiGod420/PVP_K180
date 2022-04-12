@@ -35,6 +35,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -608,6 +609,7 @@
     <Content Include="Views\Apklausa\KurtiApklausa.cshtml" />
     <Content Include="Views\Apklausa\ZiuretiApklausas.cshtml" />
     <Content Include="Views\Apklausa\DalyvautiApklausoje.cshtml" />
+    <Content Include="Views\Apklausa\RedaguotiApklausa.cshtml" />
     <Content Include="Views\Projektas\Komentarai.cshtml" />
   </ItemGroup>
   <ItemGroup>

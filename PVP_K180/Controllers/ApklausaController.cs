@@ -11,6 +11,7 @@ namespace PVP_K180.Controllers
 {
     public class ApklausaController : Controller
     {
+        Apklausa apklausa = new Apklausa();
         Apklausos_Repos apklausa_Repos = new Apklausos_Repos();
 
 
@@ -141,5 +142,43 @@ namespace PVP_K180.Controllers
             apklausa_Repos.AtnaujintiApklausuAtsakusiuSkaiciu(activeQuestioner);
             return RedirectToAction("DalyvautiApklausoje");
         }
+
+
+        public ActionResult RedaguotiApklausa(int id)
+        {
+            Apklausos_Repos apklausos_Repos = new Apklausos_Repos();
+            apklausa = apklausos_Repos.Gauti_Apklausa(id);
+            return View(apklausa);
+        }
+
+        [HttpPost]
+        public ActionResult RedaguotiApklausa(int id, Apklausa apklausa)
+        {
+            Apklausos_Repos apklausos_Repos = new Apklausos_Repos();
+            apklausa.fk_Vartotojasid_Sukurejas = (int)Session["UserID"];
+            apklausa.sukurimo_data = DateTime.Now;
+            apklausa.id_Apklausa = id;
+            bool flag = apklausos_Repos.Redaguoti_Apklausa(apklausa);
+            if (flag)
+            {
+                Response.Write("<script type='text/javascript' language='javascript'> alert('Apklausa sėkmingai redaguota!')</script>");
+            }
+            else
+            {
+                Response.Write("<script type='text/javascript' language='javascript'> alert('Apklausa neredaguota!')</script>");
+
+            }
+            return View(apklausa);
+        }
+
+
+
+        public ActionResult TrintiApklausa(int id)
+        {
+            Apklausos_Repos apklausos_Repos = new Apklausos_Repos();
+            bool flag = apklausos_Repos.Trinti_Apklausa(id);
+            return RedirectToAction("ZiuretiApklausas");
+        }
+
     }
 }
