@@ -177,6 +177,7 @@
     <Compile Include="Models\Balsavimo_Busena.cs" />
     <Compile Include="Models\Balsavimo_Variantas.cs" />
     <Compile Include="Models\Klausimas.cs" />
+    <Compile Include="Models\Komentaras.cs" />
     <Compile Include="Models\Naujiena.cs" />
     <Compile Include="Models\Nuotrauka.cs" />
     <Compile Include="Models\Projektas.cs" />
@@ -188,6 +189,7 @@
     <Compile Include="ModelView\ApklausosAtsakymai.cs" />
     <Compile Include="ModelView\Atnaujinami_Vartotojo_Duomenys.cs" />
     <Compile Include="ModelView\BalsavimoBusenaPerziura.cs" />
+    <Compile Include="ModelView\KomentaroLangasProjektas.cs" />
     <Compile Include="ModelView\Nuotrauku_Duomenys.cs" />
     <Compile Include="ModelView\Pasto_duomenys.cs" />
     <Compile Include="ModelView\Prisijungimo_Duomenys.cs" />
@@ -600,6 +602,7 @@
     <Content Include="Views\Apklausa\ZiuretiApklausas.cshtml" />
     <Content Include="Views\Apklausa\DalyvautiApklausoje.cshtml" />
     <Content Include="Views\Apklausa\RedaguotiApklausa.cshtml" />
+    <Content Include="Views\Projektas\Komentarai.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

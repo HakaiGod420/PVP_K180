@@ -11,7 +11,7 @@ namespace PVP_K180.Controllers
 {
     public class ProjektasController : Controller
     {
-
+        Projektas_Repos projektas_Repos = new Projektas_Repos();
         // GET: Projektas
         public ActionResult Index()
         {
@@ -98,6 +98,24 @@ namespace PVP_K180.Controllers
             Projektas_Repos projektas_Repos = new Projektas_Repos();
             List<Projektas> projektas = projektas_Repos.Gauti_Projektus();
             return View(projektas);
+        }
+
+        public ActionResult Komentarai(int id)
+        {
+            KomentaroLangasProjektas komentaruLangas = new KomentaroLangasProjektas();
+            komentaruLangas.parasytiKomentarai = projektas_Repos.Gauti_Projekto_Komentarus(id);
+            return View(komentaruLangas);
+        }
+
+        [HttpPost]
+        public ActionResult Komentarai(int id, KomentaroLangasProjektas komentaras)
+        {
+            komentaras.rasomasKomentaras.fk_Vartotojasid_Vartotojas = Convert.ToInt32(Session["UserID"]);
+            komentaras.rasomasKomentaras.parasymo_data = DateTime.Now;
+            komentaras.rasomasKomentaras.priskirtas_id = id;
+            projektas_Repos.Rasyti_Komentara(komentaras.rasomasKomentaras);
+            TempData["SuccsessComment"] = "Komentaras sėkmingai parašytas";
+            return RedirectToAction("Komentarai", new { id=id});
         }
     }
 }
