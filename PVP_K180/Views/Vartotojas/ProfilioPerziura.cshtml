@@ -4,39 +4,43 @@
     ViewBag.Title = "Profilio peržiura";
 }
 <style>
-body {
-background-color: white;
-}
+    body {
+        background-color: white;
+    }
 </style>
 
 <style>
-dd { 
-  font-family: verdana;
-  display: inline-block
-  height: 40px;
-  width: 300px;
-
-}
+    dd {
+        font-family: verdana;
+        display: inline-block height: 40px;
+        width: 300px;
+    }
 </style>
 
 <style>
-dt { 
-  font-family: verdana;
-  display: inline-block
-  margin-right: 40px;
-  font-size: 16px;
-  height: 40px;
-  width: 500px;
-}
+    dt {
+        font-family: verdana;
+        display: inline-block margin-right: 40px;
+        font-size: 16px;
+        height: 40px;
+        width: 500px;
+    }
 </style>
 
 
 <h2 style="text-align:center">
-Profilio peržiūra
+    Profilio peržiūra
 </h2>
 
-<div >
-    <h4 style="text-align:center">Jums priskirta rolė yra - @Session["Role"]</h4>
+<div>
+    <center>
+        <img align="top" style="align-content:center; max-width:500px" src="@(Model.nuotrauka)" alt="Profilio nuotrauka">
+    </center>
+</div>
+
+<div>
+
+    <h4 style="text-align:center">Rolė yra - @Model.roles_informacija.name</h4>
     <hr />
     <dl class="dl-horizontal">
 
@@ -71,16 +75,6 @@ Profilio peržiūra
             </dd>
         }
 
-        @if (Model.nuotrauka != "")
-        {
-            <dt>
-                @Html.DisplayNameFor(model => model.nuotrauka)
-            </dt>
-
-            <dd>
-                @Html.DisplayFor(model => model.nuotrauka)
-            </dd>
-        }
 
         @if (Model.vardas != "")
         {

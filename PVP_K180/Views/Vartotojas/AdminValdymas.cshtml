@@ -5,9 +5,14 @@
 
 <h2 style="text-align:center;">Admin Valdymo Pultas</h2>
 
-
 <td style="border:1px solid black">
     <h3>-Naujienų valdymas-</h3>
+    @Html.ActionLink("Kurti naujieną", "NaujienosKurimas", "Naujiena")
+</td>
+
+<hr style="border-top: none; margin-top: 0 !important;" />
+
+<td style="margin-top:20px">
     @Html.ActionLink("Peržiųrėti naujienų sarašą", "GautiNaujienas", "Naujiena")
 </td>
 
@@ -22,10 +27,49 @@
     @Html.ActionLink("Peržiūrėti balsavimų sąrašą", "ZiuretiBalsavimus", "Balsavimas")
 </td>
 
+<hr style="border-top: none; margin-top: 0 !important;" />
+
+<h3>-Seniunijos valdymas-</h3>
+
+<td style="margin-top:20px">
+    @Html.ActionLink("Atnaujinti seniunijos informaciją", "AtnaujintiInfoSeniunija", "Admin")
+</td>
+
+<h3>-Projektų valdymas-</h3>
+
+<td style="margin-top:20px">
+    @Html.ActionLink("Projektų sąrašas", "GautiProjektus", "Projektas")
+</td>
+<hr style="border-top: none; margin-top: 0 !important;" />
+<td style="margin-top:20px">
+    @Html.ActionLink("Kurti naują projektą", "ProjektoKurimas", "Projektas")
+</td>
+
+
+<hr style="border-top: none; margin-top: 0 !important;" />
+
+<h3>-Vartotojų valdymas-</h3>
+
+<td style="margin-top:20px">
+    @Html.ActionLink("Žiūrėti vartotojų sąrašą", "VartotojuSarasas", "Admin")
+</td>
+
+
+<h3>-Apklausų valdymas-</h3>
+
+<td style="margin-top:20px">
+    @Html.ActionLink("Kurti apklausą", "KurtiApklausa", "Apklausa")
+</td>
+
+<hr style="border-top: none; margin-top: 0 !important;" />
+
+<td style="margin-top:20px">
+    @Html.ActionLink("Peržiūrėti apklausųš sąrašą", "ZiuretiApklausas", "Apklausa")
+</td>
 
 <div style="margin-top:20px">
-<div style="margin-top:20px; padding-top: 20px;">
-    <p>
-        @Html.ActionLink("Atgal", "Index", "Home")
-    </p>
-</div>
+    <div style="margin-top:20px; padding-top: 20px;">
+        <p>
+            @Html.ActionLink("Atgal", "Index", "Home")
+        </p>
+    </div>

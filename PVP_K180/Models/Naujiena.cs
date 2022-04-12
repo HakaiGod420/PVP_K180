@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace PVP_K180.Models
 {
@@ -17,6 +18,7 @@ namespace PVP_K180.Models
         public string pavadinimas { get; set; }
 
         [DisplayName("Naujienos tekstas")]
+        [AllowHtml]
         [Required(ErrorMessage = "Privalo būti įvestas naujienos tekstas")]
         public string naujienos_tekstas { get; set; }
 

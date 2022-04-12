@@ -13,11 +13,6 @@ namespace PVP_K180.Controllers
     {
         Balsavimas_Repos balsavimas_Repos = new Balsavimas_Repos();
  
-        // GET: Balsavimas
-        public ActionResult Index()
-        {
-            return View();
-        }
 
         public ActionResult KurtiBalsavima()
         {
@@ -189,6 +184,107 @@ namespace PVP_K180.Controllers
             }
             Response.Write("<script type='text/javascript' language='javascript'> alert('Balsavimas sėkmingai redaguotas')</script>");
             return View(balsavimas);
+        }
+
+        public ActionResult KeistiBalsavimoBusena(int id)
+        {
+            if (Session["UserID"] == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            else if (!Session["Role"].Equals("Administratorius"))
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            BalsavimoBusenaPerziura balsavimoBusenaPerziura = new BalsavimoBusenaPerziura();
+            UzpildytiDuomenis(balsavimoBusenaPerziura);
+            balsavimoBusenaPerziura.balsavimo_Busena = balsavimas_Repos.Gauti_Balsavima(id).busena;
+            return View(balsavimoBusenaPerziura);
+        }
+
+        [HttpPost] 
+        public ActionResult KeistiBalsavimoBusena(int id, BalsavimoBusenaPerziura  balsavimoBusenaPerziura)
+        {
+            if (Session["UserID"] == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            else if (!Session["Role"].Equals("Administratorius"))
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            UzpildytiDuomenis(balsavimoBusenaPerziura);
+
+            var count = balsavimas_Repos.GautiAktyviuSkaiciu();
+
+            if(balsavimoBusenaPerziura.balsavimo_Busena == 2)
+            {
+                if(count >= 1)
+                {
+                    Response.Write("<script type='text/javascript' language='javascript'> alert('Aktyvus balsavimas gali būti tik vienas')</script>");
+                    return View(balsavimoBusenaPerziura);
+                }
+            }
+
+            balsavimas_Repos.Atnaujinti_Balsavimo_Busena(id, balsavimoBusenaPerziura.balsavimo_Busena);
+            Response.Write("<script type='text/javascript' language='javascript'> alert('Balsavimo būsena pakeista')</script>");
+
+            return View(balsavimoBusenaPerziura);
+        }
+
+
+        [HttpGet]
+        public ActionResult Balsuoti()
+        {
+            int acviveVote = balsavimas_Repos.Gauti_Aktyvu_Balsavima();
+            Balsavimas balsavimas = balsavimas_Repos.Gauti_Balsavima(acviveVote);
+            balsavimas.balsavimo_variantai = balsavimas_Repos.GautiVariantus(balsavimas.id_Balsavimas);
+
+            if(Session["UserID"] != null)
+            {
+                var check = balsavimas_Repos.PatikrintiPasirinkima(acviveVote, Convert.ToInt32(Session["UserID"]));
+
+                if(check)
+                {
+                    TempData["Voted"] = true;
+                    TempData["ChosenNumb"] = balsavimas_Repos.Gauti_Pasirinkta_Varianta(Convert.ToInt32(Session["UserID"]));
+                }
+                else
+                {
+                    TempData["Voted"] = false;
+                }
+            }
+
+            return View(balsavimas);
+        }
+
+        public ActionResult RinktisVarianta(int id)
+        {
+
+            Varianto_Pasirinkimas varianto_Pasirinkimas = new Varianto_Pasirinkimas();
+            varianto_Pasirinkimas.fk_Balsavimo_Variantasid_Balsavimo_Variantas = id;
+            varianto_Pasirinkimas.fk_Vartotojasid_Vartotojas = Convert.ToInt32(Session["UserID"]);
+            Balsavimo_Variantas variantas = balsavimas_Repos.GautiVarianta(id);
+            varianto_Pasirinkimas.fk_Balsavimo_Id = variantas.fk_Balsavimasid_Balsavimas;
+            balsavimas_Repos.Prideti_Pasirinkta_Varianta(varianto_Pasirinkimas);
+            balsavimas_Repos.AtnaujintiBalsavimoSkaiciu(varianto_Pasirinkimas.fk_Balsavimo_Id);
+            balsavimas_Repos.AtnaujintiVariantoSkaiciu(varianto_Pasirinkimas.fk_Balsavimo_Variantasid_Balsavimo_Variantas);
+            TempData["SuccessVote"] = "Sėkmingai buvo užbalsuota";
+            return RedirectToAction("Balsuoti");
+        }
+
+
+        public void UzpildytiDuomenis(BalsavimoBusenaPerziura balsavimoBusenaPerziura)
+        {
+            var busenos = balsavimas_Repos.GautiBusenas();
+            IList<SelectListItem> busenosList = new List<SelectListItem>();
+
+            foreach(var item in busenos)
+            {
+                busenosList.Add(new SelectListItem { Value = item.id_Balsavimo_busena.ToString(), Text = item.name });
+            }
+            balsavimoBusenaPerziura.Busenos = busenosList;
         }
     }
 }

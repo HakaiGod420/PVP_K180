@@ -22,11 +22,11 @@ table {
 }
 </style>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
+<h2>Balsavimų sąrašas</h2>
 
-<h2>ZiuretiBalsavimus</h2>
+<p>
+    @Html.ActionLink("Sukurti balsavimą", "KurtiBalsavima")
+</p>
 
 <table>
     <tr>
@@ -86,8 +86,9 @@ table {
         </td>
         <td>
 
-            @Html.ActionLink("Redaguoti", "RedaguotiBalsavima", new {  id=item.id_Balsavimas }) |
-            @Html.ActionLink("Trinti", "TrintiBalsavima", new {  id=item.id_Balsavimas  })
+            @Html.ActionLink("Redaguoti", "RedaguotiBalsavima", new { id = item.id_Balsavimas }) |
+            @Html.ActionLink("Trinti", "TrintiBalsavima", new { id = item.id_Balsavimas }) |
+            @Html.ActionLink("Keisti būseną", "KeistiBalsavimoBusena", new { id = item.id_Balsavimas })
         </td>
     </tr>
 }
