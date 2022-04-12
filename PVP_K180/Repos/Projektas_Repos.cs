@@ -123,5 +123,59 @@ namespace PVP_K180.Repos
             mySqlConnection.Close();
             return true;
         }
+
+        public bool Rasyti_Komentara(Komentaras komentaras)
+        {
+            try
+            {
+                    string conn = ConfigurationManager.ConnectionStrings["MysqlConnection"].ConnectionString;
+                MySqlConnection mySqlConnection = new MySqlConnection(conn);
+                string sqlquery = "INSERT INTO `Komentaras`(`komentaro_tekstas`, `parasymo_data`, `fk_Projektasid_Projektas`, `fk_Vartotojasid_Vartotojas`) " +
+                    "VALUES (?komentaro_tekstas,?parasymo_data,?fk_Projektasid_Projektas,?fk_Vartotojasid_Vartotojas)";
+                MySqlCommand mySqlCommand = new MySqlCommand(sqlquery, mySqlConnection);
+                mySqlCommand.Parameters.Add("?komentaro_tekstas", MySqlDbType.VarChar).Value = komentaras.komentaro_tekstas;
+                mySqlCommand.Parameters.Add("?parasymo_data", MySqlDbType.DateTime).Value = komentaras.parasymo_data;
+                mySqlCommand.Parameters.Add("?fk_Projektasid_Projektas", MySqlDbType.Int32).Value = komentaras.priskirtas_id;
+                mySqlCommand.Parameters.Add("?fk_Vartotojasid_Vartotojas", MySqlDbType.Int32).Value = komentaras.fk_Vartotojasid_Vartotojas;
+                mySqlConnection.Open();
+                mySqlCommand.ExecuteNonQuery();
+                mySqlConnection.Close();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
+        public List<Komentaras> Gauti_Projekto_Komentarus(int id)
+        {
+            List<Komentaras> komentarai = new List<Komentaras>();
+            string conn = ConfigurationManager.ConnectionStrings["MysqlConnection"].ConnectionString;
+            MySqlConnection mySqlConnection = new MySqlConnection(conn);
+            string sqlquery = "SELECT id_Komentaras,komentaro_tekstas,parasymo_data,fk_Renginysid_Renginys," +
+                "fk_Projektasid_Projektas,fk_Vartotojasid_Vartotojas,Vartotojas.slapyvardis FROM `Komentaras`" +
+                "LEFT JOIN Vartotojas ON Vartotojas.id_Vartotojas = fk_Vartotojasid_Vartotojas WHERE fk_Projektasid_Projektas=" + id;
+            MySqlCommand mySqlCommand = new MySqlCommand(sqlquery, mySqlConnection);
+            mySqlConnection.Open();
+            MySqlDataAdapter mda = new MySqlDataAdapter(mySqlCommand);
+            DataTable dt = new DataTable();
+            mda.Fill(dt);
+            mySqlConnection.Close();
+
+            foreach (DataRow item in dt.Rows)
+            {
+                komentarai.Add(new Komentaras
+                {
+                    id_Komentaras = Convert.ToInt32(item["id_Komentaras"]),
+                    komentaro_tekstas = Convert.ToString(item["komentaro_tekstas"]),
+                    parasymo_data = Convert.ToDateTime(item["parasymo_data"]),
+                    priskirtas_id = Convert.ToInt32(item["fk_Projektasid_Projektas"]),
+                    fk_Vartotojasid_Vartotojas = Convert.ToInt32(item["fk_Vartotojasid_Vartotojas"]),
+                    varotojo_slapyvardis = Convert.ToString(item["slapyvardis"])
+                }); ;
+            }
+            return komentarai;
+        }
     }
 }
