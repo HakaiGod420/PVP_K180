@@ -13,6 +13,7 @@ namespace PVP_K180.Controllers
     public class NaujienaController : Controller
     {
         Naujiena naujiena = new Naujiena();
+        Naujiena_Repos naujiena_Repos = new Naujiena_Repos();
         Nuotrauka_Repos nuotrauka_Repos = new Nuotrauka_Repos();
 
 
@@ -246,6 +247,12 @@ namespace PVP_K180.Controllers
 
             return RedirectToAction("GautiNaujienas");
 
+        }
+
+        public ActionResult Naujienos()
+        {
+            List<Naujiena> naujienos = naujiena_Repos.Gauti_Naujienas();
+            return View();
         }
     }
 }
