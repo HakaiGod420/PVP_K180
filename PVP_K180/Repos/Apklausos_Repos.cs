@@ -344,6 +344,41 @@ namespace PVP_K180.Repos
             }
         }
 
+        public bool Redaguoti_Apklausa(Apklausa apklausa)
+        {
+            try
+            {
+                string conn = ConfigurationManager.ConnectionStrings["MysqlConnection"].ConnectionString;
+                MySqlConnection mySqlConnection = new MySqlConnection(conn);
+                string sqlquery = "UPDATE `Apklausa` SET `aprasymas`=?aprasymas,`busena`=?busena WHERE id_Apklausa=" + apklausa.id_Apklausa;
+                MySqlCommand mySqlCommand = new MySqlCommand(sqlquery, mySqlConnection);
+                mySqlCommand.Parameters.Add("?aprasymas", MySqlDbType.String).Value = apklausa.aprasymas;
+                mySqlCommand.Parameters.Add("?busena", MySqlDbType.Int32).Value = apklausa.busena;
+                mySqlConnection.Open();
+                mySqlCommand.ExecuteNonQuery();
+                mySqlConnection.Close();
+                return true;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return false;
+            }
+        }
+
+        public bool Trinti_Apklausa(int id)
+        {
+            string conn = ConfigurationManager.ConnectionStrings["MysqlConnection"].ConnectionString;
+            MySqlConnection mySqlConnection = new MySqlConnection(conn);
+            string sqlquery = @"DELETE FROM `Apklausa` WHERE id_Apklausa=?id";
+            MySqlCommand mySqlCommand = new MySqlCommand(sqlquery, mySqlConnection);
+            mySqlCommand.Parameters.Add("?id", MySqlDbType.Int32).Value = Convert.ToInt32(id);
+            mySqlConnection.Open();
+            mySqlCommand.ExecuteNonQuery();
+            mySqlConnection.Close();
+            return true;
+        }
+
 
     }
 }
