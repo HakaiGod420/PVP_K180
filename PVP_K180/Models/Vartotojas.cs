@@ -45,8 +45,8 @@ namespace PVP_K180.Models
         [DisplayName("Telefono numeris")]
         public string tel_nr { get; set; }
 
-        [DisplayName("Sukurimo data")]
-        [DisplayFormat(DataFormatString = "{0:yyyy-dd-MM}", ApplyFormatInEditMode = true)]
+        [DisplayName("Profilio sukurimo data")]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime? sukurimo_data { get; set; }
 
         [DisplayName("Role")]

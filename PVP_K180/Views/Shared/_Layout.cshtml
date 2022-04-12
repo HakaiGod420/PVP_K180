@@ -48,9 +48,9 @@
                 }
                 else
                 {
-                    <div class="btn-group navbar-header" style="float: right;text-align: center">
-                        <button type="button" style="font-size: 15px;" class="btn btn-lg btn-default ">Sveiki, @Session["UserName"]</button>
-                        <button type="button" style="font-size: 15px" class="btn btn-lg btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="caret"></span><span class="sr-only">Toggle Dropdown</span></button>
+                    <div class="btn-group navbar-header" style="float: right;text-align: center; margin-top:5px">
+                        <button type="button" style="font-size: 15px;" class="btn btn-secondary dropdown-toggle">Sveiki, @Session["UserName"]</button>
+                        <button type="button" style="font-size: 15px" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="caret"></span><span class="sr-only">Toggle Dropdown</span></button>
                         <ul class="dropdown-menu">
                             <li role="presentation"><a href="@(@Url.Action("ProfilioPerziura", "Vartotojas", new { id = Session["UserID"] }))">Mano profilis</a></li>
 
