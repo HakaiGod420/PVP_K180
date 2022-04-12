@@ -1,17 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-using PVP_K180.Models;
+﻿using PVP_K180.Models;
 using PVP_K180.ModelView;
 using PVP_K180.Repos;
+using System;
+using System.Collections.Generic;
+using System.Web.Mvc;
 
 namespace PVP_K180.Controllers
 {
     public class ProjektasController : Controller
     {
-        Projektas_Repos projektas_Repos = new Projektas_Repos();
+        private Projektas_Repos projektas_Repos = new Projektas_Repos();
+
         // GET: Projektas
         public ActionResult Index()
         {
@@ -46,7 +45,7 @@ namespace PVP_K180.Controllers
             {
                 Response.Write("<script type='text/javascript' language='javascript'> alert('Projektas nesukurtas!')</script>");
             }
-          
+
             return View();
         }
 
@@ -71,7 +70,6 @@ namespace PVP_K180.Controllers
             else
             {
                 Response.Write("<script type='text/javascript' language='javascript'> alert('Projektas neredaguotas!')</script>");
-
             }
             return View(projektas);
         }
@@ -85,7 +83,6 @@ namespace PVP_K180.Controllers
 
         public ActionResult GautiProjektus()
         {
-
             if (Session["UserID"] == null)
             {
                 return RedirectToAction("Index", "Home");
@@ -94,7 +91,7 @@ namespace PVP_K180.Controllers
             {
                 return RedirectToAction("Index", "Home");
             }
-            
+
             Projektas_Repos projektas_Repos = new Projektas_Repos();
             List<Projektas> projektas = projektas_Repos.Gauti_Projektus();
             return View(projektas);
@@ -104,6 +101,7 @@ namespace PVP_K180.Controllers
         {
             KomentaroLangasProjektas komentaruLangas = new KomentaroLangasProjektas();
             komentaruLangas.parasytiKomentarai = projektas_Repos.Gauti_Projekto_Komentarus(id);
+            TempData["ProjektoID"] = id;
             return View(komentaruLangas);
         }
 
@@ -115,7 +113,28 @@ namespace PVP_K180.Controllers
             komentaras.rasomasKomentaras.priskirtas_id = id;
             projektas_Repos.Rasyti_Komentara(komentaras.rasomasKomentaras);
             TempData["SuccsessComment"] = "Komentaras sėkmingai parašytas";
-            return RedirectToAction("Komentarai", new { id=id});
+            return RedirectToAction("Komentarai", new { id = id });
+        }
+
+        public ActionResult TrintiKomentara(int id)
+        {
+            if (Session["UserID"] == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            bool check = projektas_Repos.PatikrintiArGalimaTrinti(Convert.ToInt32(Session["UserID"]), id);
+            if (check)
+            {
+                projektas_Repos.Trinti_Komentara(id);
+                TempData["DeleteSucc"] = "Komentaras ištrintas sėkmingai";
+            }
+            else
+            {
+                TempData["DeleteFail"] = "Komentaro nepavyko ištrinti";
+            }
+
+            return RedirectToAction("Komentarai", new { id = Convert.ToInt32(TempData["ProjektoID"]) });
         }
     }
 }
