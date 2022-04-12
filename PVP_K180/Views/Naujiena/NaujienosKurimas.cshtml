@@ -4,14 +4,13 @@
     ViewBag.Title = "NaujienosKurimas";
 }
 <script src="~/Themes/ckeditor/ckeditor.js"></script>
-<h2>NaujienosKurimas</h2>
+<h2>Naujienos kurimas</h2>
 
 @using (Html.BeginForm("NaujienosKurimas", "Naujiena", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
 
 <div class="form-horizontal">
-    <h4>Naujiena</h4>
     <hr />
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 

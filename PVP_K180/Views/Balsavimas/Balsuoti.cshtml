@@ -16,93 +16,124 @@
 
     @if (Model.sukurimo_data != null)
     {
-        <dl class="dl-horizontal">
+<dl class="dl-horizontal">
 
-            <dt>
-                @Html.DisplayNameFor(model => model.klausimas)
-            </dt>
+    <dt>
+        @Html.DisplayNameFor(model => model.klausimas)
+    </dt>
 
-            <dd>
-                @Html.DisplayFor(model => model.klausimas)
-            </dd>
+    <dd>
+        @Html.DisplayFor(model => model.klausimas)
+    </dd>
 
-            @if (Model.balsavimo_aprasymas != "")
+    @if (Model.balsavimo_aprasymas != "")
+    {
+
+        <dt>
+            @Html.DisplayNameFor(model => model.balsavimo_aprasymas)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.balsavimo_aprasymas)
+        </dd>
+    }
+
+    <dt>
+        @Html.DisplayNameFor(model => model.dalyviu_skaicius)
+    </dt>
+
+    <dd>
+        @Html.DisplayFor(model => model.dalyviu_skaicius)
+    </dd>
+
+    <dt>
+        @Html.DisplayNameFor(model => model.sukurimo_data)
+    </dt>
+
+    <dd>
+        @Html.DisplayFor(model => model.sukurimo_data)
+    </dd>
+
+    <dt>
+        @Html.DisplayNameFor(model => model.pabaigos_data)
+    </dt>
+
+    <dd>
+        @Html.DisplayFor(model => model.pabaigos_data)
+    </dd>
+
+
+
+    <style>
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        td, th {
+            border: 0px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        tr td:last-child {
+            width: 97%;
+            margin: auto;
+            border-collapse: collapse;
+        }
+    </style>
+    @using (Html.BeginForm())
+    {
+        <dd>
+            <b><p style="">Balsavimo variantai</p></b>
+        </dd>
+        if (Session["UserID"] != null && Convert.ToBoolean(TempData["Voted"]) == false)
+        {
+            foreach (var item in Model.balsavimo_variantai)
             {
 
-                <dt>
-                    @Html.DisplayNameFor(model => model.balsavimo_aprasymas)
-                </dt>
                 <dd>
-                    @Html.DisplayFor(model => model.balsavimo_aprasymas)
+                    <form>
+                        <a href="@Url.Action("RinktisVarianta", "Balsavimas", new { id = item.id_Balsavimo_Variantas })" style="margin-top:5px; width:25%"class="btn btn-info">
+                            <i class="fa fa-plus"></i>@item.balsavimo_variantas
+                        </a>
+                    </form>
                 </dd>
+
             }
-
-            <dt>
-                @Html.DisplayNameFor(model => model.dalyviu_skaicius)
-            </dt>
-
-            <dd>
-                @Html.DisplayFor(model => model.dalyviu_skaicius)
-            </dd>
-
-            <dt>
-                @Html.DisplayNameFor(model => model.sukurimo_data)
-            </dt>
-
-            <dd>
-                @Html.DisplayFor(model => model.sukurimo_data)
-            </dd>
-
-            <dt>
-                @Html.DisplayNameFor(model => model.pabaigos_data)
-            </dt>
-
-            <dd>
-                @Html.DisplayFor(model => model.pabaigos_data)
-            </dd>
-
-            @using (Html.BeginForm())
-            {
-                <dd>
-                    <p style="">Balsavimo variantai</p>
-                </dd>
-                if (Session["UserID"] != null && Convert.ToBoolean(TempData["Voted"]) == false)
-                {
-                    foreach (var item in Model.balsavimo_variantai)
+        }
+        else { 
+            <table>
+                <thead>
+                    <tr>
+                        <th style="margin-left:10px" colspan="3">Balsavimo variantai</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.balsavimo_variantai)
                     {
 
-                        <dd>
-                            <form>
-                                <a href="@Url.Action("RinktisVarianta", "Balsavimas", new { id = item.id_Balsavimo_Variantas })" class="btn btn-default btn-xs">
-                                    <i class="fa fa-plus"></i>@item.balsavimo_variantas
-                                </a>
-                            </form>
-                        </dd>
-
-                    }
-                }
-                else
-                {
-                    foreach (var item in Model.balsavimo_variantai)
-                    {
-
-                        <dd>
-                            @if (!(Convert.ToInt32(TempData["ChosenNumb"]) == item.id_Balsavimo_Variantas))
+                        <tr>
+                            @if ((Convert.ToInt32(TempData["ChosenNumb"]) == item.id_Balsavimo_Variantas))
                             {
-                                <p>
-                                    @item.balsavimo_variantas | Pasirininkusių skaičius: @item.pasirinkusiu_skaicius
-                                </p> }
+                                <th scope="row">✔️</th>
+                            }
                             else
                             {
-                                <p>✔️  @item.balsavimo_variantas | Pasirininkusių skaičius: @item.pasirinkusiu_skaicius </p>
+                                <th scope="row"></th>
                             }
-                        </dd>
+
+                            <td>@item.balsavimo_variantas</td>
+                            <td>Pasirinko: @item.pasirinkusiu_skaicius</td>
+                        </tr>
 
                     }
-                }
-
-            }
-        </dl>
+                </tbody>
+            </table>
+        }
+    }
+        
+    </dl>
     }
     else
     {

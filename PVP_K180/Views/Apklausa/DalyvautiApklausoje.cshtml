@@ -6,10 +6,9 @@
 
 @using (Html.BeginForm())
 {
-    <h2>DalyvautiApklausoje</h2>
+    <h2>Aktyvi apklausa</h2>
 
     <div>
-        <h4>Aktyvi apklausa</h4>
         @if (TempData["SuccsessAtsakimas"] != null)
         {
             <p class="alert alert-success" id="successMessage">@Convert.ToString(TempData["SuccsessAtsakimas"])</p>

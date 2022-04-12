@@ -5,14 +5,13 @@
 }
 
 <script src="~/Themes/ckeditor/ckeditor.js"></script>
-<h2>AtnaujintiInfoSeniunija</h2>
+<h2>Atnaujinti informaciją apie seniūnyja</h2>
 
 @using (Html.BeginForm("AtnaujintiInfoSeniunija", "Admin"))
 {
     @Html.AntiForgeryToken()
     
 <div class="form-horizontal">
-    <h4>Seniunija</h4>
     <hr />
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
@@ -35,7 +34,7 @@
 
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
-            <input type="submit" value="Save" class="btn btn-default" />
+            <input type="submit" value="Atnaujinti" class="btn btn-default" />
         </div>
     </div>
 </div>

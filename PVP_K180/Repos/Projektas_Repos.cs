@@ -184,7 +184,7 @@ namespace PVP_K180.Repos
             {
                 string conn = ConfigurationManager.ConnectionStrings["MysqlConnection"].ConnectionString;
                 MySqlConnection mySqlConnection = new MySqlConnection(conn);
-                string sqlquery = "SELECT * FROM `Komentaras` WHERE id_Komentaras=?userID and fk_Vartotojasid_Vartotojas=?commentID";
+                string sqlquery = "SELECT * FROM `Komentaras` WHERE id_Komentaras=?commentID and fk_Vartotojasid_Vartotojas=?userID";
                 MySqlCommand mySqlCommand = new MySqlCommand(sqlquery, mySqlConnection);
                 mySqlCommand.Parameters.Add("?commentID", MySqlDbType.Int32).Value = commentID;
                 mySqlCommand.Parameters.Add("?userID", MySqlDbType.Int32).Value = userID;
