@@ -13,6 +13,7 @@ namespace PVP_K180.Controllers
     public class NaujienaController : Controller
     {
         Naujiena naujiena = new Naujiena();
+        Naujiena_Repos naujiena_Repos = new Naujiena_Repos();
         Nuotrauka_Repos nuotrauka_Repos = new Nuotrauka_Repos();
 
 
@@ -124,7 +125,7 @@ namespace PVP_K180.Controllers
             }
 
             Nuotrauka_Repos nuotrauka_Repos = new Nuotrauka_Repos();
-            List<Nuotrauka> nuotraukos = nuotrauka_Repos.Gauti_Nuotraukas(id);
+            List<Nuotrauka> nuotraukos = nuotrauka_Repos.Gauti__Naujienu_Nuotraukas(id);
             foreach (var item in nuotraukos)
             {
                 var path = Path.Combine(("/Nuotraukos/") + item.nuotraukos_nuoroda);
@@ -160,13 +161,15 @@ namespace PVP_K180.Controllers
         {
             Naujiena_Repos naujiena_Repos = new Naujiena_Repos();
             naujiena = naujiena_Repos.Gauti_Naujiena(id);
+            TempData["naujienosID"] = id;
             return View(naujiena);
         }
 
         [HttpPost]
-        public ActionResult RedaguotiNaujiena(Naujiena naujiena)
+        public ActionResult RedaguotiNaujiena(int? naujienosID, Naujiena naujiena)
         {
             Naujiena_Repos naujiena_Repos = new Naujiena_Repos();
+            naujiena.id_Naujiena = Convert.ToInt32(TempData["naujienosID"]);
             naujiena.naujienos_kurejo_ID = (int)Session["UserID"];
             naujiena.naujienos_sukurimo_data = DateTime.Now;
             bool flag = naujiena_Repos.Redaguoti_Naujiena(naujiena);
@@ -179,6 +182,7 @@ namespace PVP_K180.Controllers
                 Response.Write("<script type='text/javascript' language='javascript'> alert('Naujiena neredaguota!')</script>");
 
             }
+            TempData["naujienosID"] = naujiena.id_Naujiena;
             return View(naujiena);
         }
 
@@ -246,6 +250,36 @@ namespace PVP_K180.Controllers
 
             return RedirectToAction("GautiNaujienas");
 
+        }
+
+        public ActionResult Naujienos()
+        {
+            List<Naujiena> naujienos = naujiena_Repos.Gauti_Naujienas();
+            List<NaujienuSarasas> naujienosPerziurai = new List<NaujienuSarasas>();
+
+            foreach(var item in naujienos)
+            {
+                NaujienuSarasas naujiena = new NaujienuSarasas();
+
+                naujiena.naujienos_id = item.id_Naujiena;
+                naujiena.naujienos_antraste = item.pavadinimas;
+                List<Nuotrauka> nuotraukos = nuotrauka_Repos.Gauti__Naujienu_Nuotraukas(naujiena.naujienos_id);
+                if (nuotrauka_Repos.Gauti__Naujienu_Nuotraukas(naujiena.naujienos_id).Count > 0)
+                {
+                    naujiena.pirma_nuotrauka = nuotraukos[0].nuotraukos_nuoroda;
+                }
+                naujiena.trumpasAprasas = item.naujienos_tekstas.Substring(0, 500);
+                naujienosPerziurai.Add(naujiena);
+            }
+            return View(naujienosPerziurai);
+        }
+
+        public ActionResult SkaitytiNaujiena(int id)
+        {
+            Naujiena naujiena = naujiena_Repos.Gauti_Naujiena(id);
+            naujiena.nuotraukos = nuotrauka_Repos.Gauti__Naujienu_Nuotraukas(naujiena.id_Naujiena);
+
+            return View(naujiena);
         }
     }
 }

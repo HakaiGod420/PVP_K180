@@ -4,11 +4,8 @@
     ViewBag.Title = "VartotojuSarasas";
 }
 
-<h2>VartotojuSarasas</h2>
+<h2>Esamų vartotojų sąrašas</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
 <table class="table">
     <tr>
         <th>
@@ -31,12 +28,6 @@
         </th>
         <th>
             @Html.DisplayNameFor(model => model.sukurimo_data)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.role)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.vartotojo_busena)
         </th>
         <th></th>
     </tr>
@@ -64,12 +55,6 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.sukurimo_data)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.role)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.vartotojo_busena)
             </td>
             <td>
                 <a href="@(@Url.Action("ProfilioPerziura", "Vartotojas", new { id = item.id_Vartotojas}))">Profilis</a> |

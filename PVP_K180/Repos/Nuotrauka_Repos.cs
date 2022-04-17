@@ -33,7 +33,7 @@ namespace PVP_K180.Repos
             }
         }
 
-        public List<Nuotrauka> Gauti_Nuotraukas(int id)
+        public List<Nuotrauka> Gauti__Naujienu_Nuotraukas(int id)
         {
             List<Nuotrauka> nuotraukos = new List<Nuotrauka>();
             string conn = ConfigurationManager.ConnectionStrings["MysqlConnection"].ConnectionString;

@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace PVP_K180.Models
 {
@@ -17,16 +18,17 @@ namespace PVP_K180.Models
         public string pavadinimas { get; set; }
 
         [DisplayName("Naujienos tekstas")]
+        [AllowHtml]
         [Required(ErrorMessage = "Privalo būti įvestas naujienos tekstas")]
         public string naujienos_tekstas { get; set; }
 
         [DisplayName("Naujienos sukurimo data")]
         [DisplayFormat(DataFormatString = "{0:yyyy-dd-MM}", ApplyFormatInEditMode = true)]
-        public DateTime? naujienos_sukurimo_data { get; set; }
+        public DateTime naujienos_sukurimo_data { get; set; }
 
         [DisplayName("Sukurta vartotojo")]
         public int naujienos_kurejo_ID { get; set; }
 
-        List<Nuotrauka> nuotraukos { get; set; }
+        public List<Nuotrauka> nuotraukos { get; set; }
     }
 }

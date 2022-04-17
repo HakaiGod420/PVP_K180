@@ -1,0 +1,71 @@
+﻿@model IEnumerable<PVP_K180.ModelView.NaujienuSarasas>
+
+@{
+    ViewBag.Title = "Naujienos";
+}
+
+<style>
+    img {
+        width: 50%;
+        height: 50%;
+    }
+
+    .item1 {
+        grid-area: header;
+    }
+
+    .item2 {
+        grid-area: header2;
+    }
+
+    .item3 {
+        grid-area: header3;
+    }
+
+    .item4 {
+        grid-area: menu1;
+    }
+
+    .item5 {
+        grid-area: menu2;
+    }
+
+    .item6 {
+        grid-area: menu3;
+    }
+
+    .grid-container {
+        display: grid;
+        grid-template-areas:
+            'header menu1'
+            'header menu2';
+        gap: 10px;
+        background-color: #2196F3;
+        padding: 10px;
+    }
+
+        .grid-container > div {
+            background-color: rgba(255, 255, 255, 0.8);
+            text-align: center;
+            padding: 20px 0;
+            font-size: 20px;
+        }
+</style>
+<h2>Naujienos</h2>
+
+
+@foreach (var item in Model) {
+<div class="row" style="border:solid; border-width:1px; padding:10px; margin-top:10px">
+    <div class="col-xs-12">
+        <div class="headline headline-lenta ">
+            <div class="headline-image">
+                <a class="img-link" href="@(@Url.Action("SkaitytiNaujiena", "Naujiena", new { id = item.naujienos_id }))">
+                    <img class="img-responsive lazyloaded" src="~/Nuotraukos/@item.pirma_nuotrauka" width="250" height="185" alt="" style="width: 205px; height: 124px">
+                </a>
+            </div><h3 class="headline-title">
+                <a href="@(@Url.Action("SkaitytiNaujiena", "Naujiena", new { id = item.naujienos_id }))" class="CBarticleTitle">@item.naujienos_antraste</a>
+            </h3><p class="headline-lead">@Html.Raw(item.trumpasAprasas) ...</p>
+        </div>
+    </div>
+</div>
+}

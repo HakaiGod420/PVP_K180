@@ -1,0 +1,80 @@
+﻿@model PVP_K180.ModelView.KomentaroLangasProjektas
+
+@{
+    ViewBag.Title = "Komentarai";
+}
+
+
+<style>
+    .borderless td, .borderless th {
+        border: none;
+    }
+</style>
+<h2>Komentarai</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+<div class="form-horizontal">
+    @if (TempData["SuccsessComment"] != null)
+    {
+        <p class="alert alert-success" id="successMessage">@Convert.ToString(TempData["SuccsessComment"])</p>
+    }
+    @if (TempData["DeleteSucc"] != null)
+    {
+        <p class="alert alert-success" id="successMessage">@Convert.ToString(TempData["DeleteSucc"])</p>
+    }
+    @if (TempData["DeleteFail"] != null)
+    {
+        <p class="alert alert-danger" id="successMessage">@Convert.ToString(TempData["DeleteFail"])</p>
+    }
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+    <div style="align-content:left" class="form-group">
+        @Html.LabelFor(model => model.rasomasKomentaras.komentaro_tekstas, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.rasomasKomentaras.komentaro_tekstas, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.rasomasKomentaras.komentaro_tekstas, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Rašyti" class="btn btn-default" />
+        </div>
+    </div>
+</div>
+}
+
+<div>
+            @foreach (var item in Model.parasytiKomentarai)
+            {
+                <div style="border:solid;margin-top:10px; border-width:1px">
+                    <table class='table table-bordered' style="margin-top:10px">
+                        <tbody>
+                        <td style="width:20px"><a href="@(@Url.Action("ProfilioPerziura", "Vartotojas", new { id = item.fk_Vartotojasid_Vartotojas }))">@item.varotojo_slapyvardis</a></td>
+                        <td>@item.parasymo_data.ToString("yyy-MM-dd")</td>
+                        </tbody>
+                        <tbody>
+                        <td colspan="2"> @item.komentaro_tekstas</td>
+                        @if (Convert.ToInt32(Session["UserID"]) == item.fk_Vartotojasid_Vartotojas)
+                        {
+                            <td style="text-align:right;width:150px"><a href="@(@Url.Action("TrintiKomentara", "Projektas", new { id = item.id_Komentaras }))">Trint komentarą</a></td>
+                        }
+                        </tbody>
+
+                    </table>
+                </div>
+
+        }
+</div>
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

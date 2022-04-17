@@ -4,7 +4,7 @@
     ViewBag.Title = "GautiProjektus";
 }
 
-<h2>GautiProjektus</h2>
+<h2>Esami projektai</h2>
 
 <p>
     @Html.ActionLink("Sukurti naują projektą", "ProjektoKurimas")
@@ -53,8 +53,8 @@
     </td>
     <td>
         @Html.ActionLink("Redaguoti", "RedaguotiProjekta", new { id = item.id_Projektas }) |
-        @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-        @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+        @Html.ActionLink("Pašalinti", "TrintiProjekta", new { id = item.id_Projektas }) |
+        @Html.ActionLink("Rašyti komentarą", "Komentarai", new { id = item.id_Projektas })
     </td>
 </tr>
 }

@@ -13,11 +13,6 @@ namespace PVP_K180.Controllers
     {
         Balsavimas_Repos balsavimas_Repos = new Balsavimas_Repos();
  
-        // GET: Balsavimas
-        public ActionResult Index()
-        {
-            return View();
-        }
 
         public ActionResult KurtiBalsavima()
         {
