@@ -154,7 +154,7 @@ namespace PVP_K180.Repos
             string conn = ConfigurationManager.ConnectionStrings["MysqlConnection"].ConnectionString;
             MySqlConnection mySqlConnection = new MySqlConnection(conn);
             string sqlquery = "SELECT id_Komentaras,komentaro_tekstas,parasymo_data,fk_Renginysid_Renginys," +
-                "fk_Projektasid_Projektas,fk_Vartotojasid_Vartotojas,Vartotojas.slapyvardis FROM `Komentaras`" +
+                "fk_Projektasid_Projektas,fk_Vartotojasid_Vartotojas,Vartotojas.slapyvardis,Vartotojas.nuotrauka FROM `Komentaras`" +
                 "LEFT JOIN Vartotojas ON Vartotojas.id_Vartotojas = fk_Vartotojasid_Vartotojas WHERE fk_Projektasid_Projektas=" + id;
             MySqlCommand mySqlCommand = new MySqlCommand(sqlquery, mySqlConnection);
             mySqlConnection.Open();
@@ -172,7 +172,8 @@ namespace PVP_K180.Repos
                     parasymo_data = Convert.ToDateTime(item["parasymo_data"]),
                     priskirtas_id = Convert.ToInt32(item["fk_Projektasid_Projektas"]),
                     fk_Vartotojasid_Vartotojas = Convert.ToInt32(item["fk_Vartotojasid_Vartotojas"]),
-                    varotojo_slapyvardis = Convert.ToString(item["slapyvardis"])
+                    varotojo_slapyvardis = Convert.ToString(item["slapyvardis"]),
+                    nuotrauka_location = Convert.ToString(item["nuotrauka"])
                 }); ;
             }
             return komentarai;
