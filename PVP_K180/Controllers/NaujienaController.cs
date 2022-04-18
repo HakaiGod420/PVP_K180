@@ -15,6 +15,7 @@ namespace PVP_K180.Controllers
         Naujiena naujiena = new Naujiena();
         Naujiena_Repos naujiena_Repos = new Naujiena_Repos();
         Nuotrauka_Repos nuotrauka_Repos = new Nuotrauka_Repos();
+        string[] menesiai = new string[12] { "Sausis", "Vasaris", "Kovas", "Balandis", "Gegužis", "Bižrelis", "Liepa", "Lapkritis", "Rugsėjis", "Spalis", "Lapkritis", "Gruodis" };
 
 
         // GET: Naujiena
@@ -264,11 +265,20 @@ namespace PVP_K180.Controllers
                 naujiena.naujienos_id = item.id_Naujiena;
                 naujiena.naujienos_antraste = item.pavadinimas;
                 List<Nuotrauka> nuotraukos = nuotrauka_Repos.Gauti__Naujienu_Nuotraukas(naujiena.naujienos_id);
+                naujiena.data = item.naujienos_sukurimo_data;
+                naujiena.menesioPav = menesiai[naujiena.data.Month-1];
                 if (nuotrauka_Repos.Gauti__Naujienu_Nuotraukas(naujiena.naujienos_id).Count > 0)
                 {
                     naujiena.pirma_nuotrauka = nuotraukos[0].nuotraukos_nuoroda;
                 }
-                naujiena.trumpasAprasas = item.naujienos_tekstas.Substring(0, 500);
+                if (item.naujienos_tekstas.Length > 150)
+                {
+                    naujiena.trumpasAprasas = item.naujienos_tekstas.Substring(0, 150);
+                }
+                else
+                {
+                    continue;
+                }
                 naujienosPerziurai.Add(naujiena);
             }
             return View(naujienosPerziurai);
