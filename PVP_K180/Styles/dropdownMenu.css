@@ -1,242 +1,121 @@
-﻿@import "compass/css3";
+﻿@import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700&display=swap');
 
-@import url("https://fonts.googleapis.com/css?family=Lato:300,400,700,900");
-@import url(https://fonts.googleapis.com/css?family=Pacifico);
-
-body {
-    font-family: "Lato", Helvetica, Arial;
-    font-size: 15px;
-}
-
-.text-center {
-    text-align: left;
-}
-
-*, *:before, *:after {
-    -webkit-border-sizing: border-box;
-    -moz-border-sizing: border-box;
-    border-sizing: border-box;
-}
-
-.container {
-    width: 800px;
-    margin: 50px auto;
-    & > ul
-
-{
-    list-style: none;
+.adminControll {
+    margin: 20px;
     padding: 0;
-    margin: 0 0 20px 0;
+    box-sizing: border-box;
+    user-select: none;
+    text-transform: uppercase;
+    font-family: 'Poppins', sans-serif
 }
 
-}
-
-// =============================================================================
-// Mixins and Variables
-// =============================================================================
-
-$blue: #2980B9;
-$gray: #EEE;
-
-@mixin ul-nostyle {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-mixin double-shadow($color) {
-    include box-shadow(0 1px 0 lighten($color, 10%) inset, 0 -1px 0 darken($color, 10%) inset);
-}
-
-mixin hover-style($color) {
-    &:hover {
-        background: lighten($color, 3%);
-    }
-}
-
-@mixin animation($content) {
-    animation: $content;
-    -moz-animation: $content;
-    -webkit-animation: $content;
-}
-
-@mixin keyframes($name) {
-    @keyframes
-
-    # {
-        $name
-    }
-
-{
-    @content;
-}
-
-@-moz-keyframes
-
-# {
-    $name
-}
-
-{
-    @content;
-}
-
-@-webkit-keyframes
-
-# {
-    $name
-}
-
-{
-    @content;
-}
-
-}
-
-// =============================================================================
-// Classes
-// =============================================================================
-
-.title {
-    font-family: 'Pacifico';
-    font-weight: norma;
-    font-size: 40px;
-    text-align: center;
-    line-height: 1.4;
-    color: $blue;
-}
-
-.dropdown {
-    a
-
-{
-    text-decoration: none;
-}
-
-[data-toggle="dropdown"] {
+nav {
     position: relative;
-    display: block;
-    color: white;
-    background: $blue;
-    @include double-shadow($blue);
-    @include hover-style($blue);
-    @include text-shadow(0 -1px 0 rgba(0,0,0,0.3));
-    padding: 10px;
+    top: 20%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #1b1b1b;
+    width: 400px;
+    line-height: 40px;
+    padding: 8px 25px;
+    border-radius: 5px
 }
 
-.icon-arrow {
+    nav label {
+        color: white;
+        font-size: 15px;
+        font-weight: 300;
+        display: block;
+        cursor: pointer
+    }
+
+.button span {
+    float: right;
+    line-height: 40px;
+    transition: 0.5s
+}
+
+    .button span.rotate {
+        transform: rotate(-180deg)
+    }
+
+nav ul {
     position: absolute;
-    display: block;
-    font-size: 0.7em;
-    color: #fff;
-    top: 14px;
-    right: 10px;
-    &.open
-
-{
-    @include transform(rotate(-180deg));
-    @include transition(transform .6s);
+    background: #1b1b1b;
+    list-style: none;
+    top: 66px;
+    left: 0;
+    width: 100%;
+    border-radius: 5px;
+    display: none
 }
 
-&.close {
-    @include transform(rotate(0deg));
-    @include transition(transform .6s);
+[id^=btn]:checked + ul {
+    display: block
 }
 
-&:before {
-    content: '\25BC';
+nav .menu:before {
+    position: absolute;
+    content: '';
+    height: 13px;
+    width: 13px;
+    background: #1b1b1b;
+    right: 24px;
+    top: -6px;
+    transform: rotate(45deg);
+    z-index: -1
 }
 
+nav ul li {
+    line-height: 40px;
+    padding: 8px 20px;
+    cursor: pointer;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2)
 }
 
-.dropdown-menu {
-    max-height: 0;
-    overflow: hidden;
-    @include ul-nostyle;
-    li
-
-{
-    padding: 0;
-    a
-
-{
-    display: block;
-    color: darken($gray, 50%);
-    background: $gray;
-    @include double-shadow($gray);
-    @include hover-style($gray);
-    @include text-shadow(0 -1px 0 rgba(255,255,255,0.3));
-    padding: 10px 10px;
-}
-
-}
-}
-
-.show, .hide {
-    @include transform-origin(50%, 0%);
-}
-
-.show {
-    display: block;
-    max-height: 9999px;
-    @include transform(scaleY(1));
-    @include animation(showAnimation .5s ease-in-out);
-    @include transition(max-height 1s ease-in-out);
-}
-
-.hide {
-    max-height: 0;
-    @include transform(scaleY(0));
-    @include animation(hideAnimation .4s ease-out);
-    @include transition(max-height .6s ease-out);
-}
-
-}
-
-@include keyframes(showAnimation) {
-    0% {
-        @include transform(scaleY(0.1));
+    nav ul li label {
+        font-size: 13px
     }
 
-    40% {
-        @include transform(scaleY(1.04));
+    nav ul li a {
+        color: white;
+        text-decoration: none;
+        font-size: 13px;
+        display: block
     }
 
-    60% {
-        @include transform(scaleY(0.98));
-    }
+        nav ul li a:hover,
+        nav ul li label:hover {
+            color: red
+        }
 
-    80% {
-        @include transform(scaleY(1.04));
-    }
-
-    100% {
-        @include transform(scaleY(0.98));
-    }
-
-    80% {
-        @include transform(scaleY(1.02));
-    }
-
-    100% {
-        @include transform(scaleY(1));
-    }
+nav ul ul {
+    position: static
 }
 
-@include keyframes(hideAnimation) {
-    0% {
-        @include transform(scaleY(1));
+    nav ul ul li {
+        line-height: 30px;
+        padding-left: 30px;
+        border-bottom: none
     }
 
-    60% {
-        @include transform(scaleY(0.98));
+        nav ul ul li a {
+            color: #e6e6e6;
+            font-size: 13px
+        }
+
+nav ul li span {
+    font-size: 16px;
+    float: right;
+    margin-top: 13px;
+    padding: 0 10px;
+    transition: 0.5s
+}
+
+    nav ul li span.rotate {
+        transform: rotate(-180deg)
     }
 
-    80% {
-        @include transform(scaleY(1.02));
-    }
-
-    100% {
-        @include transform(scaleY(0));
-    }
+input {
+    display: none
 }
