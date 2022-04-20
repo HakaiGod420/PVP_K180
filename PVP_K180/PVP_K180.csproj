@@ -255,6 +255,7 @@
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Styles\comment.css" />
     <Content Include="Styles\dropdownMenu.css" />
+    <Content Include="Styles\profileStyle.css" />
     <Content Include="Themes\ckeditor\adapters\jquery.js" />
     <Content Include="Themes\ckeditor\build-config.js" />
     <Content Include="Themes\ckeditor\ckeditor.js" />

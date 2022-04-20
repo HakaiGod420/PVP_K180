@@ -3,130 +3,93 @@
 @{
     ViewBag.Title = "Profilio peržiura";
 }
-<style>
-    body {
-        background-color: white;
-    }
-</style>
-
-<style>
-    dd {
-        font-family: verdana;
-        display: inline-block height: 40px;
-        width: 300px;
-    }
-</style>
-
-<style>
-    dt {
-        font-family: verdana;
-        display: inline-block margin-right: 40px;
-        font-size: 16px;
-        height: 40px;
-        width: 500px;
-    }
-</style>
 
 
+<link rel="stylesheet" href="~/Styles/profileStyle.css" />
 <h2 style="text-align:center">
     Profilio peržiūra
 </h2>
+<div class="page-content page-container" id="page-content">
+    <div class="padding">
+        <div class="row container d-flex justify-content-center">
+            <div class="col-xl-6 col-md-12">
+                <div class="card user-card-full">
+                    <div class="row m-l-0 m-r-0">
+                        <div class="col-sm-4 bg-c-lite-green user-profile">
+                            <div class="card-block text-center text-white">
+                                <div class="m-b-25"> <img src="@(Model.nuotrauka)" style="max-width: 30%" class="img-radius" alt="User-Profile-Image"> </div>
+                                <h6 class="f-w-600">@Model.slapyvardis</h6>
+                                <p>@Model.roles_informacija.name</p> <i class=" mdi mdi-square-edit-outline feather icon-edit m-t-10 f-16"></i>
+                            </div>
+                        </div>
+                        <div class="col-sm-8">
+                            <div class="card-block">
+                                <h6 class="m-b-20 p-b-5 b-b-default f-w-600">Vartotojo informacija</h6>
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <p class="m-b-10 f-w-600">@Html.DisplayNameFor(model => model.el_pastas)</p>
+                                        <h6 class="text-muted f-w-400">@Html.DisplayFor(model => model.el_pastas)</h6>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <p class="m-b-10 f-w-600"> @Html.DisplayNameFor(model => model.tel_nr)</p>
+                                        @if(Model.tel_nr != "")
+                                        {
+                                        <h6 class="text-muted f-w-400"> @Html.DisplayFor(model => model.tel_nr)</h6>
+                                        }
+                                        else
+                                        {
+                                        <h6 class="text-muted f-w-400">-</h6>
+                                        }
+                                    </div>
 
-<div>
-    <center>
-        <img align="top" style="align-content:center; max-width:20%" src="@(Model.nuotrauka)" alt="Profilio nuotrauka">
-    </center>
+                                    <div class="col-sm-6">
+                                        <p class="m-b-10 f-w-600">@Html.DisplayNameFor(model => model.vardas)</p>
+                                        @if (Model.vardas != "")
+                                        {
+                                            <h6 class="text-muted f-w-400"> @Html.DisplayFor(model => model.vardas)</h6>
+                                        }
+                                        else
+                                        {
+                                            <h6 class="text-muted f-w-400">-</h6>
+                                        }
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <p class="m-b-10 f-w-600"> @Html.DisplayNameFor(model => model.pavarde)</p>
+                                        @if (Model.pavarde != "")
+                                        {
+                                            <h6 class="text-muted f-w-400"> @Html.DisplayFor(model => model.pavarde)</h6>
+                                        }
+                                        else
+                                        {
+                                            <h6 class="text-muted f-w-400">-</h6>
+                                        }
+                                    </div>
+
+                                    <div class="col-sm-6">
+                                        <p class="m-b-10 f-w-600">@Html.DisplayNameFor(model => model.sukurimo_data)</p>
+                                        <h6 class="text-muted f-w-400"> @Html.DisplayFor(model => model.sukurimo_data)</h6>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <p class="m-b-10 f-w-600">  @Html.DisplayNameFor(model => model.gimimo_data)</p>
+                                        @if (Model.gimimo_data != null)
+                                        {
+                                            <h6 class="text-muted f-w-400"> @Html.DisplayFor(model => model.gimimo_data)</h6>
+                                        }
+                                        else
+                                        {
+                                            <h6 class="text-muted f-w-400">-</h6>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
-<div>
-
-    <h4 style="text-align:center">Rolė yra - @Model.roles_informacija.name</h4>
-    <hr />
-    <dl class="dl-horizontal">
-
-        <dt>
-            @Html.DisplayNameFor(model => model.slapyvardis)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.slapyvardis)
-        </dd>
-
-        @if (Model.el_pastas != null)
-        {
-            <dt>
-                @Html.DisplayNameFor(model => model.el_pastas)
-            </dt>
-
-            <dd>
-                @Html.DisplayFor(model => model.el_pastas)
-            </dd>
-        }
-
-
-        @if (Model.gimimo_data != null)
-        {
-            <dt>
-                @Html.DisplayNameFor(model => model.gimimo_data)
-            </dt>
-
-            <dd>
-                @Html.DisplayFor(model => model.gimimo_data)
-            </dd>
-        }
-
-
-        @if (Model.vardas != "")
-        {
-            <dt>
-                @Html.DisplayNameFor(model => model.vardas)
-            </dt>
-
-            <dd>
-                @Html.DisplayFor(model => model.vardas)
-            </dd>
-        }
-        @if (Model.pavarde != "")
-        {
-            <dt>
-                @Html.DisplayNameFor(model => model.pavarde)
-            </dt>
-
-            <dd>
-                @Html.DisplayFor(model => model.pavarde)
-            </dd>
-        }
-        @if (Model.tel_nr != "")
-        {
-            <dt>
-                @Html.DisplayNameFor(model => model.tel_nr)
-            </dt>
-
-            <dd>
-                @Html.DisplayFor(model => model.tel_nr)
-            </dd>
-        }
-        <dt>
-            @Html.DisplayNameFor(model => model.sukurimo_data)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.sukurimo_data)
-        </dd>
-
-        @if (Model.vartotojo_busena != null)
-        {
-            <dt>
-                @Html.DisplayNameFor(model => model.vartotojo_busena)
-            </dt>
-
-            <dd>
-                @Html.DisplayFor(model => model.vartotojo_busena)
-            </dd>
-        }
-
-    </dl>
-</div>
 <p>
     @Html.ActionLink("Atgal", "Index", "Home")
 </p>
