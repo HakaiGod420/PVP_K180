@@ -2,6 +2,7 @@
 
 @{
     ViewBag.Title = "DalyvautiApklausoje";
+    Styles.Render("~/Content/");
 }
 
 @using (Html.BeginForm())
@@ -56,25 +57,66 @@
             }
         </dl>
     </div>
-    if (Convert.ToBoolean(TempData["Answered"]) == false)
+    <div style="align-content:center">
+        <style>
+            .boxShadow {
+                box-shadow: 0 3px 20px rgb(0 0 0 / 0.2);
+                margin: 20px;
+                border-radius: 25px;
+                width: 50%;
+            }
+            .center {
+                width: 500px;
+                margin: auto;
+                width: auto;
+                padding: 10px;
+                margin-bottom: 20px;
+            }
+
+            textarea {
+                min-width:auto;
+                max-width:900px;
+                width: 100%;
+                height: 100px;
+                padding: 0px 20px;
+                box-sizing: border-box;
+                border: 2px solid #ccc;
+                border-radius: 20px;
+                background-color: #f8f8f8;
+                font-size: 16px;
+                resize: none;
+                display: block;
+                margin-left: auto;
+                margin-right: auto;
+            }
+        </style>
+    @if (Convert.ToBoolean(TempData["Answered"]) == false)
     {
         if (Model.apklausa.sukurimo_data != null)
         {
-            <h2>Atsakyti į klausimus</h2>
-            <div>
+            <h2 style="text-align:center">Atsakyti į klausimus</h2>
+            <div class="center">
                 <dl class="dl-horizontal">
                     @for (var i = 0; i < Model.klausimai.Count; i++)
                     {
-                        <b><p>@Model.klausimai[i].klausimo_tekstas</p></b>
-                        <div class="col-md-20">
-                            @Html.EditorFor(model => model.atsakymai[i], new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.atsakymai[i], "", new { @class = "text-danger" })
+                        var temp = i + 1;
+                        <div class="boxShadow center">
+
+
+                            <b><p>#@temp Klausimas: @Model.klausimai[i].klausimo_tekstas</p></b>
+                            <div class="col-md-25 center inputFiled" style="margin-bottom:10px; align-items:center">
+                                @Html.TextAreaFor(model => model.atsakymai[i], new { htmlAttributes = new { @class = "form-control inputFiled" } })
+                                @Html.ValidationMessageFor(model => model.atsakymai[i], "", new { @class = "text-danger" })
+                            </div>
+
+
                         </div>
+
                     }
                 </dl>
 
                 <div class="form-group">
-                    <div class="col-md-offset-0 col-md-20">
+                    <div class="col-md-offset-5 col-md-20">
                         <input type="submit" value="Tvirtinti apklausą" class="btn btn-default" />
                     </div>
                 </div>
@@ -94,7 +136,7 @@
                         if (Model.gautiAtsakymai[i] != "")
                         {
                             <p>@Model.gautiAtsakymai[i]</p>
- }
+                        }
                         else
                         {
                             <p>[Atsakymas nepateiktas]</p>
@@ -106,5 +148,5 @@
             </div>
         }
     }
-
+</div>
 }
