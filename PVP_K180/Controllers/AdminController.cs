@@ -6,6 +6,10 @@ using System.Web.Mvc;
 using PVP_K180.Models;
 using PVP_K180.ModelView;
 using PVP_K180.Repos;
+using System.IO;
+using System.Net;
+using EASendMail;
+using SmtpClient = EASendMail.SmtpClient;
 
 namespace PVP_K180.Controllers
 {
@@ -153,14 +157,6 @@ namespace PVP_K180.Controllers
         [HttpPost]
         public ActionResult KeistiRole(int id, VartotojoRolesPerziura vartotojoRolesPerziura)
         {
-            if (Session["UserID"] == null)
-            {
-                return RedirectToAction("Index", "Home");
-            }
-            else if (!Session["Role"].Equals("Administratorius"))
-            {
-                return RedirectToAction("Index", "Home");
-            }
             UzpildytiRoles(vartotojoRolesPerziura);
             vartotojas_Repos.AtnaujintiVartotojoRole(id, vartotojoRolesPerziura.vartotojo_role);
             Response.Write("<script type='text/javascript' language='javascript'> alert('Vartotojo rolė pakeista')</script>");
@@ -190,6 +186,108 @@ namespace PVP_K180.Controllers
                 rolesList.Add(new SelectListItem { Value = item.id_Role.ToString(), Text = item.name });
             }
             vartotojoRolesPerziura.role = rolesList;
+        }
+
+        public ActionResult SiustiNaujienlaiski()
+        {
+            if (Session["UserID"] == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            else if (!Session["Role"].Equals("Administratorius"))
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult SiustiNaujienlaiski(EmaiModel model)
+        {
+            if (Session["UserID"] == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            else if (!Session["Role"].Equals("Administratorius"))
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            if(!ModelState.IsValid)
+            {
+                return View();
+            }
+
+            List<string> emails = vartotojas_Repos.GautiEmailSub();
+
+            try
+            {
+                SmtpMail oMail = new SmtpMail("TryIt");
+
+                if(model.Attachment.Length > 0)
+                {
+                    foreach(var item in model.Attachment)
+                    {
+                        string fileName = Path.GetFileName(item.FileName);
+                        var ServerSavePath = Path.Combine(Server.MapPath("~/Nuotraukos/") + fileName);
+                        item.SaveAs(ServerSavePath);
+                        oMail.AddAttachment(ServerSavePath);
+                    }
+                }
+
+                // Set sender email address, please change it to yours
+                oMail.From = "noreply@k180.vhost.lt";
+
+                // Set email subject
+                oMail.Subject = model.Subject;
+
+                // Set email body
+                oMail.HtmlBody = model.Body;
+
+                // Your SMTP server address
+                SmtpServer oServer = new SmtpServer("mail.k180.vhost.lt");
+
+                // User and password for ESMTP authentication, if your server doesn't require
+                // User authentication, please remove the following codes.
+                oServer.User = "noreply@k180.vhost.lt";
+                oServer.Password = "1721420858!";
+
+                // Set 465 SMTP port
+                oServer.Port = 465;
+
+                // Enable SSL connection
+                oServer.ConnectType = SmtpConnectType.ConnectSSLAuto;
+
+
+                SmtpClient oSmtp = new SmtpClient();
+
+                foreach(var item in emails)
+                {
+                    oMail.To = item;
+                    oSmtp.SendMail(oServer, oMail);
+                }
+
+                if (model.Attachment.Length > 0)
+                {
+                    foreach (var item in model.Attachment)
+                    {
+                        string fileName = Path.GetFileName(item.FileName);
+                        var ServerSavePath = Path.Combine(Server.MapPath("~/Nuotraukos/") + fileName);
+                        item.SaveAs(ServerSavePath);
+                        if (System.IO.File.Exists(ServerSavePath))
+                        {
+                            System.IO.File.Delete(ServerSavePath);
+                        }
+                    }
+                }
+
+                TempData["Succsess"] = "Laiškai sėkmingai išiųsti " + emails.Count() + " vartotojams";
+            }
+            catch (Exception ep)
+            {
+                throw ep;
+            }
+            return View();
         }
 
     }

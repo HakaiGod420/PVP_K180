@@ -236,5 +236,55 @@ namespace PVP_K180.Controllers
             return View();
 
         }
+
+        public ActionResult AktyvuotiNaujienlaiski()
+        {
+            if (Session["UserID"] == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            int aktyvacija = vartotojas_Repos.Gauti_Naujienlaiskio_Prenumerata(Convert.ToInt32(Session["UserID"]));
+
+            if(aktyvacija == 1)
+            {
+                TempData["Aktyvacija"] = true;
+            }
+            else
+            {
+                TempData["Aktyvacija"] = false;
+            }
+
+            return View();
+        }
+
+        public ActionResult AktyvuotiPrenumerata()
+        {
+            if (Session["UserID"] == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            int id = Convert.ToInt32(Session["UserID"]);
+
+            vartotojas_Repos.AtnaujintiNaujienlaiskioPrenumerata(id, 1);
+
+            TempData["SuccsessSubs"] = "Sėkmingai užprenumeruotas naujienlaiškis";
+
+            return RedirectToAction("AktyvuotiNaujienlaiski");
+        }
+        public ActionResult SalintiPrenumerata()
+        {
+            if (Session["UserID"] == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            int id = Convert.ToInt32(Session["UserID"]);
+
+            vartotojas_Repos.AtnaujintiNaujienlaiskioPrenumerata(id, 0);
+            TempData["SuccsessSubs"] = "Sėkmingai atšaukta naujienlaiškio prenumerata";
+            return RedirectToAction("AktyvuotiNaujienlaiski");
+        }
     }
 }
