@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Newtonsoft.Json;
 using PVP_K180.Models;
 using PVP_K180.ModelView;
 using PVP_K180.Repos;
@@ -285,6 +286,36 @@ namespace PVP_K180.Controllers
                 busenosList.Add(new SelectListItem { Value = item.id_Balsavimo_busena.ToString(), Text = item.name });
             }
             balsavimoBusenaPerziura.Busenos = busenosList;
+        }
+
+        public ActionResult Rezultatai(int id)
+        {
+            if (Session["UserID"] == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            else if (!Session["Role"].Equals("Administratorius"))
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            Balsavimas balsavimas = balsavimas_Repos.Gauti_Balsavima(id);
+            balsavimas.balsavimo_variantai = balsavimas_Repos.GautiVariantus(id);
+
+            BalsavimuDiagrama diagrama = new BalsavimuDiagrama();
+
+            foreach(var item in balsavimas.balsavimo_variantai)
+            {
+                var random = new Random(Guid.NewGuid().GetHashCode());
+                var color = String.Format("#{0:X6}", random.Next(0x1000000)); // = "#A197B9"
+                diagrama.labels.Add(item.balsavimo_variantas);
+                diagrama.colors.Add(color);
+                diagrama.values.Add(item.pasirinkusiu_skaicius);
+            }
+            var t = JsonConvert.SerializeObject(diagrama.labels);
+
+            balsavimas.diagramosData = diagrama;
+            return View(balsavimas);
         }
     }
 }

@@ -260,13 +260,15 @@ namespace PVP_K180.Controllers
 
 
                 SmtpClient oSmtp = new SmtpClient();
+                
 
                 foreach(var item in emails)
                 {
-                    oMail.To = item;
-                    oSmtp.SendMail(oServer, oMail);
+                    oMail.To.Add(item);
+                    
                 }
 
+                oSmtp.SendMail(oServer, oMail);
                 if (model.Attachment.Length > 0)
                 {
                     foreach (var item in model.Attachment)
