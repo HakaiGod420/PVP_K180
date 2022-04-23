@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using PVP_K180.ModelView;
 using PVP_K180.Models;
 
 namespace PVP_K180.Models
@@ -41,5 +42,7 @@ namespace PVP_K180.Models
         public string busenos_pavadinimas { get; set; }
 
         public List<Balsavimo_Variantas> balsavimo_variantai { get;set;}
+
+        public BalsavimuDiagrama diagramosData { get; set; }
     }
 }

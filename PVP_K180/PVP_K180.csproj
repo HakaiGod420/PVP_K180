@@ -98,6 +98,7 @@
     <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>packages\System.Runtime.CompilerServices.Unsafe.5.0.0\lib\net45\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
     </Reference>
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
     <Reference Include="System.Text.Encoding.CodePages, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>packages\System.Text.Encoding.CodePages.4.5.1\lib\net461\System.Text.Encoding.CodePages.dll</HintPath>
@@ -202,6 +203,7 @@
     <Compile Include="ModelView\ApklausosAtsakymai.cs" />
     <Compile Include="ModelView\Atnaujinami_Vartotojo_Duomenys.cs" />
     <Compile Include="ModelView\BalsavimoBusenaPerziura.cs" />
+    <Compile Include="ModelView\BalsavimuDiagrama.cs" />
     <Compile Include="ModelView\EmaiModel.cs" />
     <Compile Include="ModelView\KomentaroLangasProjektas.cs" />
     <Compile Include="ModelView\NaujienuSarasas.cs" />
@@ -227,6 +229,8 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\Chart.css" />
+    <Content Include="Content\Chart.min.css" />
     <Content Include="Content\fancybox\blank.gif" />
     <Content Include="Content\fancybox\fancybox_buttons.png" />
     <Content Include="Content\fancybox\fancybox_loading%402x.gif" />
@@ -245,6 +249,8 @@
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
+    <Content Include="Scripts\Chart.js" />
+    <Content Include="Scripts\Chart.min.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
     <Content Include="Scripts\jquery-3.4.1.slim.js" />
@@ -643,6 +649,7 @@
     <Content Include="Styles\cardNews.css" />
     <Content Include="Views\Vartotojas\AktyvuotiNaujienlaiski.cshtml" />
     <Content Include="Views\Admin\SiustiNaujienlaiski.cshtml" />
+    <Content Include="Views\Balsavimas\Rezultatai.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
