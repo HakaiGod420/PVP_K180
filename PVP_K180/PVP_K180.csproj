@@ -270,6 +270,7 @@
     <Content Include="Styles\comment.css" />
     <Content Include="Styles\dropdownMenu.css" />
     <Content Include="Styles\profileStyle.css" />
+    <Content Include="Styles\slideCss.css" />
     <Content Include="Themes\ckeditor\adapters\jquery.js" />
     <Content Include="Themes\ckeditor\build-config.js" />
     <Content Include="Themes\ckeditor\ckeditor.js" />
@@ -650,6 +651,7 @@
     <Content Include="Views\Vartotojas\AktyvuotiNaujienlaiski.cshtml" />
     <Content Include="Views\Admin\SiustiNaujienlaiski.cshtml" />
     <Content Include="Views\Balsavimas\Rezultatai.cshtml" />
+    <Content Include="Views\Apklausa\Rezultatai.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
