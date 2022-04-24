@@ -34,26 +34,30 @@
     </tr>
 
 @foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.aprasymas)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.dalyviu_skaicius)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.sukurimo_data)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.pabaigos_data)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Sukurejas)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.busenos_pavadinimas)
-        </td>
-    </tr>
+<tr>
+    <td>
+        @Html.DisplayFor(modelItem => item.aprasymas)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.dalyviu_skaicius)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.sukurimo_data)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.pabaigos_data)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Sukurejas)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.busenos_pavadinimas)
+    </td>
+
+    <td>
+        @Html.ActionLink("Rezultatai", "Rezultatai", new { id = item.id_Apklausa })
+    </td>
+</tr>
 }
 
 </table>

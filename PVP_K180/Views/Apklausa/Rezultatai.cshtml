@@ -1,0 +1,81 @@
+﻿@model PVP_K180.Models.Apklausa
+@{
+    ViewBag.Title = "Apklausos rezultatai";
+}
+
+<h2 style="text-align:center">Apklausų išklotinė</h2>
+
+<style>
+    .boxShadow {
+        box-shadow: 0 1px 10px rgb(0 0 0 / 0.2);
+        margin: auto;
+        border-radius: 5px;
+        width: 75%;
+        text-align: center;
+        padding: 10px;
+        margin-top: 30px;
+        position: relative;
+    }
+</style>
+
+<div>
+    <div class="boxShadow">
+        <p style="text-align:left;font-size:20px; font-weight:bold">@Model.aprasymas</p>
+        <hr />
+        <p style="text-align:left">
+            Iš viso dalyvavo apklausoje: <b>@Model.dalyviu_skaicius</b>
+            <span style="float:right;">
+                Balsavimo pradžia: <b>@Convert.ToDateTime(Model.sukurimo_data).ToString("yyyy-MM-dd")</b>
+            </span>
+        </p>
+    </div>
+
+    @foreach (var item in Model.klausimai)
+    {
+        <div class="boxShadow" style="text-align:left;font-size:15px;">
+            @item.klausimo_tekstas
+            <hr />
+            <p style="text-align:left">
+                Atsakė: <b>@item.atsakymai.Count</b>
+                <span style="float:right;">
+                    <a class="btn btn-success" data-toggle="modal" data-val="user1" data-target=".boostrapmodal" style="margin-bottom:5px; padding:1px 40px">Atsakymai(@item.atsakymai.Count)</a>
+                </span>
+            </p>
+
+        </div>
+    }
+
+    <div class="modal fade boostrapmodal">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <b>Atsakymų sąrašas</b>
+                </div>
+
+                <div class="modal-body">
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Uždaryti</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div>
+    @Html.ActionLink("Atgal", "ZiuretiApklausas")
+</div>
+
+
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>
+    $('button[data-toggle="modal"]').click(function (event) {
+        console.log('AA');
+        var myVal = $(event.relatedTarget).data('val');
+        $(this).find(".modal-body").text(myVal);
+    });
+</script>   

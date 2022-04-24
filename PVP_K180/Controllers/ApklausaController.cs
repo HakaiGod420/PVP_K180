@@ -180,5 +180,27 @@ namespace PVP_K180.Controllers
             return RedirectToAction("ZiuretiApklausas");
         }
 
+        public ActionResult Rezultatai(int id)
+        {
+            if (Session["UserID"] == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            else if (!Session["Role"].Equals("Administratorius"))
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            Apklausa apklausa = apklausa_Repos.Gauti_Apklausa(id);
+            apklausa.klausimai = apklausa_Repos.GautiKlausimus(id);
+
+            for(var i = 0; i<apklausa.klausimai.Count;i++)
+            {
+                apklausa.klausimai[i].atsakymai = apklausa_Repos.GautiAtsakymus(apklausa.klausimai[i].id_Klausimas);
+            }
+            
+            return View(apklausa);
+        }
+
     }
 }

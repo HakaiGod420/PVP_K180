@@ -312,7 +312,6 @@ namespace PVP_K180.Controllers
                 diagrama.colors.Add(color);
                 diagrama.values.Add(item.pasirinkusiu_skaicius);
             }
-            var t = JsonConvert.SerializeObject(diagrama.labels);
 
             balsavimas.diagramosData = diagrama;
             return View(balsavimas);
