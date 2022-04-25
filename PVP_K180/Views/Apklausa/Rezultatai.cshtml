@@ -18,6 +18,7 @@
     }
 </style>
 
+@Styles.Render("~/Styles/tableStyle.css")
 <div>
     <div class="boxShadow">
         <p style="text-align:left;font-size:20px; font-weight:bold">@Model.aprasymas</p>
@@ -38,7 +39,7 @@
             <p style="text-align:left">
                 Atsakė: <b>@item.atsakymai.Count</b>
                 <span style="float:right;">
-                    <a class="btn btn-success" data-toggle="modal" data-val="user1" data-target=".boostrapmodal" style="margin-bottom:5px; padding:1px 40px">Atsakymai(@item.atsakymai.Count)</a>
+                    <a class="open-list btn btn-success" data-toggle="modal" data-id="@item.id_Klausimas" data-target=".boostrapmodal" style="margin-bottom:5px; padding:1px 40px">Atsakymai(@item.atsakymai.Count)</a>
                 </span>
             </p>
 
@@ -46,13 +47,16 @@
     }
 
     <div class="modal fade boostrapmodal">
-        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header">
                     <b>Atsakymų sąrašas</b>
                 </div>
 
                 <div class="modal-body">
+                    <div id="add_to_me">
+
+                    </div>
                 </div>
 
                 <div class="modal-footer">
@@ -73,9 +77,33 @@
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script>
-    $('button[data-toggle="modal"]').click(function (event) {
-        console.log('AA');
-        var myVal = $(event.relatedTarget).data('val');
-        $(this).find(".modal-body").text(myVal);
+    $(document).on("click", ".open-list", function () {
+        var id = $(this).data('id');
+        document.getElementById("add_to_me").innerHTML = "";
+        var model = '@Html.Raw(Json.Encode(Model))';
+        var model2 = JSON.parse(model);
+        console.log(id);
+        //console.log(model2.klausimai);
+        var klausimai = model2.klausimai;
+
+        for (let x in klausimai) {
+
+            if (model2.klausimai[x].id_Klausimas == id) {
+                var true_Klausimas = model2.klausimai[x];
+            }
+        }
+
+        $('<table class="table-fill">').append('<thead>').appendTo('#add_to_me');
+        $('<tr>').appendTo('thead');
+        $('<th "text-left>').text('Atsakymas').appendTo('tr');
+        $('<th "text-left>').text('Atsakovas').appendTo('tr');
+        $('<tbody class="table-hover">').appendTo('table');
+
+        for (let x in true_Klausimas.atsakymai) {
+            $('<tr id=partial'+x+'>').appendTo('tbody');
+            $('<td "text-left>').text(true_Klausimas.atsakymai[x].atsakymo_tekstas).appendTo('#partial'+x);
+            $('<td "text-left>').text(true_Klausimas.atsakymai[x].slapyvardis).appendTo('#partial'+x);
+        }
+
     });
 </script>   
