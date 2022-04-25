@@ -386,7 +386,8 @@ namespace PVP_K180.Repos
                 List<Atsakymas> atsakymai = new List<Atsakymas>();
                 string conn = ConfigurationManager.ConnectionStrings["MysqlConnection"].ConnectionString;
                 MySqlConnection mySqlConnection = new MySqlConnection(conn);
-                string sqlquery = "SELECT * FROM `Atsakymas` WHERE fk_Klausimasid_Klausimas=" + klausimoID;
+                string sqlquery = "SELECT id_Atsakymas,atsakymo_tekstas,fk_Vartotojasid_Vartotojas,fk_Klausimasid_Klausimas, " +
+                    "Vartotojas.slapyvardis FROM `Atsakymas` LEFT JOIN Vartotojas ON Vartotojas.id_Vartotojas = Atsakymas.fk_Vartotojasid_Vartotojas WHERE fk_Klausimasid_Klausimas=" + klausimoID;
                 MySqlCommand mySqlCommand = new MySqlCommand(sqlquery, mySqlConnection);
                 mySqlConnection.Open();
                 MySqlDataAdapter mda = new MySqlDataAdapter(mySqlCommand);
@@ -403,6 +404,7 @@ namespace PVP_K180.Repos
                         atsakymo_tekstas = Convert.ToString(item["atsakymo_tekstas"]),
                         fk_Vartotojasid_Varotojas = Convert.ToInt32(item["fk_Vartotojasid_Vartotojas"]),
                         fk_Klausimasid_Klausimas = Convert.ToInt32(item["fk_Klausimasid_Klausimas"]),
+                        slapyvardis = Convert.ToString(item["slapyvardis"]),
                     }); ;
                 }
                 return atsakymai;
