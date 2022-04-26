@@ -38,6 +38,15 @@
         padding: 0;
         background-color: #f1f1f1;
     }
+
+    .center {
+        margin: 0;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        -ms-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%);
+    }
 </style>
 
 @using (Html.BeginForm("AtnaujintiInfoSeniunija", "Admin"))
@@ -69,8 +78,10 @@
         <div class="marker-position">Paspauskite ant žemėlapio</div>
         <div id="map"></div>
     </div>
-    <button onclick="saveData()" class="btn btn-success" type="button">Patvirtinti lokaciją</button>
-
+    <div style="text-align:center; margin-top:10px">
+        <button onclick="saveData()" class="btn btn-success" type="button">Patvirtinti lokaciją</button>
+    </div>
+    
     <div style="margin-top:30px;" class="form-group">
         <div class="col-md-offset-2 col-md-10">
             <input type="submit" value="Atnaujinti" class="btn btn-default" />
@@ -85,8 +96,7 @@
 
 
 <script>
-
-    var arGaliPrideti = true;
+    var arGaliPrideti = false;
     /* eslint-disable no-undef */
     /**
      * add move and delete marker
@@ -100,15 +110,14 @@
     // magnification with which the map will start
     const zoom = 18;
     // co-ordinates
-    const lat = 52.22977;
-    const lng = 21.01178;
+    const lat = '@Model.zemelapis_ilguma';
+    const lng = '@Model.zemelapis_platuma';
 
-    var saveLat = 0;
-    var saveLng = 0;
+    var saveLat = '@Model.zemelapis_ilguma';
+    var saveLng = '@Model.zemelapis_platuma';
 
     // calling map
     const map = L.map("map", config).setView([lat, lng], zoom);
-
     // Used to load and display tile layers on the map
     // Most tile servers require attribution, which you can set under `Layer`
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
@@ -121,7 +130,6 @@
 
     console.log(saveLat);
     console.log(saveLng);
-
     function saveData() {
 
         console.log(saveLat);
@@ -157,6 +165,7 @@
         marker.on("dragend", dragedMaker);
     }
 
+
     const buttonRemove =
         '<button type="button" class="remove">Ištrinti</button>';
 
@@ -180,4 +189,7 @@
         markerPlace.textContent = `Pakeista pozicija: ${this.getLatLng().lat}, ${this.getLatLng().lng
             }`;
     }
+
+    var main = L.marker(['@Model.zemelapis_ilguma', '@Model.zemelapis_platuma']).addTo(map).bindPopup(buttonRemove);
+    main.on("popupopen", removeMarker);
 </script>
