@@ -7,10 +7,43 @@
 <script src="~/Themes/ckeditor/ckeditor.js"></script>
 <h2>Atnaujinti informaciją apie seniūnyja</h2>
 
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css"
+      integrity="sha512-hoalWLoI8r4UszCkZ5kL8vayOGVae1oxXe/2A4AO6J9+580uKHDO3JdHb7NzwwzK5xr/Fs0W40kiNHxM9vyTtQ=="
+      crossorigin="" />
+
+<script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js"
+        integrity="sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ=="
+        crossorigin=""></script>
+
+<style>
+    #map {
+        height: 580px;
+    }
+
+    .marker-position {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        z-index: 999;
+        padding: 10px;
+        font-weight: 700;
+        background-color: #fff;
+    }
+
+    .mapStyle {
+        position: relative;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+        min-height: 0;
+        margin: 0;
+        padding: 0;
+        background-color: #f1f1f1;
+    }
+</style>
+
 @using (Html.BeginForm("AtnaujintiInfoSeniunija", "Admin"))
 {
     @Html.AntiForgeryToken()
-    
+
 <div class="form-horizontal">
     <hr />
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
@@ -32,7 +65,13 @@
         </div>
     </div>
 
-    <div class="form-group">
+    <div class="mapStyle">
+        <div class="marker-position">Paspauskite ant žemėlapio</div>
+        <div id="map"></div>
+    </div>
+    <button onclick="saveData()" class="btn btn-success" type="button">Patvirtinti lokaciją</button>
+
+    <div style="margin-top:30px;" class="form-group">
         <div class="col-md-offset-2 col-md-10">
             <input type="submit" value="Atnaujinti" class="btn btn-default" />
         </div>
@@ -41,5 +80,104 @@
 }
 
 <div>
-    @Html.ActionLink("Atgal", "AdminValdymas","Vartotojas")
+    @Html.ActionLink("Atgal", "AdminValdymas", "Vartotojas")
 </div>
+
+
+<script>
+
+    var arGaliPrideti = true;
+    /* eslint-disable no-undef */
+    /**
+     * add move and delete marker
+     */
+
+    // config map
+    let config = {
+        minZoom: 3,
+        maxZoom: 18,
+    };
+    // magnification with which the map will start
+    const zoom = 18;
+    // co-ordinates
+    const lat = 52.22977;
+    const lng = 21.01178;
+
+    var saveLat = 0;
+    var saveLng = 0;
+
+    // calling map
+    const map = L.map("map", config).setView([lat, lng], zoom);
+
+    // Used to load and display tile layers on the map
+    // Most tile servers require attribution, which you can set under `Layer`
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        attribution:
+            '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    }).addTo(map);
+
+    // add marker on click
+    map.on("click", addMarker);
+
+    console.log(saveLat);
+    console.log(saveLng);
+
+    function saveData() {
+
+        console.log(saveLat);
+        console.log(saveLng);
+
+        $.post("/Admin/IsaugotiLokacija", { x: saveLat, y: saveLng});
+    }
+
+    function addMarker(e) {
+        // Add marker to map at click location
+        if (arGaliPrideti == false) {
+            const markerPlace = document.querySelector(".marker-position");
+            markerPlace.textContent = `Gali būti tik vienas pridėtas markeris vienu metu`;
+            return;
+        } else {
+            arGaliPrideti = false;
+        }
+        saveLat = e.latlng.lat;
+        saveLng = e.latlng.lng;
+        const markerPlace = document.querySelector(".marker-position");
+        markerPlace.textContent = `Naujas markeris: ${e.latlng.lat}, ${e.latlng.lng}`;
+
+        const marker = new L.marker(e.latlng, {
+            draggable: true,
+        })
+            .addTo(map)
+            .bindPopup(buttonRemove);
+
+        // event remove marker
+        marker.on("popupopen", removeMarker);
+
+        // event draged marker
+        marker.on("dragend", dragedMaker);
+    }
+
+    const buttonRemove =
+        '<button type="button" class="remove">Ištrinti</button>';
+
+    const markerPlace = document.querySelector(".marker-position");
+
+    // remove marker
+    function removeMarker() {
+        const marker = this;
+        const btn = document.querySelector(".remove");
+        btn.addEventListener("click", function () {
+            markerPlace.textContent = "Markeris ištrintas";
+            map.removeLayer(marker);
+            arGaliPrideti = true;
+            saveLat = 0;
+            saveLng = 0;
+        });
+    }
+
+    // draged
+    function dragedMaker() {
+        markerPlace.textContent = `Pakeista pozicija: ${this.getLatLng().lat}, ${this.getLatLng().lng
+            }`;
+    }
+</script>
