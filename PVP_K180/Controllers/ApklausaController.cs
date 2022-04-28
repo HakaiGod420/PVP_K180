@@ -88,14 +88,14 @@ namespace PVP_K180.Controllers
         [HttpGet]
         public ActionResult DalyvautiApklausoje()
         {
-            if (Session["UserID"] == null)
-            {
-                return RedirectToAction("Index", "Home");
-            }
             ApklausosAtsakymai apklausosAtsakymai =  new ApklausosAtsakymai();
             int activeQuestioner = apklausa_Repos.Gauti_Aktyvia_Apklausa();
             apklausosAtsakymai.apklausa = apklausa_Repos.Gauti_Apklausa(activeQuestioner);
             apklausosAtsakymai.klausimai = apklausa_Repos.GautiKlausimus(activeQuestioner);
+            if(Convert.ToString(Session["UserID"]) == "")
+            {
+                return View(apklausosAtsakymai);
+            }
             var checkIfAnswered = apklausa_Repos.Patikrinti_Ar_Atsake(Convert.ToInt32(Session["UserID"]), activeQuestioner);
             List<string> atsakymai = new List<string>();
             

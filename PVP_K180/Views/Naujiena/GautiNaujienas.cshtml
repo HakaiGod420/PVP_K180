@@ -3,24 +3,7 @@
 @{
     ViewBag.Title = "Naujienų sąrašas";
 }
-<style>
-table, th, td, tr {
-  border: 1px inset black;
-  border-collapse: collapse;
-  padding-top: 10px;
-  padding-bottom: 10px;
-  padding-left: 5px;
-}
-</style>
-
-<style>
-table {
-  width: 100%;
-  max-width: 100%;
-  margin-bottom: 20px; 
-
-}
-</style>
+@Styles.Render("~/Styles/tableStyle.css")
 
 <h2>Naujienų sąrašas</h2>
 
@@ -28,49 +11,52 @@ table {
     @Html.ActionLink("Sukurti naujieną", "NaujienosKurimas")
 </p>
 
-<table >
-
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.id_Naujiena)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.pavadinimas)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.naujienos_sukurimo_data)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.naujienos_kurejo_ID)
-        </th>
-        <th></th>
-    </tr>
-
-    @foreach (var item in Model)
-    {
+<table class="table-fill">
+    <thead>
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.id_Naujiena)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.pavadinimas)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.naujienos_sukurimo_data)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.naujienos_kurejo_ID)
-            </td>
-            <td>
-                @Html.ActionLink("Redaguoti", "RedaguotiNaujiena", new { id = item.id_Naujiena }) |
-                @Html.ActionLink("Pašalinti", "TrintiNaujiena", new { id = item.id_Naujiena }) |
-                @Html.ActionLink("Pridėti nuotraukų", "PridetiNuotrauku", new { id = item.id_Naujiena }) |
-                @Html.ActionLink("Nuotraukos", "GautiNuotraukas", new { id = item.id_Naujiena })
-            </td>
+            <th class="text-left">
+                @Html.DisplayNameFor(model => model.id_Naujiena)
+            </th>
+            <th class="text-left">
+                @Html.DisplayNameFor(model => model.pavadinimas)
+            </th>
+            <th class="text-left">
+                @Html.DisplayNameFor(model => model.naujienos_sukurimo_data)
+            </th>
+            <th class="text-left">
+                @Html.DisplayNameFor(model => model.naujienos_kurejo_ID)
+            </th>
+            <th>Funkcijos</th>
         </tr>
-    }
+    </thead>
 
+
+    <tbody class="table-hover">
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td class="text-left">
+                    @Html.DisplayFor(modelItem => item.id_Naujiena)
+                </td>
+                <td class="text-left">
+                    @Html.DisplayFor(modelItem => item.pavadinimas)
+                </td>
+                <td class="text-left">
+                    @Html.DisplayFor(modelItem => item.naujienos_sukurimo_data)
+                </td>
+                <td class="text-left">
+                    @Html.DisplayFor(modelItem => item.naujienos_kurejo_ID)
+                </td>
+                <td class="text-left">
+                    @Html.ActionLink("Redaguoti", "RedaguotiNaujiena", new { id = item.id_Naujiena }) |
+                    @Html.ActionLink("Pašalinti", "TrintiNaujiena", new { id = item.id_Naujiena }) |
+                    @Html.ActionLink("Pridėti nuotraukų", "PridetiNuotrauku", new { id = item.id_Naujiena }) |
+                    @Html.ActionLink("Nuotraukos", "GautiNuotraukas", new { id = item.id_Naujiena })
+                </td>
+            </tr>
+        }
+    </tbody>
 </table>
 <div>
-    @Html.ActionLink("Atgal", "AdminValdymas", "Vartotojas" )
+    @Html.ActionLink("Atgal", "AdminValdymas", "Vartotojas")
 </div>

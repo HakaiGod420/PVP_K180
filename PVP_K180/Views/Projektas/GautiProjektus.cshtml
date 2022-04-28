@@ -5,58 +5,64 @@
 }
 
 <h2>Esami projektai</h2>
-
+@Styles.Render("~/Styles/tableStyle.css")
 <p>
     @Html.ActionLink("Sukurti naują projektą", "ProjektoKurimas")
 </p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.id_Projektas)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.pavadinimas)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.aprasymas)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.busena)
-        </th>
-        <th></th>
-    </tr>
+<table class="table-fill">
+    <thead>
+        <tr>
+            <th class="text-left">
+                @Html.DisplayNameFor(model => model.id_Projektas)
+            </th>
+            <th >
+                @Html.DisplayNameFor(model => model.pavadinimas)
+            </th>
+            <th class="text-left">
+                @Html.DisplayNameFor(model => model.aprasymas)
+            </th>
+            <th class="text-left">
+                @Html.DisplayNameFor(model => model.busena)
+            </th>
+            <th>Funckijos</th>
+        </tr>
+    </thead>
 
-@foreach (var item in Model) {
-<tr>
-    <td>
-        @Html.DisplayFor(modelItem => item.id_Projektas)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.pavadinimas)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.aprasymas)
-    </td>
-    <td>
-        @if (item.busena == 1)
+    <tbody class="table-hover">
+        @foreach (var item in Model)
         {
-            @Html.DisplayName("Bus vykdomas")
+            <tr>
+                <td class="text-left">
+                    @Html.DisplayFor(modelItem => item.id_Projektas)
+                </td>
+                <td >
+                    @Html.DisplayFor(modelItem => item.pavadinimas)
+                </td>
+                <td class="text-left">
+                    @Html.DisplayFor(modelItem => item.aprasymas)
+                </td>
+                <td class="text-left">
+                    @if (item.busena == 1)
+                    {
+                        @Html.DisplayName("Bus vykdomas")
+                    }
+                    else if (item.busena == 2)
+                    {
+                        @Html.DisplayName("Įvykdytas")
+                    }
+                    else if (item.busena == 3)
+                    {
+                        @Html.DisplayName("Vykdomas")
+                    }
+                </td>
+                <td class="text-left">
+                    @Html.ActionLink("Redaguoti", "RedaguotiProjekta", new { id = item.id_Projektas }) |
+                    @Html.ActionLink("Pašalinti", "TrintiProjekta", new { id = item.id_Projektas }) |
+                    @Html.ActionLink("Rašyti komentarą", "Komentarai", new { id = item.id_Projektas })
+                </td>
+            </tr>
         }
-        else if (item.busena == 2)
-        {
-            @Html.DisplayName("Įvykdytas")
-        }
-        else if (item.busena == 3)
-        {
-            @Html.DisplayName("Vykdomas")
-        }
-    </td>
-    <td>
-        @Html.ActionLink("Redaguoti", "RedaguotiProjekta", new { id = item.id_Projektas }) |
-        @Html.ActionLink("Pašalinti", "TrintiProjekta", new { id = item.id_Projektas }) |
-        @Html.ActionLink("Rašyti komentarą", "Komentarai", new { id = item.id_Projektas })
-    </td>
-</tr>
-}
+    </tbody>
+    
 
 </table>
