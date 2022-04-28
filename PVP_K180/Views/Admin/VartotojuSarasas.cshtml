@@ -5,65 +5,70 @@
 }
 
 <h2>Esamų vartotojų sąrašas</h2>
-
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.slapyvardis)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.el_pastas)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.gimimo_data)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.vardas)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.pavarde)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.tel_nr)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.sukurimo_data)
-        </th>
-        <th></th>
-    </tr>
-
-    @foreach (var item in Model)
-    {
+@Styles.Render("~/Styles/tableStyle.css")
+<table class="table-fill">
+    <thead>
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.slapyvardis)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.el_pastas)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.gimimo_data)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.vardas)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.pavarde)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.tel_nr)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.sukurimo_data)
-            </td>
-            <td>
-                <a href="@(@Url.Action("ProfilioPerziura", "Vartotojas", new { id = item.id_Vartotojas}))">Profilis</a> |
-                @Html.ActionLink("Trinti", "TrintiVartotoja", new { id = item.id_Vartotojas, onclick = "return DeleteConfirm()" }) |
-                <a href="@(@Url.Action("KeistiBusena", "Admin", new { id = item.id_Vartotojas}))">Būsenos keitimas</a> |
-                <a href="@(@Url.Action("KeistiROle", "Admin", new { id = item.id_Vartotojas}))">Rolės keitimas</a>
-            </td>
+            <th class="text-left">
+                @Html.DisplayNameFor(model => model.slapyvardis)
+            </th>
+            <th class="text-left">
+                @Html.DisplayNameFor(model => model.el_pastas)
+            </th>
+            <th class="text-left">
+                @Html.DisplayNameFor(model => model.gimimo_data)
+            </th>
+            <th class="text-left">
+                @Html.DisplayNameFor(model => model.vardas)
+            </th>
+            <th class="text-left">
+                @Html.DisplayNameFor(model => model.pavarde)
+            </th>
+            <th class="text-left">
+                @Html.DisplayNameFor(model => model.tel_nr)
+            </th>
+            <th class="text-left">
+                @Html.DisplayNameFor(model => model.sukurimo_data)
+            </th>
+            <th>Funkcijos</th>
         </tr>
-    }
+    </thead>
+   
+    <tbody class="table-hover">
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td class="text-left">
+                    @Html.DisplayFor(modelItem => item.slapyvardis)
+                </td>
+                <td class="text-left">
+                    @Html.DisplayFor(modelItem => item.el_pastas)
+                </td>
+                <td class="text-left">
+                    @Html.DisplayFor(modelItem => item.gimimo_data)
+                </td>
+                <td class="text-left">
+                    @Html.DisplayFor(modelItem => item.vardas)
+                </td>
+                <td class="text-left">
+                    @Html.DisplayFor(modelItem => item.pavarde)
+                </td>
+                <td class="text-left">
+                    @Html.DisplayFor(modelItem => item.tel_nr)
+                </td>
+                <td class="text-left">
+                    @Html.DisplayFor(modelItem => item.sukurimo_data)
+                </td>
+                <td class="text-left">
+                    <a href="@(@Url.Action("ProfilioPerziura", "Vartotojas", new { id = item.id_Vartotojas}))">Profilis</a> |
+                    @Html.ActionLink("Trinti", "TrintiVartotoja", new { id = item.id_Vartotojas, onclick = "return DeleteConfirm()" }) |
+                    <a href="@(@Url.Action("KeistiBusena", "Admin", new { id = item.id_Vartotojas}))">Būsenos keitimas</a> |
+                    <a href="@(@Url.Action("KeistiROle", "Admin", new { id = item.id_Vartotojas}))">Rolės keitimas</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+   
 
 </table>
 
