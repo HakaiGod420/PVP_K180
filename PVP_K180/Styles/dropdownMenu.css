@@ -1,121 +1,122 @@
-﻿@import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700&display=swap');
-
-.adminControll {
-    margin: 20px;
-    padding: 0;
-    box-sizing: border-box;
-    user-select: none;
-    text-transform: uppercase;
-    font-family: 'Poppins', sans-serif
+﻿
+ul {
+    list-style-type: none;
 }
 
-nav {
-    position: relative;
-    top: 20%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: #1b1b1b;
-    width: 400px;
-    line-height: 40px;
-    padding: 8px 25px;
-    border-radius: 5px
+a {
+    color: #b63b4d;
+    text-decoration: none;
 }
 
-    nav label {
-        color: white;
-        font-size: 15px;
-        font-weight: 300;
-        display: block;
-        cursor: pointer
+/** =======================
+ * Contenedor Principal
+ ===========================*/
+
+
+h1 {
+    color: #FFF;
+    font-size: 24px;
+    font-weight: 400;
+    text-align: center;
+    margin-top: 80px;
+}
+
+    h1 a {
+        color: #c12c42;
+        font-size: 16px;
     }
 
-.button span {
-    float: right;
-    line-height: 40px;
-    transition: 0.5s
-}
-
-    .button span.rotate {
-        transform: rotate(-180deg)
-    }
-
-nav ul {
-    position: absolute;
-    background: #1b1b1b;
-    list-style: none;
-    top: 66px;
-    left: 0;
+.accordion {
     width: 100%;
-    border-radius: 5px;
-    display: none
+    max-width: 400px;
+    margin: 30px 0px 20px -40px;
+    background: #FFF;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 10px;
+    overflow: hidden;
+
 }
 
-[id^=btn]:checked + ul {
-    display: block
-}
-
-nav .menu:before {
-    position: absolute;
-    content: '';
-    height: 13px;
-    width: 13px;
-    background: #1b1b1b;
-    right: 24px;
-    top: -6px;
-    transform: rotate(45deg);
-    z-index: -1
-}
-
-nav ul li {
-    line-height: 40px;
-    padding: 8px 20px;
-    cursor: pointer;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.2)
-}
-
-    nav ul li label {
-        font-size: 13px
+    .accordion .link {
+        cursor: pointer;
+        display: block;
+        padding: 15px 15px 15px 42px;
+        color: black;
+        font-size: 14px;
+        font-weight: 700;
+        border-bottom: 1px solid #CCC;
+        position: relative;
+        -webkit-transition: all 0.4s ease;
+        -o-transition: all 0.4s ease;
+        transition: all 0.4s ease;
+        background-color: #e5e5e5;
     }
 
-    nav ul li a {
-        color: white;
+    .accordion li:last-child .link {
+        border-bottom: 0;
+    }
+
+    .accordion li i {
+        position: absolute;
+        top: 16px;
+        left: 12px;
+        font-size: 18px;
+        color: #595959;
+        -webkit-transition: all 0.4s ease;
+        -o-transition: all 0.4s ease;
+        transition: all 0.4s ease;
+    }
+
+        .accordion li i.fa-chevron-down {
+            right: 12px;
+            left: auto;
+            font-size: 16px;
+        }
+
+    .accordion li.open .link {
+        color: #b63b4d;
+    }
+
+    .accordion li.open i {
+        color: #b63b4d;
+    }
+
+        .accordion li.open i.fa-chevron-down {
+            -webkit-transform: rotate(180deg);
+            -ms-transform: rotate(180deg);
+            -o-transform: rotate(180deg);
+            transform: rotate(180deg);
+        }
+
+/**
+ * Submenu
+ -----------------------------*/
+
+
+.submenu {
+    display: none;
+    background: #444359;
+    font-size: 14px;
+}
+
+    .submenu li {
+        border-bottom: 1px solid #4b4a5e;
+        margin-left:-40px;
+    }
+
+    .submenu a {
+        display: block;
         text-decoration: none;
-        font-size: 13px;
-        display: block
+        color: #d9d9d9;
+        padding: 12px;
+        padding-left: 42px;
+        -webkit-transition: all 0.25s ease;
+        -o-transition: all 0.25s ease;
+        transition: all 0.25s ease;
     }
 
-        nav ul li a:hover,
-        nav ul li label:hover {
-            color: red
+        .submenu a:hover {
+            background-color: lightgray;
+            color: black;
         }
-
-nav ul ul {
-    position: static
-}
-
-    nav ul ul li {
-        line-height: 30px;
-        padding-left: 30px;
-        border-bottom: none
-    }
-
-        nav ul ul li a {
-            color: #e6e6e6;
-            font-size: 13px
-        }
-
-nav ul li span {
-    font-size: 16px;
-    float: right;
-    margin-top: 13px;
-    padding: 0 10px;
-    transition: 0.5s
-}
-
-    nav ul li span.rotate {
-        transform: rotate(-180deg)
-    }
-
-input {
-    display: none
-}
