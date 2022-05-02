@@ -67,12 +67,12 @@
     // magnification with which the map will start
     const zoom = 15;
     // co-ordinates
-    const lat = '@Model.zemelapis_ilguma';
-    const lng = '@Model.zemelapis_platuma';
+    const lat = '@Model.zemelapis_ilguma'.replace(",", ".");
+    const lng = '@Model.zemelapis_platuma'.replace(",", ".");
 
     // calling map
     const map = L.map("map", config).setView([lat, lng], zoom);
-    var main = L.marker(['@Model.zemelapis_ilguma', '@Model.zemelapis_platuma']).addTo(map).bindPopup('@Model.seniunyjos_pavadinimas');
+    var main = L.marker([lat, lng]).addTo(map).bindPopup('@Model.seniunyjos_pavadinimas');
 
     // Used to load and display tile layers on the map
     // Most tile servers require attribution, which you can set under `Layer`
