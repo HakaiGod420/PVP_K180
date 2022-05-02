@@ -110,8 +110,8 @@
     // magnification with which the map will start
     const zoom = 18;
     // co-ordinates
-    const lat = '@Model.zemelapis_ilguma';
-    const lng = '@Model.zemelapis_platuma';
+    const lat = '@Model.zemelapis_ilguma'.replace(",", ".");
+    const lng = '@Model.zemelapis_platuma'.replace(",", ".");
 
     var saveLat = '@Model.zemelapis_ilguma';
     var saveLng = '@Model.zemelapis_platuma';
@@ -128,13 +128,9 @@
     // add marker on click
     map.on("click", addMarker);
 
-    console.log(saveLat);
-    console.log(saveLng);
     function saveData() {
 
-        console.log(saveLat);
         console.log(saveLng);
-
         $.post("/Admin/IsaugotiLokacija", { x: saveLat, y: saveLng});
     }
 
@@ -190,6 +186,6 @@
             }`;
     }
 
-    var main = L.marker(['@Model.zemelapis_ilguma', '@Model.zemelapis_platuma']).addTo(map).bindPopup(buttonRemove);
+    var main = L.marker([lat, lng]).addTo(map).bindPopup(buttonRemove);
     main.on("popupopen", removeMarker);
 </script>

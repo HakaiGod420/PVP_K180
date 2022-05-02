@@ -50,6 +50,13 @@
             </ul>
         </li>
         <li>
+            <div class="link"><i class="fa-solid fa-calendar-days"></i>Renginių valdymas<i class="fa fa-chevron-down"></i></div>
+            <ul class="submenu">
+                <li><a href="@(@Url.Action("RenginioKurimas", "Renginys"))">Kurti naują renginį</a></li>
+                <li><a href="@(@Url.Action("GautiRenginius", "Renginys"))">Renginių sąrašas</a></li>
+            </ul>
+        </li>
+        <li>
             <div class="link"><i class="fa-solid fa-users"></i>Vartotojų valdymas<i class="fa fa-chevron-down"></i></div>
             <ul class="submenu">
                 <li><a href="@(@Url.Action("VartotojuSarasas", "Admin"))">Žiūrėti vartotojų sąrašą</a></li>
