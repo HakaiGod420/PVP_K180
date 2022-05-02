@@ -1,0 +1,170 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Data;
+using System.Linq;
+using System.Web;
+using MySql.Data.MySqlClient;
+using PVP_K180.Models;
+
+namespace PVP_K180.Repos
+{
+    public class Renginys_Repos
+    {
+        public bool Sukurti_Rengini(Renginys renginys)
+        {
+            try
+            {
+                string conn = ConfigurationManager.ConnectionStrings["MysqlConnection"].ConnectionString;
+                MySqlConnection mySqlConnection = new MySqlConnection(conn);
+                string sqlquery = "INSERT INTO `Renginys`(`pavadinimas`, `aprasymas`, `reitingas`, `paskelbimo_data`, `pabaigos_data`, `zemelapis_ilguma`, `zemelapis_platuma`, `renginio_busena`, `fk_Vartotojasid_Vartotojas`)" +
+                    " VALUES (?pavadinimas, ?aprasymas, ?reitingas, ?paskelbimo_data, ?pabaigos_data, ?zemelapis_ilguma, ?zemelapis_platuma, ?renginio_busena, ?fk_Vartotojasid_Vartotojas)";
+                MySqlCommand mySqlCommand = new MySqlCommand(sqlquery, mySqlConnection);
+                mySqlCommand.Parameters.Add("?pavadinimas", MySqlDbType.VarChar).Value = renginys.pavadinimas;
+                mySqlCommand.Parameters.Add("?aprasymas", MySqlDbType.VarChar).Value = renginys.aprasymas;
+                mySqlCommand.Parameters.Add("?reitingas", MySqlDbType.Int32).Value = renginys.reitingas;
+                mySqlCommand.Parameters.Add("?paskelbimo_data", MySqlDbType.DateTime).Value = renginys.paskelbimo_data;
+                mySqlCommand.Parameters.Add("?pabaigos_data", MySqlDbType.DateTime).Value = renginys.pabaigos_data;
+                mySqlCommand.Parameters.Add("?zemelapis_ilguma", MySqlDbType.Float).Value = renginys.zemelapis_ilguma;
+                mySqlCommand.Parameters.Add("?zemelapis_platuma", MySqlDbType.Float).Value = renginys.zemelapis_platuma;
+                mySqlCommand.Parameters.Add("?renginio_busena", MySqlDbType.Int32).Value = renginys.renginio_busena;
+                mySqlCommand.Parameters.Add("?fk_Vartotojasid_Vartotojas", MySqlDbType.Int32).Value = renginys.vartotojas_id;
+                mySqlConnection.Open();
+                mySqlCommand.ExecuteNonQuery();
+                mySqlConnection.Close();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
+        public Renginys Gauti_Rengini(int id)
+        {
+            Renginys renginys = new Renginys();
+            string conn = ConfigurationManager.ConnectionStrings["MysqlConnection"].ConnectionString;
+            MySqlConnection mySqlConnection = new MySqlConnection(conn);
+            string sqlquery = "select * from `Renginys` where id_Renginys=" + id;
+            MySqlCommand mySqlCommand = new MySqlCommand(sqlquery, mySqlConnection);
+            mySqlConnection.Open();
+            MySqlDataAdapter mda = new MySqlDataAdapter(mySqlCommand);
+            DataTable dt = new DataTable();
+            mda.Fill(dt);
+            mySqlConnection.Close();
+
+            foreach (DataRow item in dt.Rows)
+            {
+                {
+                    renginys.id_Renginys = Convert.ToInt32(item["id_Renginys"]);
+                    renginys.pavadinimas = Convert.ToString(item["pavadinimas"]);
+                    renginys.aprasymas = Convert.ToString(item["aprasymas"]);
+                    renginys.reitingas = Convert.ToInt32(item["reitingas"]);
+                    renginys.paskelbimo_data = Convert.ToDateTime(item["paskelbimo_data"]);
+                    renginys.pabaigos_data = Convert.ToDateTime(item["pabaigos_data"]);
+                    renginys.zemelapis_ilguma = Convert.ToInt64(item["zemelapis_ilguma"]);
+                    renginys.zemelapis_platuma = Convert.ToInt64(item["zemelapis_platuma"]);
+                    renginys.renginio_busena = Convert.ToInt32(item["renginio_busena"]);
+                }
+            }
+            return renginys;
+        }
+
+        public List<Renginys> Gauti_Renginius()
+        {
+            List<Renginys> renginys = new List<Renginys>();
+            string conn = ConfigurationManager.ConnectionStrings["MysqlConnection"].ConnectionString;
+            MySqlConnection mySqlConnection = new MySqlConnection(conn);
+            string sqlquery = "select * from " + "Renginys";
+            MySqlCommand mySqlCommand = new MySqlCommand(sqlquery, mySqlConnection);
+            mySqlConnection.Open();
+            MySqlDataAdapter mda = new MySqlDataAdapter(mySqlCommand);
+            DataTable dt = new DataTable();
+            mda.Fill(dt);
+            mySqlConnection.Close();
+
+            foreach (DataRow item in dt.Rows)
+            {
+                renginys.Add(new Renginys
+                {
+                    id_Renginys = Convert.ToInt32(item["id_Renginys"]),
+                    pavadinimas = Convert.ToString(item["pavadinimas"]),
+                    aprasymas = Convert.ToString(item["aprasymas"]),
+                    reitingas = Convert.ToInt32(item["reitingas"]),
+                    paskelbimo_data = Convert.ToDateTime(item["paskelbimo_data"]),
+                    pabaigos_data = Convert.ToDateTime(item["pabaigos_data"]),
+                    zemelapis_ilguma = Convert.ToInt64(item["zemelapis_ilguma"]),
+                    zemelapis_platuma = Convert.ToInt64(item["zemelapis_platuma"]),
+                    renginio_busena = Convert.ToInt32(item["renginio_busena"]),
+                    vartotojas_id = Convert.ToInt32(item["fk_Vartotojasid_Vartotojas"]),
+                }); ;
+            }
+            return renginys;
+        }
+
+        public bool Redaguoti_Rengini(Renginys renginys)
+        {
+            try
+            {
+                string conn = ConfigurationManager.ConnectionStrings["MysqlConnection"].ConnectionString;
+                MySqlConnection mySqlConnection = new MySqlConnection(conn);
+                string sqlquery = "UPDATE `Renginys` SET `pavadinimas`=?pavadinimas,`aprasymas`=?aprasymas,`paskelbimo_data`=?paskelbimo_data,`pabaigos_data`=?pabaigos_data,`zemelapis_ilguma`=?zemelapis_ilguma,`zemelapis_platuma`=?zemelapis_platuma,`renginio_busena`=?renginio_busena,`fk_Vartotojasid_Vartotojas`=?fk_Vartotojasid_Vartotojas WHERE id_Renginys=" + renginys.id_Renginys;
+                MySqlCommand mySqlCommand = new MySqlCommand(sqlquery, mySqlConnection);
+                mySqlCommand.Parameters.Add("?pavadinimas", MySqlDbType.Text).Value = renginys.pavadinimas;
+                mySqlCommand.Parameters.Add("?aprasymas", MySqlDbType.Text).Value = renginys.aprasymas;
+                mySqlCommand.Parameters.Add("?paskelbimo_data", MySqlDbType.DateTime).Value = renginys.paskelbimo_data;
+                mySqlCommand.Parameters.Add("?pabaigos_data", MySqlDbType.DateTime).Value = renginys.pabaigos_data;
+                mySqlCommand.Parameters.Add("?zemelapis_ilguma", MySqlDbType.Float).Value = renginys.zemelapis_ilguma;
+                mySqlCommand.Parameters.Add("?zemelapis_platuma", MySqlDbType.Float).Value = renginys.zemelapis_platuma;
+                mySqlCommand.Parameters.Add("?renginio_busena", MySqlDbType.Int32).Value = renginys.renginio_busena;
+                mySqlCommand.Parameters.Add("?fk_Vartotojasid_Vartotojas", MySqlDbType.Int32).Value = renginys.vartotojas_id;
+                mySqlConnection.Open();
+                mySqlCommand.ExecuteNonQuery();
+                mySqlConnection.Close();
+                return true;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return false;
+            }
+        }
+
+        public List<Renginys> RastiRenginius(Renginys renginys)
+        {
+            string sqlquery = "";
+            List <Renginys> rasti_renginiai = new List<Renginys>();
+            string conn = ConfigurationManager.ConnectionStrings["MysqlConnection"].ConnectionString;
+            MySqlConnection mySqlConnection = new MySqlConnection(conn);
+            if (renginys.renginio_busena != 0)
+            {
+                sqlquery = "select * from `Renginys` where renginio_busena=" + renginys.renginio_busena;
+            }
+            sqlquery = "select * from " + "Renginys";
+            MySqlCommand mySqlCommand = new MySqlCommand(sqlquery, mySqlConnection);
+            mySqlConnection.Open();
+            MySqlDataAdapter mda = new MySqlDataAdapter(mySqlCommand);
+            DataTable dt = new DataTable();
+            mda.Fill(dt);
+            mySqlConnection.Close();
+
+            foreach (DataRow item in dt.Rows)
+            {
+                rasti_renginiai.Add(new Renginys
+                {
+                    id_Renginys = Convert.ToInt32(item["id_Renginys"]),
+                    pavadinimas = Convert.ToString(item["pavadinimas"]),
+                    aprasymas = Convert.ToString(item["aprasymas"]),
+                    reitingas = Convert.ToInt32(item["reitingas"]),
+                    paskelbimo_data = Convert.ToDateTime(item["paskelbimo_data"]),
+                    pabaigos_data = Convert.ToDateTime(item["pabaigos_data"]),
+                    zemelapis_ilguma = Convert.ToInt64(item["zemelapis_ilguma"]),
+                    zemelapis_platuma = Convert.ToInt64(item["zemelapis_platuma"]),
+                    renginio_busena = Convert.ToInt32(item["renginio_busena"]),
+                    vartotojas_id = Convert.ToInt32(item["fk_Vartotojasid_Vartotojas"]),
+                }); ;
+            }
+            return rasti_renginiai;
+        }
+    }
+}

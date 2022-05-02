@@ -1,0 +1,101 @@
+﻿@model IEnumerable<PVP_K180.Models.Renginys>
+
+@{
+    ViewBag.Title = "GautiRenginius";
+}
+
+<h2>GautiRenginius</h2>
+
+<p>
+    @Html.ActionLink("Kurti naują renginį", "RenginioKurimas")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.id_Renginys)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.pavadinimas)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.aprasymas)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.reitingas)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.paskelbimo_data)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.pabaigos_data)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.zemelapis_ilguma)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.zemelapis_platuma)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.renginio_busena)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.vartotojas_id)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.id_Renginys)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.pavadinimas)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.aprasymas)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.reitingas)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.paskelbimo_data)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.pabaigos_data)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.zemelapis_ilguma)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.zemelapis_platuma)
+            </td>
+            <td>
+                @if (item.renginio_busena == 1)
+                {
+                    @Html.DisplayName("Atšauktas")
+                }
+                else if (item.renginio_busena == 2)
+                {
+                    @Html.DisplayName("Pasibaigęs")
+                }
+                else if (item.renginio_busena == 3)
+                {
+                    @Html.DisplayName("Neįvykęs")
+                }
+                else if (item.renginio_busena == 4)
+                {
+                    @Html.DisplayName("Būsimas")
+                }
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.vartotojas_id)
+            </td>
+            <td>
+                @Html.ActionLink("Redaguoti", "RedaguotiRengini", new { id = item.id_Renginys })
+            </td>
+        </tr>
+    }
+
+</table>
