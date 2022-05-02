@@ -180,6 +180,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\NaujienaController.cs" />
     <Compile Include="Controllers\ProjektasController.cs" />
+    <Compile Include="Controllers\RenginysController.cs" />
     <Compile Include="Controllers\VartotojasController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -195,6 +196,8 @@
     <Compile Include="Models\Naujiena.cs" />
     <Compile Include="Models\Nuotrauka.cs" />
     <Compile Include="Models\Projektas.cs" />
+    <Compile Include="Models\RastiRengini.cs" />
+    <Compile Include="Models\Renginys.cs" />
     <Compile Include="Models\Role.cs" />
     <Compile Include="Models\Seniunija.cs" />
     <Compile Include="Models\Varianto_Pasirinkimas.cs" />
@@ -220,6 +223,7 @@
     <Compile Include="Repos\Naujiena_Repos.cs" />
     <Compile Include="Repos\Nuotrauka_Repos.cs" />
     <Compile Include="Repos\Projektas_Repos.cs" />
+    <Compile Include="Repos\Renginys_Repos.cs" />
     <Compile Include="Repos\Role_Repos.cs" />
     <Compile Include="Repos\Seniunija_Repos.cs" />
     <Compile Include="Repos\Vartotojas_Repos.cs" />
@@ -650,6 +654,9 @@
     <Content Include="Views\Vartotojas\AktyvuotiNaujienlaiski.cshtml" />
     <Content Include="Views\Admin\SiustiNaujienlaiski.cshtml" />
     <Content Include="Views\Balsavimas\Rezultatai.cshtml" />
+    <Content Include="Views\Renginys\RenginioKurimas.cshtml" />
+    <Content Include="Views\Renginys\GautiRenginius.cshtml" />
+    <Content Include="Views\Renginys\RedaguotiRengini.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
