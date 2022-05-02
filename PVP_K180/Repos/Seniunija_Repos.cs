@@ -35,7 +35,7 @@ namespace PVP_K180.Repos
                 }
                 else
                 {
-                    seniunija.zemelapis_ilguma = (float)Convert.ToDouble(item["gimimo_Data"]);
+                    seniunija.zemelapis_ilguma = (float)Convert.ToDouble(item["zemelapis_ilguma"]);
                 }
 
                 if (item["zemelapis_platuma"] == DBNull.Value)

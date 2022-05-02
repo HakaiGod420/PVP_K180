@@ -88,14 +88,14 @@ namespace PVP_K180.Controllers
         [HttpGet]
         public ActionResult DalyvautiApklausoje()
         {
-            if (Session["UserID"] == null)
-            {
-                return RedirectToAction("Index", "Home");
-            }
             ApklausosAtsakymai apklausosAtsakymai =  new ApklausosAtsakymai();
             int activeQuestioner = apklausa_Repos.Gauti_Aktyvia_Apklausa();
             apklausosAtsakymai.apklausa = apklausa_Repos.Gauti_Apklausa(activeQuestioner);
             apklausosAtsakymai.klausimai = apklausa_Repos.GautiKlausimus(activeQuestioner);
+            if(Convert.ToString(Session["UserID"]) == "")
+            {
+                return View(apklausosAtsakymai);
+            }
             var checkIfAnswered = apklausa_Repos.Patikrinti_Ar_Atsake(Convert.ToInt32(Session["UserID"]), activeQuestioner);
             List<string> atsakymai = new List<string>();
             
@@ -178,6 +178,28 @@ namespace PVP_K180.Controllers
             Apklausos_Repos apklausos_Repos = new Apklausos_Repos();
             bool flag = apklausos_Repos.Trinti_Apklausa(id);
             return RedirectToAction("ZiuretiApklausas");
+        }
+
+        public ActionResult Rezultatai(int id)
+        {
+            if (Session["UserID"] == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            else if (!Session["Role"].Equals("Administratorius"))
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            Apklausa apklausa = apklausa_Repos.Gauti_Apklausa(id);
+            apklausa.klausimai = apklausa_Repos.GautiKlausimus(id);
+
+            for(var i = 0; i<apklausa.klausimai.Count;i++)
+            {
+                apklausa.klausimai[i].atsakymai = apklausa_Repos.GautiAtsakymus(apklausa.klausimai[i].id_Klausimas);
+            }
+            
+            return View(apklausa);
         }
 
     }

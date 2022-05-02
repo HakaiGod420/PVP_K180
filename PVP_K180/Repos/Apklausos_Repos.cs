@@ -379,6 +379,42 @@ namespace PVP_K180.Repos
             return true;
         }
 
+        public List<Atsakymas> GautiAtsakymus(int klausimoID)
+        {
+            try
+            {
+                List<Atsakymas> atsakymai = new List<Atsakymas>();
+                string conn = ConfigurationManager.ConnectionStrings["MysqlConnection"].ConnectionString;
+                MySqlConnection mySqlConnection = new MySqlConnection(conn);
+                string sqlquery = "SELECT id_Atsakymas,atsakymo_tekstas,fk_Vartotojasid_Vartotojas,fk_Klausimasid_Klausimas, " +
+                    "Vartotojas.slapyvardis FROM `Atsakymas` LEFT JOIN Vartotojas ON Vartotojas.id_Vartotojas = Atsakymas.fk_Vartotojasid_Vartotojas WHERE fk_Klausimasid_Klausimas=" + klausimoID;
+                MySqlCommand mySqlCommand = new MySqlCommand(sqlquery, mySqlConnection);
+                mySqlConnection.Open();
+                MySqlDataAdapter mda = new MySqlDataAdapter(mySqlCommand);
+                DataTable dt = new DataTable();
+                mda.Fill(dt);
+                mySqlConnection.Close();
 
+                foreach (DataRow item in dt.Rows)
+                {
+                    atsakymai.Add(new Atsakymas
+                    {
+
+                        id_Atsakymas = Convert.ToInt32(item["id_Atsakymas"]),
+                        atsakymo_tekstas = Convert.ToString(item["atsakymo_tekstas"]),
+                        fk_Vartotojasid_Varotojas = Convert.ToInt32(item["fk_Vartotojasid_Vartotojas"]),
+                        fk_Klausimasid_Klausimas = Convert.ToInt32(item["fk_Klausimasid_Klausimas"]),
+                        slapyvardis = Convert.ToString(item["slapyvardis"]),
+                    }); ;
+                }
+                return atsakymai;
+            }
+
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
     }
+
 }

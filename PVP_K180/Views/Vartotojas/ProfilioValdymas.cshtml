@@ -3,20 +3,64 @@
     ViewBag.Title = "Profilio valdymas";
 }
 
+@Styles.Render("~/Styles/dropdownMenu.css")
 <h2>Profilio valdymas</h2>
 
-<td style="margin-top:20px">
-    @Html.ActionLink("Redaguoti duomenis", "RedaguotiDuomenys", "Vartotojas")
-</td>
+<script src="https://kit.fontawesome.com/2e7ea6ec96.js" crossorigin="anonymous"></script>
+
+<div>
+    <ul id="accordion" class="accordion">
+        <li>
+            <div class="link"><i class="fa fa-pencil" aria-hidden="true"></i>Redaguoti duomenis<i class="fa fa-chevron-down"></i></div>
+            <ul class="submenu">
+                <li><a href="@(@Url.Action("Atnaujinti_email", "Vartotojas"))">Redaguoti el. paštą</a></li>
+                <li><a href="@(@Url.Action("Atnaujinti_Slaptazodi", "Vartotojas"))">Atnaujinti slaptažodį</a></li>
+                <li><a href="@(@Url.Action("Atnaujinti_Pagrindinius_Duomenis", "Vartotojas"))">Atnaujinti pagrindinius duomenis</a></li>
+                <li><a href="@(@Url.Action("KeistiProfilioNuotrauka", "Vartotojas"))">Atnaujinti profilio nuotrauką</a></li>
+            </ul>
+        </li>
+        <li>
+            <div class="link"><i class="fa fa-newspaper-o" aria-hidden="true"></i>Naujienlaiškis<i class="fa fa-chevron-down"></i></div>
+            <ul class="submenu">
+                <li><a href="@(@Url.Action("AktyvuotiNaujienlaiski", "Vartotojas"))">Naujienlaiškio prenumerata</a></li>   
+            </ul>
+        </li>
+    </ul>
+</div>
+
 <div style="margin-top:20px; padding-top: 20px;">
 
-    <td style="margin-top:20px">
-        @Html.ActionLink("Naujienlaiškio prenumerata", "AktyvuotiNaujienlaiski", "Vartotojas")
-    </td></div>
-    <div style="margin-top:20px; padding-top: 20px;">
+    <p>
+        @Html.ActionLink("Atgal", "Index", "Home")
+    </p>
+</div>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>
+    $(function () {
+        var Accordion = function (el, multiple) {
+            this.el = el || {};
+            this.multiple = multiple || false;
 
-        <p>
-            @Html.ActionLink("Atgal", "Index", "Home")
-        </p>
-    </div>
+            // Variables privadas
+            var links = this.el.find('.link');
+            // Evento
+            links.on('click', { el: this.el, multiple: this.multiple }, this.dropdown)
+        }
 
+        Accordion.prototype.dropdown = function (e) {
+            var $el = e.data.el;
+            $this = $(this),
+                $next = $this.next();
+
+            $next.slideToggle();
+            $this.parent().toggleClass('open');
+
+            if (!e.data.multiple) {
+                $el.find('.submenu').not($next).slideUp().parent().removeClass('open');
+            };
+        }
+
+        var accordion = new Accordion($('#accordion'), false);
+    });
+
+</script>

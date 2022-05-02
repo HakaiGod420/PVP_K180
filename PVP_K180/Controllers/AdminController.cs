@@ -45,10 +45,31 @@ namespace PVP_K180.Controllers
                 return RedirectToAction("Index", "Home");
             }
 
+            Seniunija seniunija2 = seniunija_Repos.Gauti_Seniunija();
+            seniunija.zemelapis_ilguma = seniunija2.zemelapis_ilguma;
+            seniunija.zemelapis_platuma = seniunija2.zemelapis_platuma;
+
+            if (Convert.ToDouble(TempData["SeniunijaLang"]) == 0 || Convert.ToDouble(TempData["SeniunijaLong"]) == 0)
+            {
+                Response.Write("<script type='text/javascript' language='javascript'> alert('Turite patvirtinti teisingą lokaciją')</script>");
+                return View(seniunija);
+            }
+
+            seniunija.zemelapis_ilguma = (float)Convert.ToDouble(TempData["SeniunijaLang"]);
+            seniunija.zemelapis_platuma = (float)Convert.ToDouble(TempData["SeniunijaLong"]);
             seniunija_Repos.AtnaujintiSeniunijosInfo(seniunija);
             Response.Write("<script type='text/javascript' language='javascript'> alert('Informacija yra atnaujinta')</script>");
             return View(seniunija);
         }
+
+        [HttpPost]
+        public void IsaugotiLokacija(float x, float y)
+        {
+            TempData["SeniunijaLang"] = x;
+            TempData["SeniunijaLong"] = y;
+        }
+
+
 
         public ActionResult VartotojuSarasas()
         {
