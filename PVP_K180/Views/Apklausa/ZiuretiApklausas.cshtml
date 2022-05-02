@@ -6,54 +6,64 @@
 
 <h2>Apklausų sąrašas</h2>
 
-
+@Styles.Render("~/Styles/tableStyle.css")
 <p>
     @Html.ActionLink("Sukurti nauja apklausa", "KurtiApklausa")
 </p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.aprasymas)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.dalyviu_skaicius)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.sukurimo_data)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.pabaigos_data)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Sukurejas)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.busenos_pavadinimas)
-        </th>
-        <th></th>
-    </tr>
+<table class="table-fill">
+    <thead>
+        <tr>
+            <th class="text-left">
+                @Html.DisplayNameFor(model => model.aprasymas)
+            </th>
+            <th class="text-left">
+                @Html.DisplayNameFor(model => model.dalyviu_skaicius)
+            </th>
+            <th class="text-left">
+                @Html.DisplayNameFor(model => model.sukurimo_data)
+            </th>
+            <th class="text-left">
+                @Html.DisplayNameFor(model => model.pabaigos_data)
+            </th>
+            <th class="text-left">
+                @Html.DisplayNameFor(model => model.Sukurejas)
+            </th>
+            <th class="text-left">
+                @Html.DisplayNameFor(model => model.busenos_pavadinimas)
+            </th>
+            <th class="text-left">Funkcijos</th>
+        </tr>
+    </thead>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.aprasymas)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.dalyviu_skaicius)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.sukurimo_data)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.pabaigos_data)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Sukurejas)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.busenos_pavadinimas)
-        </td>
-    </tr>
-}
+    <tbody class="table-hover">
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td class="text-left">
+                    @Html.DisplayFor(modelItem => item.aprasymas)
+                </td>
+                <td class="text-left">
+                    @Html.DisplayFor(modelItem => item.dalyviu_skaicius)
+                </td>
+                <td class="text-left">
+                    @Html.DisplayFor(modelItem => item.sukurimo_data)
+                </td>
+                <td class="text-left">
+                    @Html.DisplayFor(modelItem => item.pabaigos_data)
+                </td>
+                <td class="text-left">
+                    @Html.DisplayFor(modelItem => item.Sukurejas)
+                </td>
+                <td class="text-left">
+                    @Html.DisplayFor(modelItem => item.busenos_pavadinimas)
+                </td>
+
+                <td class="text-left">
+                    @Html.ActionLink("Rezultatai", "Rezultatai", new { id = item.id_Apklausa })
+                </td>
+            </tr>
+        }
+    </tbody>
+    
 
 </table>

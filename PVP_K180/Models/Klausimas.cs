@@ -17,5 +17,7 @@ namespace PVP_K180.Models
         public string klausimo_tekstas { get; set; }
 
         public int fk_Apklausa_Apklausa { get; set; }
+
+        public List<Atsakymas> atsakymai { get; set; }
     }
 }
