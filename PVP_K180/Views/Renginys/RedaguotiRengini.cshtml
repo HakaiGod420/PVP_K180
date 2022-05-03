@@ -105,22 +105,6 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.zemelapis_ilguma, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.zemelapis_ilguma, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.zemelapis_ilguma, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.zemelapis_platuma, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.zemelapis_platuma, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.zemelapis_platuma, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
             <div class="col-md-10  col-md-offset-2">
                 @Html.DropDownListFor(model => model.renginio_busena, listItems, "-- Pasirinkite --")
             </div>
