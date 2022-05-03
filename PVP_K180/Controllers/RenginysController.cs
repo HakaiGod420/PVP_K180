@@ -96,6 +96,19 @@ namespace PVP_K180.Controllers
             Renginys_Repos renginys_Repos = new Renginys_Repos();
             renginys.vartotojas_id = (int)Session["UserID"];
             renginys.paskelbimo_data = DateTime.Now;
+            Renginys renginys2 = renginys_Repos.Gauti_Rengini(id);
+            renginys.zemelapis_ilguma = renginys2.zemelapis_ilguma;
+            renginys.zemelapis_platuma = renginys2.zemelapis_platuma;
+
+            if (Convert.ToDouble(TempData["RenginysLang"]) == 0 || Convert.ToDouble(TempData["RenginysLong"]) == 0)
+            {
+                Response.Write("<script type='text/javascript' language='javascript'> alert('Turite patvirtinti teisingą lokaciją')</script>");
+                return View(renginys);
+            }
+
+            renginys.zemelapis_ilguma = (float)Convert.ToDouble(TempData["RenginysLang"]);
+            renginys.zemelapis_platuma = (float)Convert.ToDouble(TempData["RenginysLong"]);
+
             bool flag = renginys_Repos.Redaguoti_Rengini(renginys);
             if (flag)
             {

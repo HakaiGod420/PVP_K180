@@ -26,6 +26,47 @@
     });
 
 }
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css"
+      integrity="sha512-hoalWLoI8r4UszCkZ5kL8vayOGVae1oxXe/2A4AO6J9+580uKHDO3JdHb7NzwwzK5xr/Fs0W40kiNHxM9vyTtQ=="
+      crossorigin="" />
+
+<script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js"
+        integrity="sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ=="
+        crossorigin=""></script>
+
+<style>
+    #map {
+        height: 580px;
+    }
+
+    .marker-position {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        z-index: 999;
+        padding: 10px;
+        font-weight: 700;
+        background-color: #fff;
+    }
+
+    .mapStyle {
+        position: relative;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+        min-height: 0;
+        margin: 0;
+        padding: 0;
+        background-color: #f1f1f1;
+    }
+
+    .center {
+        margin: 0;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        -ms-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%);
+    }
+</style>
 
 <h2>RedaguotiRengini</h2>
 
@@ -85,6 +126,13 @@
             </div>
         </div>
 
+        <div class="mapStyle">
+            <div class="marker-position">Paspauskite ant žemėlapio</div>
+            <div id="map"></div>
+        </div>
+        <div style="text-align:center; margin-top:10px">
+            <button onclick="saveData()" class="btn btn-success" type="button">Patvirtinti lokaciją</button>
+        </div>
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
@@ -101,3 +149,98 @@
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }
+
+<script>
+    var arGaliPrideti = false;
+    /* eslint-disable no-undef */
+    /**
+     * add move and delete marker
+     */
+
+    // config map
+    let config = {
+        minZoom: 3,
+        maxZoom: 18,
+    };
+    // magnification with which the map will start
+    const zoom = 18;
+    // co-ordinates
+    const lat = '@Model.zemelapis_ilguma'.replace(",", ".");
+    const lng = '@Model.zemelapis_platuma'.replace(",", ".");
+
+    var saveLat = '@Model.zemelapis_ilguma';
+    var saveLng = '@Model.zemelapis_platuma';
+
+    // calling map
+    const map = L.map("map", config).setView([lat, lng], zoom);
+    // Used to load and display tile layers on the map
+    // Most tile servers require attribution, which you can set under `Layer`
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        attribution:
+            '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    }).addTo(map);
+
+    // add marker on click
+    map.on("click", addMarker);
+
+    function saveData() {
+
+        console.log(saveLng);
+        $.post("/Renginys/IsaugotiLokacija", { x: saveLat, y: saveLng});
+    }
+
+    function addMarker(e) {
+        // Add marker to map at click location
+        if (arGaliPrideti == false) {
+            const markerPlace = document.querySelector(".marker-position");
+            markerPlace.textContent = `Gali būti tik vienas pridėtas markeris vienu metu`;
+            return;
+        } else {
+            arGaliPrideti = false;
+        }
+        saveLat = e.latlng.lat;
+        saveLng = e.latlng.lng;
+        const markerPlace = document.querySelector(".marker-position");
+        markerPlace.textContent = `Naujas markeris: ${e.latlng.lat}, ${e.latlng.lng}`;
+
+        const marker = new L.marker(e.latlng, {
+            draggable: true,
+        })
+            .addTo(map)
+            .bindPopup(buttonRemove);
+
+        // event remove marker
+        marker.on("popupopen", removeMarker);
+
+        // event draged marker
+        marker.on("dragend", dragedMaker);
+    }
+
+
+    const buttonRemove =
+        '<button type="button" class="remove">Ištrinti</button>';
+
+    const markerPlace = document.querySelector(".marker-position");
+
+    // remove marker
+    function removeMarker() {
+        const marker = this;
+        const btn = document.querySelector(".remove");
+        btn.addEventListener("click", function () {
+            markerPlace.textContent = "Markeris ištrintas";
+            map.removeLayer(marker);
+            arGaliPrideti = true;
+            saveLat = 0;
+            saveLng = 0;
+        });
+    }
+
+    // draged
+    function dragedMaker() {
+        markerPlace.textContent = `Pakeista pozicija: ${this.getLatLng().lat}, ${this.getLatLng().lng
+            }`;
+    }
+
+    var main = L.marker([lat, lng]).addTo(map).bindPopup(buttonRemove);
+    main.on("popupopen", removeMarker);
+</script>
