@@ -102,6 +102,38 @@ namespace PVP_K180.Repos
             return renginys;
         }
 
+        public List<Renginys> Gauti_Renginius(int renginio_busena)
+        {
+            List<Renginys> renginys = new List<Renginys>();
+            string conn = ConfigurationManager.ConnectionStrings["MysqlConnection"].ConnectionString;
+            MySqlConnection mySqlConnection = new MySqlConnection(conn);
+            string sqlquery = "select * from " + "Renginys WHERE renginio_busena =" + renginio_busena;
+            MySqlCommand mySqlCommand = new MySqlCommand(sqlquery, mySqlConnection);
+            mySqlConnection.Open();
+            MySqlDataAdapter mda = new MySqlDataAdapter(mySqlCommand);
+            DataTable dt = new DataTable();
+            mda.Fill(dt);
+            mySqlConnection.Close();
+
+            foreach (DataRow item in dt.Rows)
+            {
+                renginys.Add(new Renginys
+                {
+                    id_Renginys = Convert.ToInt32(item["id_Renginys"]),
+                    pavadinimas = Convert.ToString(item["pavadinimas"]),
+                    aprasymas = Convert.ToString(item["aprasymas"]),
+                    reitingas = Convert.ToInt32(item["reitingas"]),
+                    paskelbimo_data = Convert.ToDateTime(item["paskelbimo_data"]),
+                    pabaigos_data = Convert.ToDateTime(item["pabaigos_data"]),
+                    zemelapis_ilguma = Convert.ToInt64(item["zemelapis_ilguma"]),
+                    zemelapis_platuma = Convert.ToInt64(item["zemelapis_platuma"]),
+                    renginio_busena = Convert.ToInt32(item["renginio_busena"]),
+                    vartotojas_id = Convert.ToInt32(item["fk_Vartotojasid_Vartotojas"]),
+                }); ;
+            }
+            return renginys;
+        }
+
         public bool Redaguoti_Rengini(Renginys renginys)
         {
             try

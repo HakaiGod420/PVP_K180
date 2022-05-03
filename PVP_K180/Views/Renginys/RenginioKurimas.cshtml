@@ -2,6 +2,28 @@
 
 @{
     ViewBag.Title = "RenginioKurimas";
+
+    List<SelectListItem> listItems = new List<SelectListItem>();
+    listItems.Add(new SelectListItem
+    {
+        Text = "Atšauktas",
+        Value = "1"
+    });
+    listItems.Add(new SelectListItem
+    {
+        Text = "Pasibaigęs",
+        Value = "2",
+    });
+    listItems.Add(new SelectListItem
+    {
+        Text = "Neįvykęs",
+        Value = "3"
+    });
+    listItems.Add(new SelectListItem
+    {
+        Text = "Būsimas",
+        Value = "4"
+    });
 }
 
 <h2>RenginioKurimas</h2>
@@ -58,13 +80,7 @@
 
         <div class="form-group">
             <div class="col-md-10  col-md-offset-2">
-                @Html.DropDownList("Renginio Busena", new List<SelectListItem>
-     {
-                new SelectListItem{ Text="Atšauktas", Value = "1" },
-                new SelectListItem{ Text="Pasibaigęs", Value = "2" },
-                new SelectListItem{ Text="Neįvykęs", Value = "3" },
-                new SelectListItem{ Text="Būsimas", Value = "4" },
-     })
+                @Html.DropDownListFor(model => model.renginio_busena, listItems, "-- Pasirinkite --")
             </div>
         </div>
 

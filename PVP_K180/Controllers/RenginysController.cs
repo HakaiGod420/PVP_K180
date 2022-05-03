@@ -47,11 +47,19 @@ namespace PVP_K180.Controllers
             return View();
         }
 
-        public ActionResult GautiRenginius(Renginys rasti_rengini)
+        public ActionResult GautiRenginius(int? busena, DateTime? nuo, DateTime? iki)
         {
-            
             Renginys_Repos renginys_Repos = new Renginys_Repos();
-            List<Renginys> renginys = renginys_Repos.RastiRenginius(rasti_rengini);
+            List<Renginys> renginys = renginys_Repos.Gauti_Renginius();
+            if (busena != null)
+            {
+                renginys = renginys.Where(x => x.renginio_busena == busena).ToList();
+            }
+            if (nuo != null)
+            {
+                var data = (DateTime)nuo;
+                renginys = renginys.Where(x => x.paskelbimo_data.Date > (DateTime)data.Date).ToList();
+            }
             return View(renginys);
         }
 
@@ -79,6 +87,13 @@ namespace PVP_K180.Controllers
                 Response.Write("<script type='text/javascript' language='javascript'> alert('Projektas neredaguotas!')</script>");
             }
             return View(renginys);
+        }
+
+        public ActionResult Filtruoti(int renginio_busena)
+        {
+            Renginys_Repos renginys_Repos = new Renginys_Repos();
+            var renginiai = renginys_Repos.Gauti_Renginius(renginio_busena);
+            return View(renginiai);
         }
     }
 }
