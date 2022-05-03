@@ -39,14 +39,14 @@ namespace PVP_K180.Controllers
             renginys.vartotojas_id = (int)Session["UserID"];
             renginys.paskelbimo_data = DateTime.Now;
 
-            if (Convert.ToDouble(TempData["SeniunijaLang"]) == 0 || Convert.ToDouble(TempData["SeniunijaLong"]) == 0)
+            if (Convert.ToDouble(TempData["RenginysLang"]) == 0 || Convert.ToDouble(TempData["RenginysLong"]) == 0)
             {
                 Response.Write("<script type='text/javascript' language='javascript'> alert('Turite patvirtinti teisingą lokaciją')</script>");
                 return View();
             }
 
-            renginys.zemelapis_ilguma = (float)Convert.ToDouble(TempData["SeniunijaLang"]);
-            renginys.zemelapis_platuma = (float)Convert.ToDouble(TempData["SeniunijaLong"]);
+            renginys.zemelapis_ilguma = (float)Convert.ToDouble(TempData["RenginysLang"]);
+            renginys.zemelapis_platuma = (float)Convert.ToDouble(TempData["RenginysLong"]);
 
             bool flag = renginys_Repos.Sukurti_Rengini(renginys);
             if (flag)
@@ -71,7 +71,13 @@ namespace PVP_K180.Controllers
             if (nuo != null)
             {
                 var data = (DateTime)nuo;
-                renginys = renginys.Where(x => x.paskelbimo_data.Date > (DateTime)data.Date).ToList();
+                renginys = renginys.Where(x => x.pabaigos_data.Date >= (DateTime)data.Date).ToList();
+            }
+
+            if (iki != null)
+            {
+                var data = (DateTime)iki;
+                renginys = renginys.Where(x => x.pabaigos_data.Date <= (DateTime)data.Date).ToList();
             }
             return View(renginys);
         }
