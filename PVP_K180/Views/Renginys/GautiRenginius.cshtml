@@ -26,6 +26,12 @@
     });
 }
 
+
+<style>
+    .filter{
+        margin-bottom:10px;
+    }
+</style>
 <h2>Esami renginiai</h2>
 @Styles.Render("~/Styles/tableStyle.css")
 <p>
@@ -33,13 +39,13 @@
 </p>
 @using (Html.BeginForm())
 {
-<div>
+<div class="filter"> 
     <b>Renginio Būsena</b>
     @Html.DropDownList("busena", listItems, "-- Rodyti visus --")
-    <b>Data nuo</b>
-    @Html.TextBox("nuo");
-    <b>Data iki</b>
-    @Html.TextBox("iki");
+    <b>Renginių pradžios data</b>
+    @Html.TextBox("nuo")
+    <b>Renginių pabaigos data</b>
+    @Html.TextBox("iki")
 
     <input type="submit" value="Filtruoti" />
 </div>
