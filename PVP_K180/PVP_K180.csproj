@@ -208,6 +208,7 @@
     <Compile Include="ModelView\BalsavimoBusenaPerziura.cs" />
     <Compile Include="ModelView\BalsavimuDiagrama.cs" />
     <Compile Include="ModelView\EmaiModel.cs" />
+    <Compile Include="ModelView\KomentaroLangasRenginys.cs" />
     <Compile Include="ModelView\KomentaroLangasProjektas.cs" />
     <Compile Include="ModelView\NaujienuSarasas.cs" />
     <Compile Include="ModelView\Nuotrauku_Duomenys.cs" />
@@ -661,6 +662,7 @@
     <Content Include="Views\Renginys\GautiRenginius.cshtml" />
     <Content Include="Views\Renginys\RedaguotiRengini.cshtml" />
     <Content Include="Views\Apklausa\Rezultatai.cshtml" />
+    <Content Include="Views\Renginys\Komentarai.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

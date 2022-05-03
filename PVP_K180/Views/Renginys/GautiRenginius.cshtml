@@ -4,57 +4,52 @@
     ViewBag.Title = "GautiRenginius";
 }
 
-<h2>GautiRenginius</h2>
-
+<h2>Esami projektai</h2>
+@Styles.Render("~/Styles/tableStyle.css")
 <p>
-    @Html.ActionLink("Kurti naują renginį", "RenginioKurimas")
+    @Html.ActionLink("Sukurti naują projektą", "ProjektoKurimas")
 </p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.id_Renginys)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.pavadinimas)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.aprasymas)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.reitingas)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.paskelbimo_data)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.pabaigos_data)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.zemelapis_ilguma)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.zemelapis_platuma)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.renginio_busena)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.vartotojas_id)
-        </th>
-        <th></th>
-    </tr>
+<table class="table-fill">
+    <thead>
+        <tr>
+            <th class="text-left">
+                @Html.DisplayNameFor(model => model.id_Renginys)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.pavadinimas)
+            </th>
+            <th class="text-left">
+                @Html.DisplayNameFor(model => model.reitingas)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.paskelbimo_data)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.pabaigos_data)
+            </th>
+            <th class="text-left">
+                @Html.DisplayNameFor(model => model.zemelapis_ilguma)
+            </th>
+            <th class="text-left">
+                @Html.DisplayNameFor(model => model.zemelapis_platuma)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.renginio_busena)
+            </th>
+            
+            <th>Funckijos</th>
+        </tr>
+    </thead>
 
-    @foreach (var item in Model)
-    {
+    <tbody class="table-hover">
+        @foreach (var item in Model)
+        {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.id_Renginys)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.pavadinimas)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.aprasymas)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.reitingas)
@@ -89,13 +84,14 @@
                     @Html.DisplayName("Būsimas")
                 }
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.vartotojas_id)
-            </td>
-            <td>
-                @Html.ActionLink("Redaguoti", "RedaguotiRengini", new { id = item.id_Renginys })
+            <td class="text-left">
+                @Html.ActionLink("Redaguoti", "RedaguotiRengini", new { id = item.id_Renginys }) |
+                @Html.ActionLink("Rašyti komentarą", "Komentarai", new { id = item.id_Renginys })
             </td>
         </tr>
-    }
+        }
+    </tbody>
+
 
 </table>
+
