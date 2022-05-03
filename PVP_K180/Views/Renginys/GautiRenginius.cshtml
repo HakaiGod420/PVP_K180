@@ -2,6 +2,28 @@
 
 @{
     ViewBag.Title = "GautiRenginius";
+
+    List<SelectListItem> listItems = new List<SelectListItem>();
+    listItems.Add(new SelectListItem
+    {
+        Text = "Atšauktas",
+        Value = "1"
+    });
+    listItems.Add(new SelectListItem
+    {
+        Text = "Pasibaigęs",
+        Value = "2",
+    });
+    listItems.Add(new SelectListItem
+    {
+        Text = "Neįvykęs",
+        Value = "3"
+    });
+    listItems.Add(new SelectListItem
+    {
+        Text = "Būsimas",
+        Value = "4"
+    });
 }
 
 <h2>Esami renginiai</h2>
@@ -9,6 +31,19 @@
 <p>
     @Html.ActionLink("Sukurti naują projektą", "RenginioKurimas")
 </p>
+@using (Html.BeginForm())
+{
+<div>
+    <b>Renginio Būsena</b>
+    @Html.DropDownList("busena", listItems, "-- Rodyti visus --")
+    <b>Data nuo</b>
+    @Html.TextBox("nuo");
+    <b>Data iki</b>
+    @Html.TextBox("iki");
+
+    <input type="submit" value="Filtruoti" />
+</div>
+}
 <table class="table-fill">
     <thead>
         <tr>
