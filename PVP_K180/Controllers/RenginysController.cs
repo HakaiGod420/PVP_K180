@@ -34,9 +34,20 @@ namespace PVP_K180.Controllers
         [HttpPost]
         public ActionResult RenginioKurimas(Renginys renginys)
         {
+            int counter = 0;
             Renginys_Repos renginys_Repos = new Renginys_Repos();
             renginys.vartotojas_id = (int)Session["UserID"];
             renginys.paskelbimo_data = DateTime.Now;
+
+            if (Convert.ToDouble(TempData["SeniunijaLang"]) == 0 || Convert.ToDouble(TempData["SeniunijaLong"]) == 0)
+            {
+                Response.Write("<script type='text/javascript' language='javascript'> alert('Turite patvirtinti teisingą lokaciją')</script>");
+                return View();
+            }
+
+            renginys.zemelapis_ilguma = (float)Convert.ToDouble(TempData["SeniunijaLang"]);
+            renginys.zemelapis_platuma = (float)Convert.ToDouble(TempData["SeniunijaLong"]);
+
             bool flag = renginys_Repos.Sukurti_Rengini(renginys);
             if (flag)
             {
@@ -130,6 +141,13 @@ namespace PVP_K180.Controllers
             }
 
             return RedirectToAction("Komentarai", new { id = Convert.ToInt32(TempData["RenginioID"]) });
+        }
+
+        [HttpPost]
+        public void IsaugotiLokacija(float x, float y)
+        {
+            TempData["RenginysLang"] = x;
+            TempData["RenginysLong"] = y;
         }
     }
 }
