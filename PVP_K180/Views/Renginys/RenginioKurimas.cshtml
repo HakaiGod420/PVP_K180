@@ -29,7 +29,6 @@
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css"
       integrity="sha512-hoalWLoI8r4UszCkZ5kL8vayOGVae1oxXe/2A4AO6J9+580uKHDO3JdHb7NzwwzK5xr/Fs0W40kiNHxM9vyTtQ=="
       crossorigin="" />
-
 <script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js"
         integrity="sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ=="
         crossorigin=""></script>
@@ -76,55 +75,63 @@
 {
     @Html.AntiForgeryToken()
 
-<div class="form-horizontal">
-    <h4>Renginys</h4>
-    <hr />
-    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="form-horizontal">
+        <h4>Renginys</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.pavadinimas, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.pavadinimas, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.pavadinimas, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.pavadinimas, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.pavadinimas, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.pavadinimas, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.aprasymas, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.aprasymas, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.aprasymas, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.pradzios_data, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.pradzios_data, new { htmlAttributes = new { @class = "form-control dateFormat" } })
+                @Html.ValidationMessageFor(model => model.pradzios_data, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.pabaigos_data, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.pabaigos_data, new { htmlAttributes = new { @class = "form-control dateFormat" } })
+                @Html.ValidationMessageFor(model => model.pabaigos_data, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-10  col-md-offset-2">
+                @Html.DropDownListFor(model => model.renginio_busena, listItems, "-- Pasirinkite --")
+            </div>
+        </div>
+
+        <div class="mapStyle">
+            <div class="marker-position">Paspauskite ant žemėlapio</div>
+            <div id="map"></div>
+        </div>
+        <div style="text-align:center; margin-top:10px">
+            <button onclick="saveData()" class="btn btn-success" type="button">Patvirtinti lokaciją</button>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Sukurti" class="btn btn-default" />
+            </div>
         </div>
     </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.aprasymas, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.aprasymas, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.aprasymas, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.pabaigos_data, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.pabaigos_data, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.pabaigos_data, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
-    <div class="form-group">
-        <div class="col-md-10  col-md-offset-2">
-            @Html.DropDownListFor(model => model.renginio_busena, listItems, "-- Pasirinkite --")
-        </div>
-    </div>
-
-    <div class="mapStyle">
-        <div class="marker-position">Paspauskite ant žemėlapio</div>
-        <div id="map"></div>
-    </div>
-    <div style="text-align:center; margin-top:10px">
-        <button onclick="saveData()" class="btn btn-success" type="button">Patvirtinti lokaciją</button>
-    </div>
-
-    <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <input type="submit" value="Sukurti" class="btn btn-default" />
-        </div>
-    </div>
-</div>
 }
 
 <div>
@@ -134,8 +141,12 @@
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+</script>
 
 <script>
+
+
     var arGaliPrideti = true;
     /* eslint-disable no-undef */
     /**
@@ -171,7 +182,7 @@
     function saveData() {
 
         console.log(saveLng);
-        $.post("/Renginys/IsaugotiLokacija", { x: saveLat, y: saveLng});
+        $.post("/Renginys/IsaugotiLokacija", { x: saveLat, y: saveLng });
     }
 
     function addMarker(e) {

@@ -245,7 +245,7 @@ namespace PVP_K180.Controllers
             {
                 SmtpMail oMail = new SmtpMail("TryIt");
 
-                if(model.Attachment.Length > 0)
+                if(model.Attachment[0] != null)
                 {
                     foreach(var item in model.Attachment)
                     {
@@ -290,7 +290,7 @@ namespace PVP_K180.Controllers
                 }
 
                 oSmtp.SendMail(oServer, oMail);
-                if (model.Attachment.Length > 0)
+                if (model.Attachment[0] != null)
                 {
                     foreach (var item in model.Attachment)
                     {
