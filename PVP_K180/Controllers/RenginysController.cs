@@ -11,6 +11,7 @@ namespace PVP_K180.Controllers
 {
     public class RenginysController : Controller
     {
+
         private Renginys_Repos renginys_Repos = new Renginys_Repos();
         // GET: Renginys
         public ActionResult Index()
@@ -62,7 +63,6 @@ namespace PVP_K180.Controllers
 
         public ActionResult GautiRenginius(int? busena, DateTime? nuo, DateTime? iki)
         {
-            Renginys_Repos renginys_Repos = new Renginys_Repos();
             List<Renginys> renginys = renginys_Repos.Gauti_Renginius();
             if (busena != null)
             {
@@ -167,6 +167,12 @@ namespace PVP_K180.Controllers
         {
             TempData["RenginysLang"] = x;
             TempData["RenginysLong"] = y;
+        }
+
+        public ActionResult Renginiai()
+        {
+            List<Renginys> renginiai = renginys_Repos.Gauti_Renginius();
+            return View(renginiai);
         }
     }
 }

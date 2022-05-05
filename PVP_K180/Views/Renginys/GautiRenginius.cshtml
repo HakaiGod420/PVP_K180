@@ -35,7 +35,7 @@
 <h2>Esami renginiai</h2>
 @Styles.Render("~/Styles/tableStyle.css")
 <p>
-    @Html.ActionLink("Sukurti naują projektą", "RenginioKurimas")
+    @Html.ActionLink("Sukurti naują renginį", "RenginioKurimas")
 </p>
 @using (Html.BeginForm())
 {
@@ -66,18 +66,15 @@
                 @Html.DisplayNameFor(model => model.paskelbimo_data)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.pradzios_data)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.pabaigos_data)
-            </th>
-            <th class="text-left">
-                @Html.DisplayNameFor(model => model.zemelapis_ilguma)
-            </th>
-            <th class="text-left">
-                @Html.DisplayNameFor(model => model.zemelapis_platuma)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.renginio_busena)
             </th>
-            
+
             <th>Funckijos</th>
         </tr>
     </thead>
@@ -96,16 +93,13 @@
                 @Html.DisplayFor(modelItem => item.reitingas)
             </td>
             <td>
+                @Html.DisplayFor(modelItem => item.pradzios_data)
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.paskelbimo_data)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.pabaigos_data)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.zemelapis_ilguma)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.zemelapis_platuma)
             </td>
             <td>
                 @if (item.renginio_busena == 1)

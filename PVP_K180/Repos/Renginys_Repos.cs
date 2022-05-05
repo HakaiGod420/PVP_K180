@@ -17,13 +17,14 @@ namespace PVP_K180.Repos
             {
                 string conn = ConfigurationManager.ConnectionStrings["MysqlConnection"].ConnectionString;
                 MySqlConnection mySqlConnection = new MySqlConnection(conn);
-                string sqlquery = "INSERT INTO `Renginys`(`pavadinimas`, `aprasymas`, `reitingas`, `paskelbimo_data`, `pabaigos_data`, `zemelapis_ilguma`, `zemelapis_platuma`, `renginio_busena`, `fk_Vartotojasid_Vartotojas`)" +
-                    " VALUES (?pavadinimas, ?aprasymas, ?reitingas, ?paskelbimo_data, ?pabaigos_data, ?zemelapis_ilguma, ?zemelapis_platuma, ?renginio_busena, ?fk_Vartotojasid_Vartotojas)";
+                string sqlquery = "INSERT INTO `Renginys`(`pavadinimas`, `aprasymas`, `reitingas`, `paskelbimo_data`,`pradzios_data`, `pabaigos_data`, `zemelapis_ilguma`, `zemelapis_platuma`, `renginio_busena`, `fk_Vartotojasid_Vartotojas`)" +
+                    " VALUES (?pavadinimas, ?aprasymas, ?reitingas, ?paskelbimo_data,?pradzios_data, ?pabaigos_data, ?zemelapis_ilguma, ?zemelapis_platuma, ?renginio_busena, ?fk_Vartotojasid_Vartotojas)";
                 MySqlCommand mySqlCommand = new MySqlCommand(sqlquery, mySqlConnection);
                 mySqlCommand.Parameters.Add("?pavadinimas", MySqlDbType.VarChar).Value = renginys.pavadinimas;
                 mySqlCommand.Parameters.Add("?aprasymas", MySqlDbType.VarChar).Value = renginys.aprasymas;
                 mySqlCommand.Parameters.Add("?reitingas", MySqlDbType.Int32).Value = renginys.reitingas;
                 mySqlCommand.Parameters.Add("?paskelbimo_data", MySqlDbType.DateTime).Value = renginys.paskelbimo_data;
+                mySqlCommand.Parameters.Add("?pradzios_data", MySqlDbType.DateTime).Value = renginys.pradzios_data;
                 mySqlCommand.Parameters.Add("?pabaigos_data", MySqlDbType.DateTime).Value = renginys.pabaigos_data;
                 mySqlCommand.Parameters.Add("?zemelapis_ilguma", MySqlDbType.Float).Value = renginys.zemelapis_ilguma;
                 mySqlCommand.Parameters.Add("?zemelapis_platuma", MySqlDbType.Float).Value = renginys.zemelapis_platuma;
@@ -61,6 +62,7 @@ namespace PVP_K180.Repos
                     renginys.aprasymas = Convert.ToString(item["aprasymas"]);
                     renginys.reitingas = Convert.ToInt32(item["reitingas"]);
                     renginys.paskelbimo_data = Convert.ToDateTime(item["paskelbimo_data"]);
+                    renginys.pradzios_data = Convert.ToDateTime(item["pradzios_data"]);
                     renginys.pabaigos_data = Convert.ToDateTime(item["pabaigos_data"]);
                     renginys.zemelapis_ilguma = Convert.ToInt64(item["zemelapis_ilguma"]);
                     renginys.zemelapis_platuma = Convert.ToInt64(item["zemelapis_platuma"]);
@@ -92,6 +94,7 @@ namespace PVP_K180.Repos
                     aprasymas = Convert.ToString(item["aprasymas"]),
                     reitingas = Convert.ToInt32(item["reitingas"]),
                     paskelbimo_data = Convert.ToDateTime(item["paskelbimo_data"]),
+                    pradzios_data = Convert.ToDateTime(item["pradzios_data"]),
                     pabaigos_data = Convert.ToDateTime(item["pabaigos_data"]),
                     zemelapis_ilguma = Convert.ToInt64(item["zemelapis_ilguma"]),
                     zemelapis_platuma = Convert.ToInt64(item["zemelapis_platuma"]),
@@ -124,6 +127,7 @@ namespace PVP_K180.Repos
                     aprasymas = Convert.ToString(item["aprasymas"]),
                     reitingas = Convert.ToInt32(item["reitingas"]),
                     paskelbimo_data = Convert.ToDateTime(item["paskelbimo_data"]),
+                    pradzios_data = Convert.ToDateTime(item["pradzios_data"]),
                     pabaigos_data = Convert.ToDateTime(item["pabaigos_data"]),
                     zemelapis_ilguma = Convert.ToInt64(item["zemelapis_ilguma"]),
                     zemelapis_platuma = Convert.ToInt64(item["zemelapis_platuma"]),
@@ -140,11 +144,12 @@ namespace PVP_K180.Repos
             {
                 string conn = ConfigurationManager.ConnectionStrings["MysqlConnection"].ConnectionString;
                 MySqlConnection mySqlConnection = new MySqlConnection(conn);
-                string sqlquery = "UPDATE `Renginys` SET `pavadinimas`=?pavadinimas,`aprasymas`=?aprasymas,`paskelbimo_data`=?paskelbimo_data,`pabaigos_data`=?pabaigos_data,`zemelapis_ilguma`=?zemelapis_ilguma,`zemelapis_platuma`=?zemelapis_platuma,`renginio_busena`=?renginio_busena,`fk_Vartotojasid_Vartotojas`=?fk_Vartotojasid_Vartotojas WHERE id_Renginys=" + renginys.id_Renginys;
+                string sqlquery = "UPDATE `Renginys` SET `pavadinimas`=?pavadinimas,`aprasymas`=?aprasymas,`paskelbimo_data`=?paskelbimo_data,`pabaigos_data`=?pabaigos_data,`pradzios_data`=?pradzios_data,`zemelapis_ilguma`=?zemelapis_ilguma,`zemelapis_platuma`=?zemelapis_platuma,`renginio_busena`=?renginio_busena,`fk_Vartotojasid_Vartotojas`=?fk_Vartotojasid_Vartotojas WHERE id_Renginys=" + renginys.id_Renginys;
                 MySqlCommand mySqlCommand = new MySqlCommand(sqlquery, mySqlConnection);
                 mySqlCommand.Parameters.Add("?pavadinimas", MySqlDbType.Text).Value = renginys.pavadinimas;
                 mySqlCommand.Parameters.Add("?aprasymas", MySqlDbType.Text).Value = renginys.aprasymas;
                 mySqlCommand.Parameters.Add("?paskelbimo_data", MySqlDbType.DateTime).Value = renginys.paskelbimo_data;
+                mySqlCommand.Parameters.Add("?pradzios_data", MySqlDbType.DateTime).Value = renginys.pabaigos_data;
                 mySqlCommand.Parameters.Add("?pabaigos_data", MySqlDbType.DateTime).Value = renginys.pabaigos_data;
                 mySqlCommand.Parameters.Add("?zemelapis_ilguma", MySqlDbType.Float).Value = renginys.zemelapis_ilguma;
                 mySqlCommand.Parameters.Add("?zemelapis_platuma", MySqlDbType.Float).Value = renginys.zemelapis_platuma;
@@ -189,6 +194,7 @@ namespace PVP_K180.Repos
                     aprasymas = Convert.ToString(item["aprasymas"]),
                     reitingas = Convert.ToInt32(item["reitingas"]),
                     paskelbimo_data = Convert.ToDateTime(item["paskelbimo_data"]),
+                    pradzios_data = Convert.ToDateTime(item["pradzios_data"]),
                     pabaigos_data = Convert.ToDateTime(item["pabaigos_data"]),
                     zemelapis_ilguma = Convert.ToInt64(item["zemelapis_ilguma"]),
                     zemelapis_platuma = Convert.ToInt64(item["zemelapis_platuma"]),
