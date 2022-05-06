@@ -53,9 +53,6 @@
 <table class="table-fill">
     <thead>
         <tr>
-            <th class="text-left">
-                @Html.DisplayNameFor(model => model.id_Renginys)
-            </th>
             <th>
                 @Html.DisplayNameFor(model => model.pavadinimas)
             </th>
@@ -72,6 +69,12 @@
                 @Html.DisplayNameFor(model => model.pabaigos_data)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.adresas)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.kaina)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.renginio_busena)
             </th>
 
@@ -83,9 +86,6 @@
         @foreach (var item in Model)
         {
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.id_Renginys)
-            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.pavadinimas)
             </td>
@@ -100,6 +100,12 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.pabaigos_data)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.adresas)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.kaina)
             </td>
             <td>
                 @if (item.renginio_busena == 1)

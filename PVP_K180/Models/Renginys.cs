@@ -26,6 +26,15 @@ namespace PVP_K180.Models
         [DisplayName("Renginio pabaigos data")]
         [DisplayFormat(DataFormatString = "{0:yyyy-dd-MM HH:mm}", ApplyFormatInEditMode = true)]
         public DateTime pabaigos_data { get; set; }
+
+        [DisplayName("Adresas")]
+        [Required]
+        public string adresas { get; set; }
+
+        [DisplayName("Kaina")]
+        [Required]
+        public double kaina { get; set; }
+
         [DisplayName("Ilgumos koordinates")]
         public float zemelapis_ilguma { get; set; }
         [DisplayName("Plokštumos koordinates")]

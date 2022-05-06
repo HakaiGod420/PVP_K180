@@ -29,28 +29,32 @@
                 <div class="overlay"></div>
 
                 <div class="event-info">
-                    <p class="title">Bubbe's Book Club</p>
+                    <p class="title">@item.pavadinimas</p>
                     <div class="separator"></div>
-                    <p class="info">Bellmore, NY</p>
-                    <p class="price">Free</p>
-
+                    @if (item.kaina == 0)
+                    {
+                    <p class="price">Nemokama</p>
+                    }
+                    else
+                    {
+                    <p class="price">@item.kaina €</p>
+                    }
                     <div class="additional-info">
                         <p class="info">
                             <i class="fas fa-map-marker-alt"></i>
-                            Grand Central Terminal
+                            @item.adresas
                         </p>
                         <p class="info">
                             <i class="far fa-calendar-alt"></i>
-                            Sat, Sep 19, 10:00 AM EDT
+                            @item.pradzios_data.ToString("yyyy-MM-dd HH:mm")
                         </p>
 
                         <p class="info description">
-                            Welcome! Everyone has a unique perspective after reading a book, and we would love you
-                            to share yours with us! We meet one Sunday evening <span>more...</span>
+                            @item.aprasymas <span>daugiau...</span>
                         </p>
                     </div>
                 </div>
-                <button class="action">Book it</button>
+                <button class="action">INFORMACIJA</button>
             </div>
         </div>
         }
