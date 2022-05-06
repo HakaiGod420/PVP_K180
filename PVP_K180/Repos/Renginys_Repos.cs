@@ -17,8 +17,8 @@ namespace PVP_K180.Repos
             {
                 string conn = ConfigurationManager.ConnectionStrings["MysqlConnection"].ConnectionString;
                 MySqlConnection mySqlConnection = new MySqlConnection(conn);
-                string sqlquery = "INSERT INTO `Renginys`(`pavadinimas`, `aprasymas`, `reitingas`, `paskelbimo_data`,`pradzios_data`, `pabaigos_data`, `zemelapis_ilguma`, `zemelapis_platuma`, `renginio_busena`, `fk_Vartotojasid_Vartotojas`)" +
-                    " VALUES (?pavadinimas, ?aprasymas, ?reitingas, ?paskelbimo_data,?pradzios_data, ?pabaigos_data, ?zemelapis_ilguma, ?zemelapis_platuma, ?renginio_busena, ?fk_Vartotojasid_Vartotojas)";
+                string sqlquery = "INSERT INTO `Renginys`(`pavadinimas`, `aprasymas`, `reitingas`, `paskelbimo_data`,`pradzios_data`, `pabaigos_data`, `zemelapis_ilguma`, `zemelapis_platuma`,`adresas`,`kaina`, `renginio_busena`, `fk_Vartotojasid_Vartotojas`)" +
+                    " VALUES (?pavadinimas, ?aprasymas, ?reitingas, ?paskelbimo_data,?pradzios_data, ?pabaigos_data, ?zemelapis_ilguma, ?zemelapis_platuma,?adresas,?kaina, ?renginio_busena, ?fk_Vartotojasid_Vartotojas)";
                 MySqlCommand mySqlCommand = new MySqlCommand(sqlquery, mySqlConnection);
                 mySqlCommand.Parameters.Add("?pavadinimas", MySqlDbType.VarChar).Value = renginys.pavadinimas;
                 mySqlCommand.Parameters.Add("?aprasymas", MySqlDbType.VarChar).Value = renginys.aprasymas;
@@ -28,6 +28,8 @@ namespace PVP_K180.Repos
                 mySqlCommand.Parameters.Add("?pabaigos_data", MySqlDbType.DateTime).Value = renginys.pabaigos_data;
                 mySqlCommand.Parameters.Add("?zemelapis_ilguma", MySqlDbType.Float).Value = renginys.zemelapis_ilguma;
                 mySqlCommand.Parameters.Add("?zemelapis_platuma", MySqlDbType.Float).Value = renginys.zemelapis_platuma;
+                mySqlCommand.Parameters.Add("?adresas", MySqlDbType.VarChar).Value = renginys.adresas;
+                mySqlCommand.Parameters.Add("?kaina", MySqlDbType.Double).Value = renginys.kaina;
                 mySqlCommand.Parameters.Add("?renginio_busena", MySqlDbType.Int32).Value = renginys.renginio_busena;
                 mySqlCommand.Parameters.Add("?fk_Vartotojasid_Vartotojas", MySqlDbType.Int32).Value = renginys.vartotojas_id;
                 mySqlConnection.Open();
@@ -66,6 +68,8 @@ namespace PVP_K180.Repos
                     renginys.pabaigos_data = Convert.ToDateTime(item["pabaigos_data"]);
                     renginys.zemelapis_ilguma = Convert.ToInt64(item["zemelapis_ilguma"]);
                     renginys.zemelapis_platuma = Convert.ToInt64(item["zemelapis_platuma"]);
+                    renginys.adresas = Convert.ToString(item["adresas"]);
+                    renginys.kaina = Convert.ToDouble(item["kaina"]);
                     renginys.renginio_busena = Convert.ToInt32(item["renginio_busena"]);
                 }
             }
@@ -99,7 +103,9 @@ namespace PVP_K180.Repos
                     zemelapis_ilguma = Convert.ToInt64(item["zemelapis_ilguma"]),
                     zemelapis_platuma = Convert.ToInt64(item["zemelapis_platuma"]),
                     renginio_busena = Convert.ToInt32(item["renginio_busena"]),
-                    vartotojas_id = Convert.ToInt32(item["fk_Vartotojasid_Vartotojas"]),
+                    adresas = Convert.ToString(item["adresas"]),
+                    kaina = Convert.ToDouble(item["kaina"]),
+                vartotojas_id = Convert.ToInt32(item["fk_Vartotojasid_Vartotojas"]),
                 }); ;
             }
             return renginys;
@@ -131,6 +137,8 @@ namespace PVP_K180.Repos
                     pabaigos_data = Convert.ToDateTime(item["pabaigos_data"]),
                     zemelapis_ilguma = Convert.ToInt64(item["zemelapis_ilguma"]),
                     zemelapis_platuma = Convert.ToInt64(item["zemelapis_platuma"]),
+                    adresas = Convert.ToString(item["adresas"]),
+                    kaina = Convert.ToDouble(item["kaina"]),
                     renginio_busena = Convert.ToInt32(item["renginio_busena"]),
                     vartotojas_id = Convert.ToInt32(item["fk_Vartotojasid_Vartotojas"]),
                 }); ;
@@ -144,15 +152,17 @@ namespace PVP_K180.Repos
             {
                 string conn = ConfigurationManager.ConnectionStrings["MysqlConnection"].ConnectionString;
                 MySqlConnection mySqlConnection = new MySqlConnection(conn);
-                string sqlquery = "UPDATE `Renginys` SET `pavadinimas`=?pavadinimas,`aprasymas`=?aprasymas,`paskelbimo_data`=?paskelbimo_data,`pabaigos_data`=?pabaigos_data,`pradzios_data`=?pradzios_data,`zemelapis_ilguma`=?zemelapis_ilguma,`zemelapis_platuma`=?zemelapis_platuma,`renginio_busena`=?renginio_busena,`fk_Vartotojasid_Vartotojas`=?fk_Vartotojasid_Vartotojas WHERE id_Renginys=" + renginys.id_Renginys;
+                string sqlquery = "UPDATE `Renginys` SET `pavadinimas`=?pavadinimas,`aprasymas`=?aprasymas,`paskelbimo_data`=?paskelbimo_data,`pabaigos_data`=?pabaigos_data,`pradzios_data`=?pradzios_data,`zemelapis_ilguma`=?zemelapis_ilguma,`zemelapis_platuma`=?zemelapis_platuma,`adresas`=?adresas,`kaina`= ?kaina,`renginio_busena`=?renginio_busena,`fk_Vartotojasid_Vartotojas`=?fk_Vartotojasid_Vartotojas WHERE id_Renginys=" + renginys.id_Renginys;
                 MySqlCommand mySqlCommand = new MySqlCommand(sqlquery, mySqlConnection);
                 mySqlCommand.Parameters.Add("?pavadinimas", MySqlDbType.Text).Value = renginys.pavadinimas;
                 mySqlCommand.Parameters.Add("?aprasymas", MySqlDbType.Text).Value = renginys.aprasymas;
                 mySqlCommand.Parameters.Add("?paskelbimo_data", MySqlDbType.DateTime).Value = renginys.paskelbimo_data;
-                mySqlCommand.Parameters.Add("?pradzios_data", MySqlDbType.DateTime).Value = renginys.pabaigos_data;
+                mySqlCommand.Parameters.Add("?pradzios_data", MySqlDbType.DateTime).Value = renginys.pradzios_data;
                 mySqlCommand.Parameters.Add("?pabaigos_data", MySqlDbType.DateTime).Value = renginys.pabaigos_data;
                 mySqlCommand.Parameters.Add("?zemelapis_ilguma", MySqlDbType.Float).Value = renginys.zemelapis_ilguma;
                 mySqlCommand.Parameters.Add("?zemelapis_platuma", MySqlDbType.Float).Value = renginys.zemelapis_platuma;
+                mySqlCommand.Parameters.Add("?adresas", MySqlDbType.VarChar).Value = renginys.adresas;
+                mySqlCommand.Parameters.Add("?kaina", MySqlDbType.Double).Value = renginys.kaina;
                 mySqlCommand.Parameters.Add("?renginio_busena", MySqlDbType.Int32).Value = renginys.renginio_busena;
                 mySqlCommand.Parameters.Add("?fk_Vartotojasid_Vartotojas", MySqlDbType.Int32).Value = renginys.vartotojas_id;
                 mySqlConnection.Open();
@@ -198,6 +208,8 @@ namespace PVP_K180.Repos
                     pabaigos_data = Convert.ToDateTime(item["pabaigos_data"]),
                     zemelapis_ilguma = Convert.ToInt64(item["zemelapis_ilguma"]),
                     zemelapis_platuma = Convert.ToInt64(item["zemelapis_platuma"]),
+                    adresas = Convert.ToString(item["adresas"]),
+                    kaina = Convert.ToDouble(item["kaina"]),
                     renginio_busena = Convert.ToInt32(item["renginio_busena"]),
                     vartotojas_id = Convert.ToInt32(item["fk_Vartotojasid_Vartotojas"]),
                 }); ;
