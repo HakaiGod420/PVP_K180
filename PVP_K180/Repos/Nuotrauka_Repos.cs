@@ -58,6 +58,31 @@ namespace PVP_K180.Repos
             return nuotraukos;
         }
 
+        public List<Nuotrauka> Gauti_Projektu_Nuotraukas(int id)
+        {
+            List<Nuotrauka> nuotraukos = new List<Nuotrauka>();
+            string conn = ConfigurationManager.ConnectionStrings["MysqlConnection"].ConnectionString;
+            MySqlConnection mySqlConnection = new MySqlConnection(conn);
+            string sqlquery = "select * from `Nuotrauka` where fk_Projektasid_Projektas=" + id;
+            MySqlCommand mySqlCommand = new MySqlCommand(sqlquery, mySqlConnection);
+            mySqlConnection.Open();
+            MySqlDataAdapter mda = new MySqlDataAdapter(mySqlCommand);
+            DataTable dt = new DataTable();
+            mda.Fill(dt);
+            mySqlConnection.Close();
+
+            foreach (DataRow item in dt.Rows)
+            {
+                nuotraukos.Add(new Nuotrauka
+                {
+                    id_Nuotrauka = Convert.ToInt32(item["id_Nuotrauka"]),
+                    nuotraukos_nuoroda = Convert.ToString(item["nuotraukos_nuroda"]),
+                    priskirtas_id = Convert.ToInt32(item["fk_Naujienaid_Naujiena"]),
+                });
+            }
+            return nuotraukos;
+        }
+
         public Nuotrauka Gauti_Nuotrauka(int id)
         {
             Nuotrauka nuotrauka = new Nuotrauka();

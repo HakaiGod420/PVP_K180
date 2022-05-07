@@ -6,6 +6,7 @@ using System.Linq;
 using System.Web;
 using MySql.Data.MySqlClient;
 using PVP_K180.Models;
+using PVP_K180.ModelView;
 
 namespace PVP_K180.Repos
 {
@@ -220,5 +221,35 @@ namespace PVP_K180.Repos
             mySqlConnection.Close();
             return true;
         }
+
+
+        public List<ProjektuPerziura> Gauti_Projektus_Atvaizdavimui()
+        {
+            List<ProjektuPerziura> projektas = new List<ProjektuPerziura>();
+            string conn = ConfigurationManager.ConnectionStrings["MysqlConnection"].ConnectionString;
+            MySqlConnection mySqlConnection = new MySqlConnection(conn);
+            string sqlquery = "SELECT id_Projektas, pavadinimas,aprasymas,sukurimo_data,ivertinimas,Projekto_busena.name as 'busena' FROM `Projektas`LEFT JOIN Projekto_busena ON Projekto_busena.id_Projekto_busena = busena";
+            MySqlCommand mySqlCommand = new MySqlCommand(sqlquery, mySqlConnection);
+            mySqlConnection.Open();
+            MySqlDataAdapter mda = new MySqlDataAdapter(mySqlCommand);
+            DataTable dt = new DataTable();
+            mda.Fill(dt);
+            mySqlConnection.Close();
+
+            foreach (DataRow item in dt.Rows)
+            {
+                projektas.Add(new ProjektuPerziura
+                {
+                    id_Projektas = Convert.ToInt32(item["id_Projektas"]),
+                    pavadinimas = Convert.ToString(item["pavadinimas"]),
+                    aprasymas = Convert.ToString(item["aprasymas"]),
+                    busena = Convert.ToString(item["busena"]),
+                    sukurimo_data = Convert.ToDateTime(item["sukurimo_data"]),
+                }); ;
+            }
+            return projektas;
+        }
     }
+
+   
 }
