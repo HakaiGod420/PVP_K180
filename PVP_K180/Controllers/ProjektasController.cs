@@ -10,6 +10,7 @@ namespace PVP_K180.Controllers
     public class ProjektasController : Controller
     {
         private Projektas_Repos projektas_Repos = new Projektas_Repos();
+        private Nuotrauka_Repos nuotrauka_Repos = new Nuotrauka_Repos();
 
         // GET: Projektas
         public ActionResult Index()
@@ -135,6 +136,19 @@ namespace PVP_K180.Controllers
             }
 
             return RedirectToAction("Komentarai", new { id = Convert.ToInt32(TempData["ProjektoID"]) });
+        }
+
+        public ActionResult Projektai()
+        {
+            Projektas_Repos projektas_Repos = new Projektas_Repos();
+            List<ProjektuPerziura> projektas = projektas_Repos.Gauti_Projektus_Atvaizdavimui();
+
+            for(var i = 0; i < projektas.Count; i++)
+            {
+                List<Nuotrauka> nuotraukos = nuotrauka_Repos.Gauti_Projektu_Nuotraukas(projektas[i].id_Projektas);
+                projektas[i].pradine_nuotrauka = nuotraukos[0].nuotraukos_nuoroda;
+            }
+            return View(projektas);
         }
     }
 }

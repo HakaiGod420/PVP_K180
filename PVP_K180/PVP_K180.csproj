@@ -210,6 +210,7 @@
     <Compile Include="ModelView\EmaiModel.cs" />
     <Compile Include="ModelView\KomentaroLangasRenginys.cs" />
     <Compile Include="ModelView\KomentaroLangasProjektas.cs" />
+    <Compile Include="ModelView\ProjektuPerziura.cs" />
     <Compile Include="ModelView\NaujienuSarasas.cs" />
     <Compile Include="ModelView\Nuotrauku_Duomenys.cs" />
     <Compile Include="ModelView\Pasto_duomenys.cs" />
@@ -277,6 +278,7 @@
     <Content Include="Styles\EventStyle.css" />
     <Content Include="Styles\navbar.css" />
     <Content Include="Styles\profileStyle.css" />
+    <Content Include="Styles\ProjectStyle.css" />
     <Content Include="Styles\slideCss.css" />
     <Content Include="Styles\tableStyle.css" />
     <Content Include="Themes\ckeditor\adapters\jquery.js" />
@@ -665,6 +667,7 @@
     <Content Include="Views\Apklausa\Rezultatai.cshtml" />
     <Content Include="Views\Renginys\Komentarai.cshtml" />
     <Content Include="Views\Renginys\Renginiai.cshtml" />
+    <Content Include="Views\Projektas\Projektai.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
