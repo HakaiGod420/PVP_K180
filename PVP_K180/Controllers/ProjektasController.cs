@@ -11,6 +11,7 @@ namespace PVP_K180.Controllers
     {
         private Projektas_Repos projektas_Repos = new Projektas_Repos();
         private Nuotrauka_Repos nuotrauka_Repos = new Nuotrauka_Repos();
+        string[] menesiai = new string[12] { "SAU", "VAS", "KOV", "BAL", "GEG", "BIR", "LIE", "LAP", "RUG", "SPA", "LAP", "GRU" };
 
         // GET: Projektas
         public ActionResult Index()
@@ -145,6 +146,8 @@ namespace PVP_K180.Controllers
 
             for(var i = 0; i < projektas.Count; i++)
             {
+                projektas[i].diena = projektas[i].sukurimo_data.Day;
+                projektas[i].menuo = menesiai[projektas[i].sukurimo_data.Month-1];
                 List<Nuotrauka> nuotraukos = nuotrauka_Repos.Gauti_Projektu_Nuotraukas(projektas[i].id_Projektas);
                 projektas[i].pradine_nuotrauka = nuotraukos[0].nuotraukos_nuoroda;
             }
