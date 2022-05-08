@@ -228,7 +228,10 @@ namespace PVP_K180.Repos
             List<ProjektuPerziura> projektas = new List<ProjektuPerziura>();
             string conn = ConfigurationManager.ConnectionStrings["MysqlConnection"].ConnectionString;
             MySqlConnection mySqlConnection = new MySqlConnection(conn);
-            string sqlquery = "SELECT id_Projektas, pavadinimas,aprasymas,sukurimo_data,ivertinimas,Projekto_busena.name as 'busena' FROM `Projektas`LEFT JOIN Projekto_busena ON Projekto_busena.id_Projekto_busena = busena";
+            string sqlquery = "SELECT id_Projektas, pavadinimas,aprasymas,sukurimo_data,ivertinimas,Projekto_busena.name as 'busena',COUNT(Komentaras.id_Komentaras) " +
+                "as 'komentarai' FROM `Projektas` " +
+                "LEFT JOIN Projekto_busena ON Projekto_busena.id_Projekto_busena = busena " +
+                "LEFT JOIN Komentaras ON Komentaras.fk_Projektasid_Projektas = Projektas.id_Projektas GROUP BY Projektas.id_Projektas";
             MySqlCommand mySqlCommand = new MySqlCommand(sqlquery, mySqlConnection);
             mySqlConnection.Open();
             MySqlDataAdapter mda = new MySqlDataAdapter(mySqlCommand);
@@ -244,6 +247,7 @@ namespace PVP_K180.Repos
                     pavadinimas = Convert.ToString(item["pavadinimas"]),
                     aprasymas = Convert.ToString(item["aprasymas"]),
                     busena = Convert.ToString(item["busena"]),
+                    komenetarai = Convert.ToInt32(item["komentarai"]),
                     sukurimo_data = Convert.ToDateTime(item["sukurimo_data"]),
                 }); ;
             }
