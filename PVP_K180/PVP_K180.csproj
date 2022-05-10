@@ -176,6 +176,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\ApklausaController.cs" />
+    <Compile Include="Controllers\AtsitikimasController.cs" />
     <Compile Include="Controllers\BalsavimasController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\NaujienaController.cs" />
@@ -188,6 +189,8 @@
     <Compile Include="Models\Apklausa.cs" />
     <Compile Include="Models\Apklausos_Busena.cs" />
     <Compile Include="Models\Atsakymas.cs" />
+    <Compile Include="Models\Atsitikimas.cs" />
+    <Compile Include="Models\Atsitikimo_Tipas.cs" />
     <Compile Include="Models\Balsavimas.cs" />
     <Compile Include="Models\Balsavimo_Busena.cs" />
     <Compile Include="Models\Balsavimo_Variantas.cs" />
@@ -221,6 +224,7 @@
     <Compile Include="ModelView\VartotojoRolesPerziura.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repos\Apklausos_Repos.cs" />
+    <Compile Include="Repos\Atsitikimas_Repos.cs" />
     <Compile Include="Repos\Balsavimas_Repos.cs" />
     <Compile Include="Repos\Naujiena_Repos.cs" />
     <Compile Include="Repos\Nuotrauka_Repos.cs" />
@@ -668,6 +672,7 @@
     <Content Include="Views\Renginys\Komentarai.cshtml" />
     <Content Include="Views\Renginys\Renginiai.cshtml" />
     <Content Include="Views\Projektas\Projektai.cshtml" />
+    <Content Include="Views\Atsitikimas\SkelbtiAtsitikima.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
