@@ -1,0 +1,61 @@
+﻿@model IEnumerable<PVP_K180.Models.Atsitikimas>
+
+@{
+    ViewBag.Title = "AtsitikimuIstorija";
+}
+<link href="~/Styles/tableStyle.css" rel="stylesheet" />
+<h2>Atsitikimų istorija</h2>
+
+<table class="table-fill">
+    <thead>
+        <tr>
+            <th class="text-left">
+                @Html.DisplayNameFor(model => model.paskelbimo_data)
+            </th>
+            <th class="text-left"> 
+                @Html.DisplayNameFor(model => model.tvirtintojas)
+            </th>
+            <th class="text-left">
+                @Html.DisplayNameFor(model => model.tipas)
+            </th>
+            <th class="text-left">
+                @Html.DisplayNameFor(model => model.busena)
+            </th>
+            <th class="text-left">Papildomos funkcijos</th>
+        </tr>
+    </thead>
+    
+    <tbody class="table-hover">
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td class="text-left">
+                    @Html.DisplayFor(modelItem => item.paskelbimo_data)
+                </td>
+                <td class="text-left">
+                    @if (item.tvirtintojas != null)
+                    {
+                        @Html.DisplayFor(modelItem => item.tvirtintojas)
+                    }
+                    else
+                    { <p>-</p>}
+                </td>
+                <td class="text-left">
+                    @Html.DisplayFor(modelItem => item.tipas)
+                </td>
+                <td class="text-left">
+                    @Html.DisplayFor(modelItem => item.busena)
+                </td>
+                <td class="text-left">
+                    @Html.ActionLink("Detali informacija", "DetaliInformacija", new {  id=item.id_Atstikimas })
+                </td>
+            </tr>
+        }
+    </tbody>
+   
+
+</table>
+
+<p style="margin-top: 20px">
+    @Html.ActionLink("Atgal", "ProfilioValdymas", "Vartotojas")
+</p>

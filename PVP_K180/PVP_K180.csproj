@@ -673,6 +673,7 @@
     <Content Include="Views\Renginys\Renginiai.cshtml" />
     <Content Include="Views\Projektas\Projektai.cshtml" />
     <Content Include="Views\Atsitikimas\SkelbtiAtsitikima.cshtml" />
+    <Content Include="Views\Atsitikimas\AtsitikimuIstorija.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

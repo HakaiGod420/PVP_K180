@@ -71,5 +71,112 @@ namespace PVP_K180.Repos
                 return false;
             }
         }
+
+
+        public List<Atsitikimas> GautiAtsitikimus()
+        {
+            try
+            {
+                List<Atsitikimas> atsitikimai = new List<Atsitikimas>();
+                string conn = ConfigurationManager.ConnectionStrings["MysqlConnection"].ConnectionString;
+                MySqlConnection mySqlConnection = new MySqlConnection(conn);
+                string sqlquery = "SELECT id_Atsitikimas, paskelbimo_data,komentaras, aprasymas,zemelapis_ilguma,zemelapis_platuma,atsitikimo_tipas,atsitikimo_busena,fk_Vartotojasid_Pranesejas,fk_Vartotojasid_Tvirtintojas," +
+                    "Atsitikimo_Tipas.name AS 'atsitikimas',Atsitikimo_Busena.name as 'busena', g.slapyvardis as 'tvirtintojas', Vartotojas.slapyvardis as 'pranesejas' FROM `Atsitikimas`" +
+                    " LEFT JOIN Atsitikimo_Tipas ON Atsitikimo_Tipas.id_Atsitikimo_Tipas = atsitikimo_tipas " +
+                    "LEFT JOIN Atsitikimo_Busena ON Atsitikimo_Busena.id_Atsitikimo_Busena = atsitikimo_busena " +
+                    "LEFT JOIN Vartotojas ON Vartotojas.id_Vartotojas = fk_Vartotojasid_Pranesejas LEFT JOIN Vartotojas as g ON g.id_Vartotojas = fk_Vartotojasid_Tvirtintojas";
+                MySqlCommand mySqlCommand = new MySqlCommand(sqlquery, mySqlConnection);
+                mySqlConnection.Open();
+                MySqlDataAdapter mda = new MySqlDataAdapter(mySqlCommand);
+                DataTable dt = new DataTable();
+                mda.Fill(dt);
+                mySqlConnection.Close();
+
+                foreach (DataRow item in dt.Rows)
+                {
+                    atsitikimai.Add(new Atsitikimas
+                    {
+
+                        id_Atstikimas = Convert.ToInt32(item["id_Atsitikimas"]),
+                        paskelbimo_data = Convert.ToDateTime(item["paskelbimo_data"]),
+                        aprasymas = CheckIfDataNull(item, "aprasymas"),
+                        zemelapio_ilguma = Convert.ToDouble(item["zemelapis_ilguma"]),
+                        zemelapio_platuma = Convert.ToDouble(item["zemelapis_platuma"]),
+                        atsitikimo_tipas = Convert.ToInt32(item["atsitikimo_tipas"]),
+                        atsitikimo_busena = Convert.ToInt32(item["atsitikimo_busena"]),
+                        fk_Vartotojasid_Pranesejas = Convert.ToInt32(item["fk_Vartotojasid_Pranesejas"]),
+                        fk_Vartotojasid_Tvirtintojas = CheckIfDataNull(item, "fk_Vartotojasid_Tvirtintojas"),
+                        tipas = Convert.ToString(item["atsitikimas"]),
+                        busena = Convert.ToString(item["busena"]),
+                        tvirtintojas = CheckIfDataNull(item, "tvirtintojas"),
+                        pranesejas = Convert.ToString(item["pranesejas"]),
+                        komentaras = CheckIfDataNull(item, "komentaras"),
+                    }); ;
+                }
+                return atsitikimai;
+            }
+
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+
+        private dynamic CheckIfDataNull(DataRow data, string type)
+        {
+            if (type == "fk_Vartotojasid_Tvirtintojas")
+            {
+                if (data["fk_Vartotojasid_Tvirtintojas"] == DBNull.Value)
+                {
+                    return null;
+                }
+                else
+                {
+                    return Convert.ToInt32(data["fk_Vartotojasid_Tvirtintojas"]);
+                }
+            }
+
+            if (type == "tvirtintojas")
+            {
+                if (data["tvirtintojas"] == DBNull.Value)
+                {
+                    return null;
+                }
+                else
+                {
+                    return Convert.ToString(data["tvirtintojas"]);
+                }
+            }
+
+            if (type == "komentaras")
+            {
+                if (data["komentaras"] == DBNull.Value)
+                {
+                    return null;
+                }
+                else
+                {
+                    return Convert.ToString(data["komentaras"]);
+                }
+            }
+
+            if (type == "aprasymas")
+            {
+                if (data["aprasymas"] == DBNull.Value)
+                {
+                    return null;
+                }
+                else
+                {
+                    return Convert.ToString(data["aprasymas"]);
+                }
+            }
+
+           
+            return null;
+
+        }
     }
+
+
 }

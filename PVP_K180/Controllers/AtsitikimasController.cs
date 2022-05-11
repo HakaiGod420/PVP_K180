@@ -78,5 +78,16 @@ namespace PVP_K180.Controllers
             TempData["AtsitikimasLang"] = x;
             TempData["AtsitikimasLong"] = y;
         }
+
+
+        public ActionResult AtsitikimuIstorija()
+        {
+            if (Session["UserID"] == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            List<Atsitikimas> atsitikimai = atsitikimas_Repos.GautiAtsitikimus();
+            return View(atsitikimai.Where(x=>x.fk_Vartotojasid_Pranesejas==Convert.ToInt32(Session["UserID"])).ToList());
+        }
     }
 }
