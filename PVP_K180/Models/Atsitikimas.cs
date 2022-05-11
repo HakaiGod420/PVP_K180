@@ -32,7 +32,7 @@ namespace PVP_K180.Models
         public int atsitikimo_tipas { get; set; }
         public int atsitikimo_busena { get; set; }
 
-        public int fk_Vartotojasid_Tvirtintojas { get; set; }
+        public int? fk_Vartotojasid_Tvirtintojas { get; set; }
         public int fk_Vartotojasid_Pranesejas { get; set; }
 
         [DisplayName("Tvirtintojas")]
