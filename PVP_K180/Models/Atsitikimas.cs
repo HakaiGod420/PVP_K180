@@ -48,5 +48,8 @@ namespace PVP_K180.Models
 
         public IList<SelectListItem> atsitikimo_tipai { get; set; }
 
+        [DisplayName("Pridėti nuotraukas")]
+        public HttpPostedFileBase[] nuotraukos { get; set; }
+
     }
 }

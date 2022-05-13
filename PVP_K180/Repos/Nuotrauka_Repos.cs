@@ -33,6 +33,28 @@ namespace PVP_K180.Repos
             }
         }
 
+        public bool Prideti_Atsitikimo_Nuotraukas(Nuotrauka nuotrauka)
+        {
+            try
+            {
+                string conn = ConfigurationManager.ConnectionStrings["MysqlConnection"].ConnectionString;
+                MySqlConnection mySqlConnection = new MySqlConnection(conn);
+                string sqlquery = "INSERT INTO `Nuotrauka`(`nuotraukos_nuroda`,`fk_Atsitikimasid_Atsitikimas`) " +
+                    "VALUES (?nuotraukos_nuoroda,?fk_Atsitikimasid_Atsitikimas)";
+                MySqlCommand mySqlCommand = new MySqlCommand(sqlquery, mySqlConnection);
+                mySqlCommand.Parameters.Add("?nuotraukos_nuoroda", MySqlDbType.VarChar).Value = nuotrauka.nuotraukos_nuoroda;
+                mySqlCommand.Parameters.Add("?fk_Atsitikimasid_Atsitikimas", MySqlDbType.VarChar).Value = nuotrauka.priskirtas_id;
+                mySqlConnection.Open();
+                mySqlCommand.ExecuteNonQuery();
+                mySqlConnection.Close();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
         public List<Nuotrauka> Gauti__Naujienu_Nuotraukas(int id)
         {
             List<Nuotrauka> nuotraukos = new List<Nuotrauka>();

@@ -6,12 +6,14 @@ using System.Web.Mvc;
 using PVP_K180.Models;
 using PVP_K180.Repos;
 using PVP_K180.ModelView;
+using System.IO;
 
 namespace PVP_K180.Controllers
 {
     public class AtsitikimasController : Controller
     {
         Atsitikimas_Repos atsitikimas_Repos = new Atsitikimas_Repos();
+        Nuotrauka_Repos nuotrauka_Repos = new Nuotrauka_Repos();
 
         public ActionResult SkelbtiAtsitikima()
         {
@@ -29,6 +31,8 @@ namespace PVP_K180.Controllers
         [HttpPost]
         public ActionResult SkelbtiAtsitikima(Atsitikimas atsitikimas)
         {
+            List<string> posiblesExtensions = new List<string>() { ".jpg", ".png", ".JPG", ".PNG", ".jpeg", ".JPEG" };
+
             UzpildytiAtsitikimoTipus(atsitikimas);
             if (Session["UserID"] == null)
             {
@@ -56,8 +60,37 @@ namespace PVP_K180.Controllers
             atsitikimas.atsitikimo_busena = 1;
 
             atsitikimas_Repos.PridetiAtsitikima(atsitikimas);
+            var lastIndex = atsitikimas_Repos.Gauti_Paskutini_Prideto_Index();
 
             TempData["AtsitikmasSuccsess"] = "Atsitikimas sėkmingai pridėtas";
+
+
+            foreach (HttpPostedFileBase file in atsitikimas.nuotraukos)
+            {
+                if (file != null)
+                {
+                    var InputFileName = Path.GetFileName(file.FileName);
+
+                    var extension = Path.GetExtension(file.FileName);
+                    if (!posiblesExtensions.Contains(extension))
+                    {
+                        TempData["AtsitikmasFail"] = "Kai kurios nuotraukos įkeltus su netinkamu formatu";
+                        continue;
+                    }
+
+                    var random = Guid.NewGuid() + InputFileName;
+                    var ServerSavePath = Path.Combine(Server.MapPath("~/Nuotraukos/") + random);
+
+
+                    file.SaveAs(ServerSavePath);
+                    Nuotrauka nuotrauka = new Nuotrauka();
+                    nuotrauka.nuotraukos_nuoroda = random;
+                    nuotrauka.priskirtas_id = lastIndex;
+                    nuotrauka_Repos.Prideti_Atsitikimo_Nuotraukas(nuotrauka);
+
+                }
+            }
+
             return View(atsitikimas);
         }
 
