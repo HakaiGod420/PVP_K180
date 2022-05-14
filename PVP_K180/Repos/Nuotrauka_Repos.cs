@@ -140,5 +140,30 @@ namespace PVP_K180.Repos
             mySqlConnection.Close();
             return true;
         }
+
+        public List<Nuotrauka> Gauti__Atsitikimu_Nuotraukas(int id)
+        {
+            List<Nuotrauka> nuotraukos = new List<Nuotrauka>();
+            string conn = ConfigurationManager.ConnectionStrings["MysqlConnection"].ConnectionString;
+            MySqlConnection mySqlConnection = new MySqlConnection(conn);
+            string sqlquery = "select * from `Nuotrauka` where fk_Atsitikimasid_Atsitikimas=" + id;
+            MySqlCommand mySqlCommand = new MySqlCommand(sqlquery, mySqlConnection);
+            mySqlConnection.Open();
+            MySqlDataAdapter mda = new MySqlDataAdapter(mySqlCommand);
+            DataTable dt = new DataTable();
+            mda.Fill(dt);
+            mySqlConnection.Close();
+
+            foreach (DataRow item in dt.Rows)
+            {
+                nuotraukos.Add(new Nuotrauka
+                {
+                    id_Nuotrauka = Convert.ToInt32(item["id_Nuotrauka"]),
+                    nuotraukos_nuoroda = Convert.ToString(item["nuotraukos_nuroda"]),
+                    priskirtas_id = Convert.ToInt32(item["fk_Atsitikimasid_Atsitikimas"]),
+                });
+            }
+            return nuotraukos;
+        }
     }
 }

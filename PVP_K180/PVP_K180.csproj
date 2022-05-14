@@ -276,14 +276,17 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\lightbox.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Styles\comment.css" />
     <Content Include="Styles\dropdownMenu.css" />
     <Content Include="Styles\EventStyle.css" />
+    <Content Include="Styles\lightbox.css" />
     <Content Include="Styles\navbar.css" />
     <Content Include="Styles\profileStyle.css" />
     <Content Include="Styles\ProjectStyle.css" />
     <Content Include="Styles\slideCss.css" />
+    <Content Include="Styles\photoStyle.css" />
     <Content Include="Styles\tableStyle.css" />
     <Content Include="Themes\ckeditor\adapters\jquery.js" />
     <Content Include="Themes\ckeditor\build-config.js" />
@@ -674,6 +677,8 @@
     <Content Include="Views\Projektas\Projektai.cshtml" />
     <Content Include="Views\Atsitikimas\SkelbtiAtsitikima.cshtml" />
     <Content Include="Views\Atsitikimas\AtsitikimuIstorija.cshtml" />
+    <Content Include="Views\Atsitikimas\AtsitikimuSarasas.cshtml" />
+    <Content Include="Views\Atsitikimas\DetaliInformacija.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

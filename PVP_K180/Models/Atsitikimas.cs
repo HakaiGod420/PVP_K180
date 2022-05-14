@@ -50,6 +50,6 @@ namespace PVP_K180.Models
 
         [DisplayName("Pridėti nuotraukas")]
         public HttpPostedFileBase[] nuotraukos { get; set; }
-
+        public List<Nuotrauka> gautosNuotraukos { get; set; }
     }
 }
