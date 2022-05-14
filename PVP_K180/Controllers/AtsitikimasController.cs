@@ -120,7 +120,31 @@ namespace PVP_K180.Controllers
                 return RedirectToAction("Index", "Home");
             }
             List<Atsitikimas> atsitikimai = atsitikimas_Repos.GautiAtsitikimus();
+            TempData["AdminMenu"] = false;
             return View(atsitikimai.Where(x=>x.fk_Vartotojasid_Pranesejas==Convert.ToInt32(Session["UserID"])).ToList());
         }
+
+        public ActionResult AtsitikimuSarasas()
+        {
+            if (Session["UserID"] == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            else if (!Session["Role"].Equals("Administratorius"))
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            List<Atsitikimas> atsitikimai = atsitikimas_Repos.GautiAtsitikimus();
+            TempData["AdminMenu"] = true;
+            return View(atsitikimai);
+        }
+
+        public ActionResult DetaliInformacija(int id)
+        {
+            Atsitikimas atsitikimas = atsitikimas_Repos.Gauti_Atsitikima(id);
+            atsitikimas.gautosNuotraukos = nuotrauka_Repos.Gauti__Atsitikimu_Nuotraukas(id);
+            return View(atsitikimas);
+        }
+
     }
 }
