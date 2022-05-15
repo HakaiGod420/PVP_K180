@@ -146,5 +146,52 @@ namespace PVP_K180.Controllers
             return View(atsitikimas);
         }
 
+        public ActionResult KeistiAtsitikimoBusena(int id)
+        {
+            if (Session["UserID"] == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            else if (!Session["Role"].Equals("Administratorius"))
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            TempData["idAtsitikimas"] = id;
+            AtsitikimuKeitimasPerziura atsitikimas = atsitikimas_Repos.Gauti_Atsitikimo_Perziura(id);
+            UzpildytiAtsitikimoBusenas(atsitikimas);
+            
+            return View(atsitikimas);
+        }
+
+        [HttpPost]
+        public ActionResult KeistiAtsitikimoBusena(AtsitikimuKeitimasPerziura atsitikimas)
+        {
+            if (Session["UserID"] == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            else if (!Session["Role"].Equals("Administratorius"))
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            atsitikimas.tvirtintojas = Convert.ToInt32(Session["UserID"]);
+            atsitikimas.id_Atstikimas = Convert.ToInt32(TempData["idAtsitikimas"]);
+            atsitikimas_Repos.Atnaujinti_Atsitikimo_Busena(atsitikimas);
+            UzpildytiAtsitikimoBusenas(atsitikimas);
+            TempData["SuccsessAtstikimas"] = "Atsitikimas sėkmingai atnaujintas";   
+            return View(atsitikimas);
+        }
+
+        public void UzpildytiAtsitikimoBusenas(AtsitikimuKeitimasPerziura atsitikimas)
+        {
+            var atsitikimai = atsitikimas_Repos.GautiAtsitikimoBusenas();
+            IList<SelectListItem> busenosList = new List<SelectListItem>();
+            foreach (var item in atsitikimai)
+            {
+                busenosList.Add(new SelectListItem { Value = item.id_Atsitikimas_Busena.ToString(), Text = item.name });
+            }
+            atsitikimas.atsitikimo_busenos = busenosList;
+        }
+
     }
 }

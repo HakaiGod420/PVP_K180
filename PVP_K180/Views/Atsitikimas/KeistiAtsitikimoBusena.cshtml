@@ -1,0 +1,47 @@
+﻿@model PVP_K180.ModelView.AtsitikimuKeitimasPerziura
+
+@{
+    ViewBag.Title = "Atsitikimų būsenos keitimas";
+}
+
+<h2>Atstitikimo būsenos keitimas</h2>
+
+@if (TempData["SuccsessAtstikimas"] != null)
+{
+    <p class="alert alert-success" id="successMessage">@Convert.ToString(TempData["SuccsessAtstikimas"])</p>
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <hr />
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.atsitikimo_busena, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.atsitikimo_busena, Model.atsitikimo_busenos, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.atsitikimo_busenos, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.komentaras, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.komentaras, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.komentaras, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Atnauninti" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Atgal", "DetaliInformacija", new { id = Model.id_Atstikimas })
+</div>

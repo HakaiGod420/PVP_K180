@@ -45,6 +45,39 @@ namespace PVP_K180.Repos
             }
         }
 
+        public List<Atsitikimo_Busena> GautiAtsitikimoBusenas()
+        {
+            try
+            {
+                List<Atsitikimo_Busena> busenos = new List<Atsitikimo_Busena>();
+                string conn = ConfigurationManager.ConnectionStrings["MysqlConnection"].ConnectionString;
+                MySqlConnection mySqlConnection = new MySqlConnection(conn);
+                string sqlquery = "SELECT * FROM `Atsitikimo_Busena` WHERE 1";
+                MySqlCommand mySqlCommand = new MySqlCommand(sqlquery, mySqlConnection);
+                mySqlConnection.Open();
+                MySqlDataAdapter mda = new MySqlDataAdapter(mySqlCommand);
+                DataTable dt = new DataTable();
+                mda.Fill(dt);
+                mySqlConnection.Close();
+
+                foreach (DataRow item in dt.Rows)
+                {
+                    busenos.Add(new Atsitikimo_Busena
+                    {
+
+                        id_Atsitikimas_Busena = Convert.ToInt32(item["id_Atsitikimo_Busena"]),
+                        name = Convert.ToString(item["name"])
+                    }); ;
+                }
+                return busenos;
+            }
+
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+
         public bool PridetiAtsitikima(Atsitikimas atsitikimas)
         {
             try
@@ -163,6 +196,35 @@ namespace PVP_K180.Repos
             return atsitikimas;
         }
 
+        public AtsitikimuKeitimasPerziura Gauti_Atsitikimo_Perziura(int id)
+        {
+            AtsitikimuKeitimasPerziura atsitikimas = new AtsitikimuKeitimasPerziura();
+            string conn = ConfigurationManager.ConnectionStrings["MysqlConnection"].ConnectionString;
+            MySqlConnection mySqlConnection = new MySqlConnection(conn);
+            string sqlquery = "SELECT id_Atsitikimas, paskelbimo_data,komentaras, aprasymas,zemelapis_ilguma,zemelapis_platuma,atsitikimo_tipas,atsitikimo_busena,fk_Vartotojasid_Pranesejas,fk_Vartotojasid_Tvirtintojas," +
+            "Atsitikimo_Tipas.name AS 'atsitikimas',Atsitikimo_Busena.name as 'busena', g.slapyvardis as 'tvirtintojas', Vartotojas.slapyvardis as 'pranesejas' FROM `Atsitikimas`" +
+            " LEFT JOIN Atsitikimo_Tipas ON Atsitikimo_Tipas.id_Atsitikimo_Tipas = atsitikimo_tipas " +
+            "LEFT JOIN Atsitikimo_Busena ON Atsitikimo_Busena.id_Atsitikimo_Busena = atsitikimo_busena " +
+            "LEFT JOIN Vartotojas ON Vartotojas.id_Vartotojas = fk_Vartotojasid_Pranesejas LEFT JOIN Vartotojas as g ON g.id_Vartotojas = fk_Vartotojasid_Tvirtintojas where id_Atsitikimas=" + id;
+
+            MySqlCommand mySqlCommand = new MySqlCommand(sqlquery, mySqlConnection);
+            mySqlConnection.Open();
+            MySqlDataAdapter mda = new MySqlDataAdapter(mySqlCommand);
+            DataTable dt = new DataTable();
+            mda.Fill(dt);
+            mySqlConnection.Close();
+
+            foreach (DataRow item in dt.Rows)
+            {
+                {
+                    atsitikimas.id_Atstikimas = Convert.ToInt32(item["id_Atsitikimas"]);
+                    atsitikimas.atsitikimo_busena = Convert.ToInt32(item["atsitikimo_busena"]);
+                    atsitikimas.komentaras = CheckIfDataNull(item, "komentaras");
+                }
+            }
+            return atsitikimas;
+        }
+
         private dynamic CheckIfDataNull(DataRow data, string type)
         {
             if (type == "fk_Vartotojasid_Tvirtintojas")
@@ -243,6 +305,29 @@ namespace PVP_K180.Repos
             catch (Exception ex)
             {
                 return -1;
+            }
+        }
+
+        public bool Atnaujinti_Atsitikimo_Busena(AtsitikimuKeitimasPerziura atsitikimas)
+        {
+            try
+            {
+                string conn = ConfigurationManager.ConnectionStrings["MysqlConnection"].ConnectionString;
+                MySqlConnection mySqlConnection = new MySqlConnection(conn);
+                string sqlquery = "UPDATE `Atsitikimas` SET `komentaras`=?komentaras,`atsitikimo_busena`=?atsitikimo_busena,`fk_Vartotojasid_Tvirtintojas`=?fk_Vartotojasid_Tvirtintojas WHERE id_Atsitikimas=" + atsitikimas.id_Atstikimas;
+                MySqlCommand mySqlCommand = new MySqlCommand(sqlquery, mySqlConnection);
+                mySqlCommand.Parameters.Add("?komentaras", MySqlDbType.String).Value = atsitikimas.komentaras;
+                mySqlCommand.Parameters.Add("?atsitikimo_busena", MySqlDbType.Int32).Value = atsitikimas.atsitikimo_busena;
+                mySqlCommand.Parameters.Add("?fk_Vartotojasid_Tvirtintojas", MySqlDbType.Int32).Value = atsitikimas.tvirtintojas;
+                mySqlConnection.Open();
+                mySqlCommand.ExecuteNonQuery();
+                mySqlConnection.Close();
+                return true;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return false;
             }
         }
     }
