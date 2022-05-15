@@ -190,6 +190,7 @@
     <Compile Include="Models\Apklausos_Busena.cs" />
     <Compile Include="Models\Atsakymas.cs" />
     <Compile Include="Models\Atsitikimas.cs" />
+    <Compile Include="Models\Atsitikimo_Busena.cs" />
     <Compile Include="Models\Atsitikimo_Tipas.cs" />
     <Compile Include="Models\Balsavimas.cs" />
     <Compile Include="Models\Balsavimo_Busena.cs" />
@@ -208,6 +209,7 @@
     <Compile Include="Models\Vartotojo_Busena.cs" />
     <Compile Include="ModelView\ApklausosAtsakymai.cs" />
     <Compile Include="ModelView\Atnaujinami_Vartotojo_Duomenys.cs" />
+    <Compile Include="ModelView\AtsitikimuKeitimasPerziura.cs" />
     <Compile Include="ModelView\BalsavimoBusenaPerziura.cs" />
     <Compile Include="ModelView\BalsavimuDiagrama.cs" />
     <Compile Include="ModelView\EmaiModel.cs" />
@@ -679,6 +681,7 @@
     <Content Include="Views\Atsitikimas\AtsitikimuIstorija.cshtml" />
     <Content Include="Views\Atsitikimas\AtsitikimuSarasas.cshtml" />
     <Content Include="Views\Atsitikimas\DetaliInformacija.cshtml" />
+    <Content Include="Views\Atsitikimas\KeistiAtsitikimoBusena.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
