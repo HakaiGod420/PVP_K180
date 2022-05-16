@@ -113,7 +113,7 @@ namespace PVP_K180.Controllers
         }
 
 
-        public ActionResult AtsitikimuIstorija()
+        public ActionResult AtsitikimuIstorija(int? busena,int? tipas, DateTime? nuo, DateTime? iki)
         {
             if (Session["UserID"] == null)
             {
@@ -121,10 +121,29 @@ namespace PVP_K180.Controllers
             }
             List<Atsitikimas> atsitikimai = atsitikimas_Repos.GautiAtsitikimus();
             TempData["AdminMenu"] = false;
+            if(busena != null)
+            {
+                atsitikimai = atsitikimai.Where(x => x.atsitikimo_busena == Convert.ToInt32(busena)).ToList();
+            }
+            if(tipas != null)
+            {
+                atsitikimai = atsitikimai.Where(x => x.atsitikimo_tipas == Convert.ToInt32(tipas)).ToList();
+            }
+            if (nuo != null)
+            {
+                var data = (DateTime)nuo;
+                atsitikimai = atsitikimai.Where(x => x.paskelbimo_data.Date >= (DateTime)data.Date).ToList();
+            }
+
+            if (iki != null)
+            {
+                var data = (DateTime)iki;
+                atsitikimai = atsitikimai.Where(x => x.paskelbimo_data.Date <= (DateTime)data.Date).ToList();
+            }
             return View(atsitikimai.Where(x=>x.fk_Vartotojasid_Pranesejas==Convert.ToInt32(Session["UserID"])).ToList());
         }
 
-        public ActionResult AtsitikimuSarasas()
+        public ActionResult AtsitikimuSarasas(int? busena, int? tipas, DateTime? nuo, DateTime? iki)
         {
             if (Session["UserID"] == null)
             {
@@ -136,6 +155,25 @@ namespace PVP_K180.Controllers
             }
             List<Atsitikimas> atsitikimai = atsitikimas_Repos.GautiAtsitikimus();
             TempData["AdminMenu"] = true;
+            if (busena != null)
+            {
+                atsitikimai = atsitikimai.Where(x => x.atsitikimo_busena == Convert.ToInt32(busena)).ToList();
+            }
+            if (tipas != null)
+            {
+                atsitikimai = atsitikimai.Where(x => x.atsitikimo_tipas == Convert.ToInt32(tipas)).ToList();
+            }
+            if (nuo != null)
+            {
+                var data = (DateTime)nuo;
+                atsitikimai = atsitikimai.Where(x => x.paskelbimo_data.Date >= (DateTime)data.Date).ToList();
+            }
+
+            if (iki != null)
+            {
+                var data = (DateTime)iki;
+                atsitikimai = atsitikimai.Where(x => x.paskelbimo_data.Date <= (DateTime)data.Date).ToList();
+            }
             return View(atsitikimai);
         }
 
