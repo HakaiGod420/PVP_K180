@@ -43,5 +43,7 @@ namespace PVP_K180.Models
         public int renginio_busena { get; set; }
         [DisplayName("Sukurta vartotojo")]
         public int vartotojas_id { get; set; }
+
+        public List<Nuotrauka> gautosNuotraukos { get; set; }
     }
 }

@@ -207,5 +207,12 @@ namespace PVP_K180.Controllers
             List<Renginys> renginiai = renginys_Repos.Gauti_Renginius();
             return View(renginiai);
         }
+
+        public ActionResult DetaliInformacijaRenginys(int id)
+        {
+            Renginys renginys = renginys_Repos.Gauti_Rengini(id);
+            renginys.gautosNuotraukos = nuotrauka_Repos.Gauti__Renginiu_Nuotraukas(id);
+            return View(renginys);
+        }
     }
 }

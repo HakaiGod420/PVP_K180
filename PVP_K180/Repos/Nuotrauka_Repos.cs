@@ -55,6 +55,28 @@ namespace PVP_K180.Repos
             }
         }
 
+        public bool Prideti_Projekto_Nuotraukas(Nuotrauka nuotrauka)
+        {
+            try
+            {
+                string conn = ConfigurationManager.ConnectionStrings["MysqlConnection"].ConnectionString;
+                MySqlConnection mySqlConnection = new MySqlConnection(conn);
+                string sqlquery = "INSERT INTO `Nuotrauka`(`nuotraukos_nuroda`,`fk_Projektasid_Projektas`) " +
+                    "VALUES (?nuotraukos_nuoroda,?fk_Projektasid_Projektas)";
+                MySqlCommand mySqlCommand = new MySqlCommand(sqlquery, mySqlConnection);
+                mySqlCommand.Parameters.Add("?nuotraukos_nuoroda", MySqlDbType.VarChar).Value = nuotrauka.nuotraukos_nuoroda;
+                mySqlCommand.Parameters.Add("?fk_Projektasid_Projektas", MySqlDbType.VarChar).Value = nuotrauka.priskirtas_id;
+                mySqlConnection.Open();
+                mySqlCommand.ExecuteNonQuery();
+                mySqlConnection.Close();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
         public bool Prideti_Atsitikimo_Nuotraukas(Nuotrauka nuotrauka)
         {
             try
@@ -146,7 +168,7 @@ namespace PVP_K180.Repos
                 {
                     id_Nuotrauka = Convert.ToInt32(item["id_Nuotrauka"]),
                     nuotraukos_nuoroda = Convert.ToString(item["nuotraukos_nuroda"]),
-                    priskirtas_id = Convert.ToInt32(item["fk_Naujienaid_Naujiena"]),
+                    priskirtas_id = Convert.ToInt32(item["fk_Projektasid_Projektas"]),
                 });
             }
             return nuotraukos;
@@ -193,6 +215,29 @@ namespace PVP_K180.Repos
                 nuotrauka.id_Nuotrauka = Convert.ToInt32(item["id_Nuotrauka"]);
                 nuotrauka.nuotraukos_nuoroda = Convert.ToString(item["nuotraukos_nuroda"]);
                 nuotrauka.priskirtas_id = Convert.ToInt32(item["fk_Renginysid_Renginys"]);
+            }
+
+            return nuotrauka;
+        }
+
+        public Nuotrauka Gauti_Projekto_Nuotrauka(int id)
+        {
+            Nuotrauka nuotrauka = new Nuotrauka();
+            string conn = ConfigurationManager.ConnectionStrings["MysqlConnection"].ConnectionString;
+            MySqlConnection mySqlConnection = new MySqlConnection(conn);
+            string sqlquery = "select * from `Nuotrauka` where id_Nuotrauka=" + id;
+            MySqlCommand mySqlCommand = new MySqlCommand(sqlquery, mySqlConnection);
+            mySqlConnection.Open();
+            MySqlDataAdapter mda = new MySqlDataAdapter(mySqlCommand);
+            DataTable dt = new DataTable();
+            mda.Fill(dt);
+            mySqlConnection.Close();
+
+            foreach (DataRow item in dt.Rows)
+            {
+                nuotrauka.id_Nuotrauka = Convert.ToInt32(item["id_Nuotrauka"]);
+                nuotrauka.nuotraukos_nuoroda = Convert.ToString(item["nuotraukos_nuroda"]);
+                nuotrauka.priskirtas_id = Convert.ToInt32(item["fk_Projektasid_Projektas"]);
             }
 
             return nuotrauka;

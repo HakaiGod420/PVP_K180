@@ -1,7 +1,7 @@
-﻿@model PVP_K180.Models.Atsitikimas
+﻿@model PVP_K180.Models.Renginys
 
 @{
-    ViewBag.Title = "DetaliInformacija";
+    ViewBag.Title = "DetaliInformacijaRenginys";
 }
 
 <link href="~/Styles/photoStyle.css" rel="stylesheet" />
@@ -34,7 +34,7 @@
         margin: 0;
         padding: 0;
         background-color: #f1f1f1;
-        margin-top:20px;
+        margin-top: 20px;
     }
 </style>
 
@@ -58,45 +58,51 @@
 
     <div class="boxShadow">
         <p style="text-align:left;font-size:20px; font-weight:bold">
-            Atsitikimas #@Model.id_Atstikimas
-            @if (Session["Role"].Equals("Administratorius"))
-            {
-            <span style="float:right;">
-                @Html.ActionLink("Atnaujinti atsitikimą", "KeistiAtsitikimoBusena", "Atsitikimas", new { id = Model.id_Atstikimas }, new { @class = "lnkGetReward btn btn-default btn-sm" })
-            </span>
-            }
+            Renginys #@Model.id_Renginys
         </p>
         <hr />
-        <p style="text-align:left">
-            Atsitikimo tipas: <b>@Model.tipas</b>
-            <span style="float:right;">
-                Atsitikimo būsena: <b>@Model.busena</b>
-            </span>
-        </p>
+    </div>
+
+    <div class="boxShadow" style="text-align:left;font-size:15px;">
+        <p style="text-align: left; font-size: 20px; font-weight: bold">@Html.DisplayNameFor(model => model.pavadinimas)</p>
+        <hr />
+        <p>@Html.DisplayFor(model => model.pavadinimas)</p>
     </div>
 
     <div class="boxShadow" style="text-align:left;font-size:15px;">
         <p style="text-align: left; font-size: 20px; font-weight: bold">@Html.DisplayNameFor(model => model.aprasymas)</p>
         <hr />
-        <p>@Html.DisplayFor(model => model.aprasymas)</p>
+        <p> @Html.DisplayFor(model => model.aprasymas)</p>
     </div>
 
     <div class="boxShadow" style="text-align:left;font-size:15px;">
-        <p style="text-align: left; font-size: 20px; font-weight: bold">@Html.DisplayNameFor(model => model.komentaras)</p>
+        <p style="text-align: left; font-size: 20px; font-weight: bold">@Html.DisplayNameFor(model => model.paskelbimo_data)</p>
         <hr />
-        <p> @Html.DisplayFor(model => model.komentaras)</p>
+        <p>@Html.DisplayFor(model => model.paskelbimo_data)</p>
     </div>
 
     <div class="boxShadow" style="text-align:left;font-size:15px;">
-        <p style="text-align: left; font-size: 20px; font-weight: bold">@Html.DisplayNameFor(model => model.pranesejas)</p>
+        <p style="text-align: left; font-size: 20px; font-weight: bold"> @Html.DisplayNameFor(model => model.pabaigos_data)</p>
         <hr />
-        <p>@Html.DisplayFor(model => model.pranesejas)</p>
+        <p> @Html.DisplayFor(model => model.pabaigos_data)</p>
     </div>
 
     <div class="boxShadow" style="text-align:left;font-size:15px;">
-        <p style="text-align: left; font-size: 20px; font-weight: bold"> @Html.DisplayNameFor(model => model.tvirtintojas)</p>
+        <p style="text-align: left; font-size: 20px; font-weight: bold"> @Html.DisplayNameFor(model => model.adresas)</p>
         <hr />
-        <p> @Html.DisplayFor(model => model.tvirtintojas)</p>
+        <p> @Html.DisplayFor(model => model.adresas)</p>
+    </div>
+
+    <div class="boxShadow" style="text-align:left;font-size:15px;">
+        <p style="text-align: left; font-size: 20px; font-weight: bold"> @Html.DisplayNameFor(model => model.kaina)</p>
+        <hr />
+        <p> @Html.DisplayFor(model => model.kaina)</p>
+    </div>
+
+    <div class="boxShadow" style="text-align:left;font-size:15px;">
+        <p style="text-align: left; font-size: 20px; font-weight: bold"> @Html.DisplayNameFor(model => model.renginio_busena)</p>
+        <hr />
+        <p> @Html.DisplayFor(model => model.renginio_busena)</p>
     </div>
 
     <div class="boxShadow">
@@ -134,15 +140,7 @@
     </div>
 </div>
 <p style="margin-top:20px">
-    @if (Convert.ToBoolean(TempData["AdminMenu"]) == true)
-    {
-        @Html.ActionLink("Atgal", "AtsitikimuSarasas")
-    }
-    else
-    {
-        @Html.ActionLink("Atgal", "AtsitikimuIstorija")
-    }
-
+    @Html.ActionLink("Atgal", "GautiRenginius")
 </p>
 
 
@@ -161,12 +159,12 @@
     // magnification with which the map will start
     const zoom = 15;
     // co-ordinates
-    const lat = '@Model.zemelapio_ilguma'.replace(",", ".");
-    const lng = '@Model.zemelapio_platuma'.replace(",", ".");
+    const lat = '@Model.zemelapis_ilguma'.replace(",", ".");
+    const lng = '@Model.zemelapis_platuma'.replace(",", ".");
 
     // calling map
     const map = L.map("map", config).setView([lat, lng], zoom);
-    var main = L.marker([lat, lng]).addTo(map).bindPopup('@Model.tipas');
+    var main = L.marker([lat, lng]).addTo(map);
 
     // Used to load and display tile layers on the map
     // Most tile servers require attribution, which you can set under `Layer`

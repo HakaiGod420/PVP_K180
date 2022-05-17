@@ -127,7 +127,8 @@
             </td>
             <td class="text-left">
                 @Html.ActionLink("Redaguoti", "RedaguotiRengini", new { id = item.id_Renginys }) |
-                @Html.ActionLink("Rašyti komentarą", "Komentarai", new { id = item.id_Renginys })
+                @Html.ActionLink("Rašyti komentarą", "Komentarai", new { id = item.id_Renginys }) |
+                @Html.ActionLink("Detali informacija", "DetaliInformacijaRenginys", new { id = item.id_Renginys })
             </td>
         </tr>
         }
