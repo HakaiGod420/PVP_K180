@@ -208,6 +208,7 @@
     <Compile Include="Models\Vartotojas.cs" />
     <Compile Include="Models\Vartotojo_Busena.cs" />
     <Compile Include="ModelView\ApklausosAtsakymai.cs" />
+    <Compile Include="ModelView\ApklausosBusenaPerziura.cs" />
     <Compile Include="ModelView\Atnaujinami_Vartotojo_Duomenys.cs" />
     <Compile Include="ModelView\AtsitikimuKeitimasPerziura.cs" />
     <Compile Include="ModelView\BalsavimoBusenaPerziura.cs" />
@@ -686,6 +687,7 @@
     <Content Include="Views\Atsitikimas\KeistiAtsitikimoBusena.cshtml" />
     <Content Include="Views\Projektas\DetaliInformacijaProjektas.cshtml" />
     <Content Include="Views\Renginys\DetaliInformacijaRenginys.cshtml" />
+    <Content Include="Views\Apklausa\KeistiApklausosBusena.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

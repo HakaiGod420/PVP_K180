@@ -6,6 +6,7 @@ using PVP_K180.Models;
 using PVP_K180.ModelView;
 using PVP_K180.Repos;
 using System.Web.Mvc;
+using System.Threading.Tasks;
 
 namespace PVP_K180.Controllers
 {
@@ -201,6 +202,52 @@ namespace PVP_K180.Controllers
             
             return View(apklausa);
         }
+
+        public ActionResult KeistiApklausosBusena(int id)
+        {
+            Apklausos_Repos apklausos_Repos = new Apklausos_Repos();
+            apklausa = apklausos_Repos.Gauti_Apklausa(id);
+            return View(new ApklausosBusenaPerziura {
+                apklausos_Busena = apklausa.busena, Busenos = apklausa_Repos.GautiBusenas().Select(b => new SelectListItem {
+            Text = b.name,
+            Value = b.id_Apklausos_busena.ToString()} )});
+        }
+
+        [HttpPost]
+        public ActionResult KeistiApklausosBusena(int id, ApklausosBusenaPerziura apklausosBusenaPerziura)
+        {
+            if (Session["UserID"] == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            else if (!Session["Role"].Equals("Administratorius"))
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            var count = apklausa_Repos.GautiAktyviuSkaiciu();
+
+            apklausosBusenaPerziura.Busenos = apklausa_Repos.GautiBusenas().Select(b => new SelectListItem
+            {
+                Text = b.name,
+                Value = b.id_Apklausos_busena.ToString()
+            });
+
+            if (apklausosBusenaPerziura.apklausos_Busena == 2)
+            {
+                if (count >= 1)
+                {
+                    Response.Write("<script type='text/javascript' language='javascript'> alert('Aktyvus apklausa gali būti tik viena')</script>");
+                    return View(apklausosBusenaPerziura);
+                }
+            }
+
+            apklausa_Repos.Atnaujinti_Apklausos_Busena(id, apklausosBusenaPerziura.apklausos_Busena);
+            Response.Write("<script type='text/javascript' language='javascript'> alert('Apklausos būsena pakeista')</script>");
+
+            return RedirectToAction("ZiuretiApklausas", "Apklausa");
+        }
+
 
     }
 }
