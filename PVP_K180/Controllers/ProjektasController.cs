@@ -3,6 +3,8 @@ using PVP_K180.ModelView;
 using PVP_K180.Repos;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Web;
 using System.Web.Mvc;
 
 namespace PVP_K180.Controllers
@@ -33,19 +35,48 @@ namespace PVP_K180.Controllers
         }
 
         [HttpPost]
-        public ActionResult ProjektoKurimas(Projektas projektas)
+        public ActionResult ProjektoKurimas(Projekto_duomenys projekto_Duomenys)
         {
+            List<string> posiblesExtensions = new List<string>() { ".jpg", ".png", ".JPG", ".PNG", ".jpeg", ".JPEG" };
             Projektas_Repos projektas_Repos = new Projektas_Repos();
-            projektas.fk_Vartotojasid_Vartotojas = (int)Session["UserID"];
-            bool flag = projektas_Repos.Sukurti_Projekta(projektas);
-
-            if (true)
+            projekto_Duomenys.projektas.fk_Vartotojasid_Vartotojas = (int)Session["UserID"];
+            bool flag = projektas_Repos.Sukurti_Projekta(projekto_Duomenys.projektas);
+            if (flag)
             {
+                int lastIndex = projektas_Repos.Gauti_Paskutini_Prideto_Index();
+
+                foreach (HttpPostedFileBase file in projekto_Duomenys.nuotraukos)
+                {
+                    if (file != null)
+                    {
+                        var InputFileName = Path.GetFileName(file.FileName);
+
+                        var extension = Path.GetExtension(file.FileName);
+                        if (!posiblesExtensions.Contains(extension))
+                        {
+                            Response.Write("<script type='text/javascript' language='javascript'> alert('Įkeltas su netinkamu formatu')</script>");
+                            return View();
+                        }
+
+                        var random = Guid.NewGuid() + InputFileName;
+                        var ServerSavePath = Path.Combine(Server.MapPath("~/Nuotraukos/") + random);
+
+
+                        file.SaveAs(ServerSavePath);
+                        Nuotrauka nuotrauka = new Nuotrauka();
+                        nuotrauka.nuotraukos_nuoroda = random;
+                        nuotrauka.priskirtas_id = lastIndex;
+                        nuotrauka_Repos.Prideti_Projekto_Nuotraukas(nuotrauka);
+
+                    }
+                }
+
                 Response.Write("<script type='text/javascript' language='javascript'> alert('Projektas sėkmingai sukurtas!')</script>");
             }
             else
             {
                 Response.Write("<script type='text/javascript' language='javascript'> alert('Projektas nesukurtas!')</script>");
+
             }
 
             return View();
@@ -151,6 +182,13 @@ namespace PVP_K180.Controllers
                 List<Nuotrauka> nuotraukos = nuotrauka_Repos.Gauti_Projektu_Nuotraukas(projektas[i].id_Projektas);
                 projektas[i].pradine_nuotrauka = nuotraukos[0].nuotraukos_nuoroda;
             }
+            return View(projektas);
+        }
+
+        public ActionResult DetaliInformacijaProjektas(int id)
+        {
+            Projektas projektas = projektas_Repos.Gauti_Projekta(id);
+            projektas.gautosNuotraukos = nuotrauka_Repos.Gauti_Projektu_Nuotraukas(id);
             return View(projektas);
         }
     }

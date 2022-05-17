@@ -22,7 +22,7 @@
                 @Html.DisplayNameFor(model => model.aprasymas)
             </th>
             <th class="text-left">
-                @Html.DisplayNameFor(model => model.busena)
+                @Html.DisplayNameFor(model => model.projekto_busena)
             </th>
             <th>Funckijos</th>
         </tr>
@@ -42,15 +42,15 @@
                     @Html.DisplayFor(modelItem => item.aprasymas)
                 </td>
                 <td class="text-left">
-                    @if (item.busena == 1)
+                    @if (item.projekto_busena == 1)
                     {
                         @Html.DisplayName("Bus vykdomas")
                     }
-                    else if (item.busena == 2)
+                    else if (item.projekto_busena == 2)
                     {
                         @Html.DisplayName("Įvykdytas")
                     }
-                    else if (item.busena == 3)
+                    else if (item.projekto_busena == 3)
                     {
                         @Html.DisplayName("Vykdomas")
                     }
@@ -58,7 +58,8 @@
                 <td class="text-left">
                     @Html.ActionLink("Redaguoti", "RedaguotiProjekta", new { id = item.id_Projektas }) |
                     @Html.ActionLink("Pašalinti", "TrintiProjekta", new { id = item.id_Projektas }) |
-                    @Html.ActionLink("Rašyti komentarą", "Komentarai", new { id = item.id_Projektas })
+                    @Html.ActionLink("Rašyti komentarą", "Komentarai", new { id = item.id_Projektas }) |
+                    @Html.ActionLink("Detali informacija", "DetaliInformacijaProjektas", new { id = item.id_Projektas })
                 </td>
             </tr>
         }

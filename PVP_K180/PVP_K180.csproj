@@ -215,6 +215,7 @@
     <Compile Include="ModelView\EmaiModel.cs" />
     <Compile Include="ModelView\KomentaroLangasRenginys.cs" />
     <Compile Include="ModelView\KomentaroLangasProjektas.cs" />
+    <Compile Include="ModelView\Projekto_duomenys.cs" />
     <Compile Include="ModelView\ProjektuPerziura.cs" />
     <Compile Include="ModelView\NaujienuSarasas.cs" />
     <Compile Include="ModelView\Nuotrauku_Duomenys.cs" />
@@ -683,6 +684,8 @@
     <Content Include="Views\Atsitikimas\AtsitikimuSarasas.cshtml" />
     <Content Include="Views\Atsitikimas\DetaliInformacija.cshtml" />
     <Content Include="Views\Atsitikimas\KeistiAtsitikimoBusena.cshtml" />
+    <Content Include="Views\Projektas\DetaliInformacijaProjektas.cshtml" />
+    <Content Include="Views\Renginys\DetaliInformacijaRenginys.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
