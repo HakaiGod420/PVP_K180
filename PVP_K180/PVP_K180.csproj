@@ -201,6 +201,7 @@
     <Compile Include="Models\Nuotrauka.cs" />
     <Compile Include="Models\Projektas.cs" />
     <Compile Include="Models\RastiRengini.cs" />
+    <Compile Include="Models\Renginio_Busena.cs" />
     <Compile Include="Models\Renginys.cs" />
     <Compile Include="Models\Role.cs" />
     <Compile Include="Models\Seniunija.cs" />
@@ -223,6 +224,7 @@
     <Compile Include="ModelView\Pasto_duomenys.cs" />
     <Compile Include="ModelView\Prisijungimo_Duomenys.cs" />
     <Compile Include="ModelView\Naujienos_duomenys.cs" />
+    <Compile Include="ModelView\RenginioBusenaPerziura.cs" />
     <Compile Include="ModelView\Renginio_duomenys.cs" />
     <Compile Include="ModelView\Slaptazodzio_Atnaujinimo_Duomenys.cs" />
     <Compile Include="ModelView\VartotojoBusenosPerziura.cs" />
@@ -688,6 +690,7 @@
     <Content Include="Views\Projektas\DetaliInformacijaProjektas.cshtml" />
     <Content Include="Views\Renginys\DetaliInformacijaRenginys.cshtml" />
     <Content Include="Views\Apklausa\KeistiApklausosBusena.cshtml" />
+    <Content Include="Views\Renginys\KeistiRenginioBusena.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

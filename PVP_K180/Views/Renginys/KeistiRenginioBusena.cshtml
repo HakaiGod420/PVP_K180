@@ -1,0 +1,40 @@
+﻿@model PVP_K180.ModelView.RenginioBusenaPerziura
+
+@{
+    ViewBag.Title = "KeistiRenginioBusena";
+}
+
+<h2>KeistiRenginioBusena</h2>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>RenginioBusenaPerziura</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.renginio_Busena, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.renginio_Busena, Model.Busenos, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.renginio_Busena, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "GautiRenginius")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
