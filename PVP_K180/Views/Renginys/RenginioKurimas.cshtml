@@ -1,4 +1,4 @@
-﻿@model PVP_K180.Models.Renginys
+﻿@model PVP_K180.ModelView.Renginio_duomenys
 
 @{
     ViewBag.Title = "RenginioKurimas";
@@ -71,7 +71,7 @@
 <h2>RenginioKurimas</h2>
 
 
-@using (Html.BeginForm())
+@using (Html.BeginForm("RenginioKurimas", "Renginys", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
 
@@ -81,56 +81,57 @@
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
     <div class="form-group">
-        @Html.LabelFor(model => model.pavadinimas, htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.LabelFor(model => model.renginys.pavadinimas, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.EditorFor(model => model.pavadinimas, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.pavadinimas, "", new { @class = "text-danger" })
+            @Html.EditorFor(model => model.renginys.pavadinimas, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.renginys.pavadinimas, "", new { @class = "text-danger" })
         </div>
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(model => model.aprasymas, htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.LabelFor(model => model.renginys.aprasymas, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.EditorFor(model => model.aprasymas, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.aprasymas, "", new { @class = "text-danger" })
+            @Html.EditorFor(model => model.renginys.aprasymas, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.renginys.aprasymas, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.renginys.pabaigos_data, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.renginys.pabaigos_data, new { htmlAttributes = new { @class = "form-control dateFormat" } })
+            @Html.ValidationMessageFor(model => model.renginys.pabaigos_data, "", new { @class = "text-danger" })
         </div>
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(model => model.pradzios_data, htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.LabelFor(model => model.renginys.adresas, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.EditorFor(model => model.pradzios_data, new { htmlAttributes = new { @class = "form-control dateFormat" } })
-            @Html.ValidationMessageFor(model => model.pradzios_data, "", new { @class = "text-danger" })
+            @Html.EditorFor(model => model.renginys.adresas, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.renginys.adresas, "", new { @class = "text-danger" })
         </div>
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(model => model.pabaigos_data, htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.LabelFor(model => model.renginys.kaina, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.EditorFor(model => model.pabaigos_data, new { htmlAttributes = new { @class = "form-control dateFormat" } })
-            @Html.ValidationMessageFor(model => model.pabaigos_data, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.adresas, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.adresas, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.adresas, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.kaina, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.kaina, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.kaina, "", new { @class = "text-danger" })
+            @Html.EditorFor(model => model.renginys.kaina, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.renginys.kaina, "", new { @class = "text-danger" })
         </div>
     </div>
 
     <div class="form-group">
         <div class="col-md-10  col-md-offset-2">
-            @Html.DropDownListFor(model => model.renginio_busena, listItems, "-- Pasirinkite --")
+            @Html.DropDownListFor(model => model.renginys.renginio_busena, listItems, "-- Pasirinkite --")
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.nuotraukos, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(model => model.nuotraukos, "", new { @type = "file", @multiple = "multiple" })
+            @Html.ValidationMessageFor(model => model.nuotraukos, "", new { @class = "text-danger" })
         </div>
     </div>
 

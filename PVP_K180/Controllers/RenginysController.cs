@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using PVP_K180.Repos;
 using PVP_K180.Models;
 using PVP_K180.ModelView;
+using System.IO;
 
 namespace PVP_K180.Controllers
 {
@@ -13,6 +14,8 @@ namespace PVP_K180.Controllers
     {
 
         private Renginys_Repos renginys_Repos = new Renginys_Repos();
+        Nuotrauka_Repos nuotrauka_Repos = new Nuotrauka_Repos();
+
         // GET: Renginys
         public ActionResult Index()
         {
@@ -33,12 +36,13 @@ namespace PVP_K180.Controllers
         }
 
         [HttpPost]
-        public ActionResult RenginioKurimas(Renginys renginys)
+        public ActionResult RenginioKurimas(Renginio_duomenys renginio_Duomenys)
         {
             int counter = 0;
+            List<string> posiblesExtensions = new List<string>() { ".jpg", ".png", ".JPG", ".PNG", ".jpeg", ".JPEG" };
             Renginys_Repos renginys_Repos = new Renginys_Repos();
-            renginys.vartotojas_id = (int)Session["UserID"];
-            renginys.paskelbimo_data = DateTime.Now;
+            renginio_Duomenys.renginys.vartotojas_id = (int)Session["UserID"];
+            renginio_Duomenys.renginys.paskelbimo_data = DateTime.Now;
 
             if (Convert.ToDouble(TempData["RenginysLang"]) == 0 || Convert.ToDouble(TempData["RenginysLong"]) == 0)
             {
@@ -46,17 +50,46 @@ namespace PVP_K180.Controllers
                 return View();
             }
 
-            renginys.zemelapis_ilguma = (float)Convert.ToDouble(TempData["RenginysLang"]);
-            renginys.zemelapis_platuma = (float)Convert.ToDouble(TempData["RenginysLong"]);
+            renginio_Duomenys.renginys.zemelapis_ilguma = (float)Convert.ToDouble(TempData["RenginysLang"]);
+            renginio_Duomenys.renginys.zemelapis_platuma = (float)Convert.ToDouble(TempData["RenginysLong"]);
 
-            bool flag = renginys_Repos.Sukurti_Rengini(renginys);
+            bool flag = renginys_Repos.Sukurti_Rengini(renginio_Duomenys.renginys);
             if (flag)
             {
+                int lastIndex = renginys_Repos.Gauti_Paskutini_Prideto_Index();
+
+                foreach (HttpPostedFileBase file in renginio_Duomenys.nuotraukos)
+                {
+                    if (file != null)
+                    {
+                        var InputFileName = Path.GetFileName(file.FileName);
+
+                        var extension = Path.GetExtension(file.FileName);
+                        if (!posiblesExtensions.Contains(extension))
+                        {
+                            Response.Write("<script type='text/javascript' language='javascript'> alert('Įkeltas su netinkamu formatu')</script>");
+                            return View();
+                        }
+
+                        var random = Guid.NewGuid() + InputFileName;
+                        var ServerSavePath = Path.Combine(Server.MapPath("~/Nuotraukos/") + random);
+
+
+                        file.SaveAs(ServerSavePath);
+                        Nuotrauka nuotrauka = new Nuotrauka();
+                        nuotrauka.nuotraukos_nuoroda = random;
+                        nuotrauka.priskirtas_id = lastIndex;
+                        nuotrauka_Repos.Prideti_Renginio_Nuotraukas(nuotrauka);
+
+                    }
+                }
+
                 Response.Write("<script type='text/javascript' language='javascript'> alert('Renginys sėkmingai sukurtas!')</script>");
             }
             else
             {
                 Response.Write("<script type='text/javascript' language='javascript'> alert('Renginys nesukurtas!')</script>");
+
             }
             return View();
         }
