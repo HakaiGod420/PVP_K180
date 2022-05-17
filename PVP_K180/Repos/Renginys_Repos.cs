@@ -340,5 +340,58 @@ namespace PVP_K180.Repos
                 return -1;
             }
         }
+
+        public IEnumerable<Renginio_Busena> GautiBusenas()
+        {
+            try
+            {
+                List<Renginio_Busena> renginio_Busenas = new List<Renginio_Busena>();
+                string conn = ConfigurationManager.ConnectionStrings["MysqlConnection"].ConnectionString;
+                MySqlConnection mySqlConnection = new MySqlConnection(conn);
+                string sqlquery = "SELECT * FROM `Renginio_busena` WHERE 1";
+                MySqlCommand mySqlCommand = new MySqlCommand(sqlquery, mySqlConnection);
+                mySqlConnection.Open();
+                MySqlDataAdapter mda = new MySqlDataAdapter(mySqlCommand);
+                DataTable dt = new DataTable();
+                mda.Fill(dt);
+                mySqlConnection.Close();
+
+                foreach (DataRow item in dt.Rows)
+                {
+                    renginio_Busenas.Add(new Renginio_Busena
+                    {
+
+                        id_Renginio_busena = Convert.ToInt32(item["id_Renginio_Busena"]),
+                        name = Convert.ToString(item["name"])
+                    }); ;
+                }
+                return renginio_Busenas;
+            }
+
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+
+        public bool Atnaujinti_Renginio_Busena(int renginio_id, int busenos_id)
+        {
+            try
+            {
+                string conn = ConfigurationManager.ConnectionStrings["MysqlConnection"].ConnectionString;
+                MySqlConnection mySqlConnection = new MySqlConnection(conn);
+                string sqlquery = "UPDATE `Renginys` SET `renginio_busena`=?busena WHERE id_Renginys=" + renginio_id;
+                MySqlCommand mySqlCommand = new MySqlCommand(sqlquery, mySqlConnection);
+                mySqlCommand.Parameters.Add("?busena", MySqlDbType.Int32).Value = busenos_id;
+                mySqlConnection.Open();
+                mySqlCommand.ExecuteNonQuery();
+                mySqlConnection.Close();
+                return true;
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+        }
     }
 }

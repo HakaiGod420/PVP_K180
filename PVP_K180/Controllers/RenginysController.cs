@@ -214,5 +214,40 @@ namespace PVP_K180.Controllers
             renginys.gautosNuotraukos = nuotrauka_Repos.Gauti__Renginiu_Nuotraukas(id);
             return View(renginys);
         }
+
+        public ActionResult KeistiRenginioBusena(int id)
+        {
+            Renginys_Repos renginiai_Repos = new Renginys_Repos();
+            Renginys renginys = renginiai_Repos.Gauti_Rengini(id);
+            return View(new RenginioBusenaPerziura
+            {
+                renginio_Busena = renginys.renginio_busena,
+                Busenos = renginys_Repos.GautiBusenas().Select(b => new SelectListItem
+                {
+                    Text = b.name,
+                    Value = b.id_Renginio_busena.ToString()
+                })
+            });
+        }
+
+        [HttpPost]
+        public ActionResult KeistiRenginioBusena(int id, RenginioBusenaPerziura renginysBusenaPerziura)
+        {
+            if (Session["UserID"] == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            else if (!Session["Role"].Equals("Administratorius"))
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+           
+
+            renginys_Repos.Atnaujinti_Renginio_Busena(id, renginysBusenaPerziura.renginio_Busena);
+            Response.Write("<script type='text/javascript' language='javascript'> alert('Renginio būsena pakeista')</script>");
+
+            return RedirectToAction("GautiRenginius", "Renginys");
+        }
     }
 }
