@@ -221,6 +221,7 @@
     <Compile Include="ModelView\Pasto_duomenys.cs" />
     <Compile Include="ModelView\Prisijungimo_Duomenys.cs" />
     <Compile Include="ModelView\Naujienos_duomenys.cs" />
+    <Compile Include="ModelView\Renginio_duomenys.cs" />
     <Compile Include="ModelView\Slaptazodzio_Atnaujinimo_Duomenys.cs" />
     <Compile Include="ModelView\VartotojoBusenosPerziura.cs" />
     <Compile Include="ModelView\VartotojoRolesPerziura.cs" />
