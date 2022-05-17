@@ -59,7 +59,8 @@
                 </td>
 
                 <td class="text-left">
-                    @Html.ActionLink("Rezultatai", "Rezultatai", new { id = item.id_Apklausa })
+                    @Html.ActionLink("Rezultatai", "Rezultatai", new { id = item.id_Apklausa })|
+                    @Html.ActionLink("Keisti būseną", "KeistiApklausosBusena", new { id = item.id_Apklausa })
                 </td>
             </tr>
         }
