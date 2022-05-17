@@ -14,13 +14,13 @@
     <section class="navigation">
         <div class="nav-container">
             <div class="brand">
-                <a href="@(@Url.Action("Index", "Home"))">Seniūnyjos puslapis</a>
+                <a href="@(@Url.Action("Index", "Home"))">seniūnijos puslapis</a>
             </div>
             <nav>
                 <div class="nav-mobile"><a id="nav-toggle" href="#!"><span></span></a></div>
                 <ul class="nav-list">
                     <li>
-                        <a href="@(@Url.Action("Apie", "Home"))">Apie seniūnyją</a>
+                        <a href="@(@Url.Action("Apie", "Home"))">Apie seniūniją</a>
                     </li>
                     <li>
                         <a href="#!">Aktualijos</a>
@@ -32,7 +32,7 @@
                                 <a href="@(@Url.Action("Projektai", "Projektas"))">Projektai</a>
                             </li>
                             <li>
-                                <a href="@(@Url.Action("Renginiai", "Renginiai"))">Renginiai</a>
+                                <a href="@(@Url.Action("Renginiai", "Renginys"))">Renginiai</a>
                             </li>
                         </ul>
                     </li>
@@ -91,10 +91,7 @@
 
     <div class="container body-content">
         @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year  K180 - Ką veikia seniūnijos</p>
-        </footer>
+        
     </div>
 
     @Scripts.Render("~/bundles/jquery")

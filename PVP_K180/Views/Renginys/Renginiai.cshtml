@@ -1,0 +1,66 @@
+﻿@model IEnumerable<PVP_K180.Models.Renginys>
+@{
+    ViewBag.Title = "Renginiai";
+}
+
+<link href="~/Styles/EventStyle.css" rel="stylesheet" />
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css">
+    <link rel="stylesheet" href="./style.css">
+    <title>Events Ticket Card</title>
+</head>
+<body>
+    <div class="container">
+
+        @foreach (var item in Model)
+        {
+        <div class="item-container">
+            <div class="img-container">
+                <img src="https://www.lrt.lt/img/2019/11/17/550825-741847-756x425.jpg" alt="Event image">
+            </div>
+
+            <div class="body-container">
+                <div class="overlay"></div>
+
+                <div class="event-info">
+                    <p class="title">@item.pavadinimas</p>
+                    <div class="separator"></div>
+                    @if (item.kaina == 0)
+                    {
+                    <p class="price">Nemokama</p>
+                    }
+                    else
+                    {
+                    <p class="price">@item.kaina €</p>
+                    }
+                    <div class="additional-info">
+                        <p class="info">
+                            <i class="fas fa-map-marker-alt"></i>
+                            @item.adresas
+                        </p>
+                        <p class="info">
+                            <i class="far fa-calendar-alt"></i>
+                            @item.pradzios_data.ToString("yyyy-MM-dd HH:mm")
+                        </p>
+
+                        <p class="info description">
+                            @item.aprasymas <span>daugiau...</span>
+                        </p>
+                    </div>
+                </div>
+                <button class="action">INFORMACIJA</button>
+            </div>
+        </div>
+        }
+    </div>
+
+</body>
+</html>
+
+

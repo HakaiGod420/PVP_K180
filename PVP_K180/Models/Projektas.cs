@@ -21,9 +21,11 @@ namespace PVP_K180.Models
         public string aprasymas { get; set; }
 
         [DisplayName("Būsena")]
-        public int busena { get; set; }
+        public int projekto_busena { get; set; }
 
         [DisplayName("Kūrėjo ID")]
         public int fk_Vartotojasid_Vartotojas { get; set; }
+
+        public List<Nuotrauka> gautosNuotraukos { get; set; }
     }
 }

@@ -339,9 +339,7 @@ namespace PVP_K180.Repos
                     return Convert.ToInt32(data["fk_Vartotojo_Busenaid_Vartotojo_Busena"]);
                 }
             }
-
             return null;
-
 
         }
 

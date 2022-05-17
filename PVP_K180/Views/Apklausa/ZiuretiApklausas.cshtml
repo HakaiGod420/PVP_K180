@@ -1,10 +1,23 @@
 ﻿@model IEnumerable<PVP_K180.Models.Apklausa>
-
 @{
     ViewBag.Title = "ZiuretiApklausas";
 }
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#myInput").on("keyup", function () {
+            var value = $(this).val().toLowerCase();
+            $("#myTable tr").filter(function () {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+    });
+</script>
 
 <h2>Apklausų sąrašas</h2>
+
+<input id="myInput" type="text" placeholder="Įveskit pagal ką filtruosit">
+<br><br>
 
 @Styles.Render("~/Styles/tableStyle.css")
 <p>
@@ -34,8 +47,7 @@
             <th class="text-left">Funkcijos</th>
         </tr>
     </thead>
-
-    <tbody class="table-hover">
+    <tbody class="table-hover", id="myTable">
         @foreach (var item in Model)
         {
             <tr>
@@ -57,13 +69,13 @@
                 <td class="text-left">
                     @Html.DisplayFor(modelItem => item.busenos_pavadinimas)
                 </td>
-
                 <td class="text-left">
-                    @Html.ActionLink("Rezultatai", "Rezultatai", new { id = item.id_Apklausa })
+                    @Html.ActionLink("Rezultatai", "Rezultatai", new { id = item.id_Apklausa }) |
+                    @Html.ActionLink("Redaguoti", "RedaguotiApklausa", new { id = item.id_Apklausa }) |
+                    @Html.ActionLink("Trinti", "TrintiApklausa", new { id = item.id_Apklausa })
                 </td>
             </tr>
         }
     </tbody>
-    
 
 </table>

@@ -1,16 +1,25 @@
 ﻿@model IEnumerable<PVP_K180.Models.Naujiena>
-
 @{
     ViewBag.Title = "Naujienų sąrašas";
 }
 @Styles.Render("~/Styles/tableStyle.css")
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#myInput").on("keyup", function () {
+            var value = $(this).val().toLowerCase();
+            $("#myTable tr").filter(function () {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+    });
+</script>
 <h2>Naujienų sąrašas</h2>
-
+<input id="myInput" type="text" placeholder="Įveskit pagal ką filtruosit">
+<br><br>
 <p>
     @Html.ActionLink("Sukurti naujieną", "NaujienosKurimas")
 </p>
-
 <table class="table-fill">
     <thead>
         <tr>
@@ -30,8 +39,7 @@
         </tr>
     </thead>
 
-
-    <tbody class="table-hover">
+    <tbody class="table-hover", id="myTable">
         @foreach (var item in Model)
         {
             <tr>
