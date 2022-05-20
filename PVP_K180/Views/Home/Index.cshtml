@@ -1,3 +1,63 @@
 ﻿@{
     ViewBag.Title = "Pagrindinis puslapis";
 }
+<link href="~/Styles/MainPage.css" rel="stylesheet" />
+
+<main >
+    <div class="carousel fade-carousel slide" data-ride="carousel" data-interval="4000" id="bs-carousel">
+        <!-- Overlay -->
+        <!-- Indicators -->
+        <ol class="carousel-indicators">
+            <li data-target="#bs-carousel" data-slide-to="0" class="active"></li>
+            <li data-target="#bs-carousel" data-slide-to="1"></li>
+            <li data-target="#bs-carousel" data-slide-to="2"></li>
+        </ol>
+
+        <!-- Wrapper for slides -->
+        <div class="carousel-inner">
+            <div class="item slides active">
+                <div class="slide-1">
+                    <div class="overlay"></div>
+                </div>
+                <div class="hero">
+                    <hgroup>
+                        <h1>Renginiai</h1>
+                        <h3>Nepraleisk progos praleisti gerai laiką</h3>
+                    </hgroup>
+                    <button onclick="location.href='@Url.Action("Renginiai", "Renginys")'" class="btn btn-hero btn-lg" role="button">Žiūrėti Renginius</button>
+                </div>
+            </div>
+            <div class="item slides">
+                <div class="slide-2">
+                    <div class="overlay"></div>
+                </div>
+                <div class="hero">
+                    <hgroup>
+                        <h1>Projektai</h1>
+                        <h3>Sužinok kas vyksta tavo aplinkoje</h3>
+                    </hgroup>
+                    <button onclick="location.href='@Url.Action("Projektai", "Projektas")'" class="btn btn-hero btn-lg" role="button">Žiūrėti Projektus</button>
+                </div>
+            </div>
+            <div class="item slides">
+                <div class="slide-3">
+                    <div class="overlay"></div>
+                </div>
+                <div class="hero">
+                    <hgroup>
+                        <h1>Naujienos</h1>
+                        <h3>Nepraleisk naujausių aktualijų</h3>
+                    </hgroup>
+                    <button onclick="location.href='@Url.Action("Naujienos", "Naujiena")'" class="btn btn-hero btn-lg" role="button">Žiūrėti naujienas</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+
+<script>
+
+</script>
