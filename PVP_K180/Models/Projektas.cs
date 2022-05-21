@@ -26,6 +26,9 @@ namespace PVP_K180.Models
         [DisplayName("Kūrėjo ID")]
         public int fk_Vartotojasid_Vartotojas { get; set; }
 
+        [DisplayName("Sukūrimo data")]
+        public DateTime sukurimo_data { get; set; }
+
         public List<Nuotrauka> gautosNuotraukos { get; set; }
     }
 }
