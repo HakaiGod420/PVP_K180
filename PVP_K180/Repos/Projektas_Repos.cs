@@ -18,13 +18,14 @@ namespace PVP_K180.Repos
             {
                 string conn = ConfigurationManager.ConnectionStrings["MysqlConnection"].ConnectionString;
                 MySqlConnection mySqlConnection = new MySqlConnection(conn);
-                string sqlquery = "INSERT INTO `Projektas`(`pavadinimas`,`aprasymas`, `busena`, `fk_Vartotojasid_Vartotojas`) " +
-                    "VALUES(?pavadinimas,?aprasymas,?busena,?fk_Vartotojasid_Vartotojas)";
+                string sqlquery = "INSERT INTO `Projektas`(`pavadinimas`,`aprasymas`, `busena`, `fk_Vartotojasid_Vartotojas`,`sukurimo_data`) " +
+                    "VALUES(?pavadinimas,?aprasymas,?busena,?fk_Vartotojasid_Vartotojas,?sukurimo_data)";
                 MySqlCommand mySqlCommand = new MySqlCommand(sqlquery, mySqlConnection);
                 mySqlCommand.Parameters.Add("?pavadinimas", MySqlDbType.VarChar).Value = projektas.pavadinimas;
                 mySqlCommand.Parameters.Add("?aprasymas", MySqlDbType.VarChar).Value = projektas.aprasymas;
                 mySqlCommand.Parameters.Add("?busena", MySqlDbType.Int32).Value = projektas.projekto_busena;
                 mySqlCommand.Parameters.Add("?fk_Vartotojasid_Vartotojas", MySqlDbType.Int32).Value = projektas.fk_Vartotojasid_Vartotojas;
+                mySqlCommand.Parameters.Add("?sukurimo_data", MySqlDbType.DateTime).Value = projektas.sukurimo_data;
                 mySqlConnection.Open();
                 mySqlCommand.ExecuteNonQuery();
                 mySqlConnection.Close();

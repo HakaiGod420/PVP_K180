@@ -5,51 +5,60 @@
     Styles.Render("~/Content/");
 }
 
+
+<style>
+    .boxShadow2 {
+        box-shadow: 0 1px 10px rgb(0 0 0 / 0.2);
+        margin: auto;
+        border-radius: 4px;
+        width: 100%;
+        text-align: center;
+        padding: 10px;
+        margin-top: 30px;
+        position: relative;
+    }
+</style>
+
 @using (Html.BeginForm())
 {
-    <h2>Aktyvi apklausa</h2>
-
+    <h2 class="text-left">Aktyvi apklausa</h2>
     <div>
-        @if (TempData["SuccsessAtsakimas"] != null)
-        {
-            <p class="alert alert-success" id="successMessage">@Convert.ToString(TempData["SuccsessAtsakimas"])</p>
-        }
-        <hr />
+
 
         <dl class="dl-horizontal">
             @if (Model.apklausa.sukurimo_data != null)
             {
-                <dt>
-                    @Html.DisplayNameFor(model => model.apklausa.aprasymas)
-                </dt>
+                <h4 class="text-left">@Model.apklausa.aprasymas</h4>
+                if (TempData["SuccsessAtsakimas"] != null)
+                {
+                    <p class="alert alert-success" id="successMessage">@Convert.ToString(TempData["SuccsessAtsakimas"])</p>
+                }
+                <hr />
 
-                <dd>
-                    @Html.DisplayFor(model => model.apklausa.aprasymas)
-                </dd>
+                <div class="boxShadow2">
+                    <p style="text-align:left;font-size:20px; font-weight:bold">
+                        Apklausoje jūs:
+                        @if (Convert.ToBoolean(TempData["Answered"]) == true)
+                        {
 
-                <dt>
-                    @Html.DisplayNameFor(model => model.apklausa.dalyviu_skaicius)
-                </dt>
-
-                <dd>
-                    @Html.DisplayFor(model => model.apklausa.dalyviu_skaicius)
-                </dd>
-
-                <dt>
-                    @Html.DisplayNameFor(model => model.apklausa.sukurimo_data)
-                </dt>
-
-                <dd>
-                    @Html.DisplayFor(model => model.apklausa.sukurimo_data)
-                </dd>
-
-                <dt>
-                    @Html.DisplayNameFor(model => model.apklausa.pabaigos_data)
-                </dt>
-
-                <dd>
-                    @Html.DisplayFor(model => model.apklausa.pabaigos_data)
-                </dd>
+                            <span>Dalyvavote</span>
+                            <span style="float:right;">
+                                <a class="open-list btn btn-success" data-toggle="modal" data-target=".boostrapmodal" style="margin-bottom:5px; padding:1px 40px">Atsakymai</a>
+                            </span>
+                        }
+                        else
+                        {
+                            <span>Nedalyvavote</span>
+                        }
+                    </p>
+                    <hr />
+                    <p style="text-align:left">
+                        Iš viso dalyvavo: <b>@Model.apklausa.dalyviu_skaicius</b>
+                        <span style="float:right;">
+                            Apklausos pabaiga: <b>@Convert.ToDateTime(Model.apklausa.pabaigos_data).ToString("yyyy-MM-dd")</b>
+                        </span>
+                    </p>
+                </div>
             }
             else
             {
@@ -57,14 +66,57 @@
             }
         </dl>
     </div>
+
+    <div class="modal fade boostrapmodal">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <b>Atsakymai į apklausą</b>
+                </div>
+
+                <div class="modal-body">
+                    <div id="add_to_me">
+                        @if (Model.gautiAtsakymai != null && Model.gautiAtsakymai.Count != 0 )
+                        {
+                        <h2>Tavo atsakymai į apklausą</h2>
+                        <div>
+                            <dl class="dl-horizontal">
+                                @for (var i = 0; i < Model.klausimai.Count; i++)
+                                {
+                                    var temp = i + 1;
+                                    <p><b>@temp. @Model.klausimai[i].klausimo_tekstas</b></p>
+                                    if (Model.gautiAtsakymai[i] != "")
+                                    {
+                                        <p>@Model.gautiAtsakymai[i]</p>
+                                    }
+                                    else
+                                    {
+                                        <p>[Atsakymas nepateiktas]</p>
+
+                                    }
+
+                                }
+                            </dl>
+                        </div>
+                        }
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Uždaryti</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     if (Convert.ToInt16(Session["UserID"]) != 0)
     {
         <div style="align-content:center">
             <style>
                 .boxShadow {
-                    box-shadow: 0 3px 20px rgb(0 0 0 / 0.2);
+                    box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
                     margin: 20px;
-                    border-radius: 25px;
+                    border-radius: 10px;
                     width: 50%;
                 }
 
@@ -78,13 +130,13 @@
 
                 textarea {
                     min-width: auto;
-                    max-width: 900px;
+                    max-width: 1000px;
                     width: 100%;
                     height: 100px;
                     padding: 0px 20px;
                     box-sizing: border-box;
                     border: 2px solid #ccc;
-                    border-radius: 20px;
+                    border-radius: 10px;
                     background-color: #f8f8f8;
                     font-size: 16px;
                     resize: none;
@@ -130,39 +182,8 @@
             {
                 if (Model.apklausa.sukurimo_data != null)
                 {
-                    <h2>Tavo atsakymai į apklausą</h2>
-                    <div>
-                        <dl class="dl-horizontal">
-                            @for (var i = 0; i < Model.klausimai.Count; i++)
-                            {
-                                <p><b>@Model.klausimai[i].klausimo_tekstas</b></p>
-                                if (Model.gautiAtsakymai[i] != "")
-                                {
-                                    <p>@Model.gautiAtsakymai[i]</p>
-                                }
-                                else
-                                {
-                                    <p>[Atsakymas nepateiktas]</p>
-
-                                }
-
-                            }
-                        </dl>
-                    </div>
                 }
             }
-        </div>
-    }
-    else
-    {
-        <h2>Klausimai</h2>
-        <div>
-            <dl class="dl-horizontal">
-                @for (var i = 0; i < Model.klausimai.Count; i++)
-                {
-                    <p><b>@Model.klausimai[i].klausimo_tekstas</b></p>
-                }
-            </dl>
         </div>
     }
 }

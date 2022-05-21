@@ -39,6 +39,7 @@ namespace PVP_K180.Controllers
         {
             List<string> posiblesExtensions = new List<string>() { ".jpg", ".png", ".JPG", ".PNG", ".jpeg", ".JPEG" };
             Projektas_Repos projektas_Repos = new Projektas_Repos();
+            projekto_Duomenys.projektas.sukurimo_data = DateTime.Now;
             projekto_Duomenys.projektas.fk_Vartotojasid_Vartotojas = (int)Session["UserID"];
             bool flag = projektas_Repos.Sukurti_Projekta(projekto_Duomenys.projektas);
             if (flag)
