@@ -1,0 +1,127 @@
+﻿.main-info-wrap .sticky-items {
+    width: 390px;
+    overflow: hidden;
+}
+
+.main-info {
+    border-radius: 3px;
+    background-color: #ffffff;
+}
+
+    .main-info .time-box {
+        height: 90px;
+        background-color: #406290;
+        box-sizing: border-box;
+        color: #ffffff;
+        border-top-left-radius: 3px;
+        border-top-right-radius: 3px;
+    }
+
+    .main-info .date-time-wrap {
+        width: 50%;
+        float: left;
+        border-right: 2px solid #7d98bc;
+        height: 51px;
+        margin-top: 19px;
+        box-sizing: border-box;
+        text-align: center;
+    }
+
+    .main-info .duration-wrap {
+        width: 50%;
+        float: left;
+        height: 51px;
+        margin-top: 15px;
+        box-sizing: border-box;
+        text-align: center;
+    }
+
+    .main-info .duration-text {
+        font-size: 12px;
+        font-weight: normal;
+        letter-spacing: -0.2px;
+        color: #ffffff;
+        margin-bottom: 4px;
+    }
+
+    .main-info .duration {
+        font-size: 30px;
+        font-weight: 500;
+        line-height: 1.2;
+        letter-spacing: -0.4px;
+        color: #ffffff;
+    }
+
+    .main-info .time-date {
+        font-size: 12px;
+        font-weight: normal;
+        letter-spacing: -0.2px;
+        color: #ffffff;
+        display: block;
+        margin-bottom: 4px;
+    }
+
+    .main-info .time-h {
+        font-size: 30px;
+        font-weight: 500;
+        line-height: 1.2;
+        letter-spacing: -0.4px;
+        color: #ffffff;
+    }
+
+    .main-info .details-wrap {
+        padding: 20px 30px 17px;
+        background: #fff;
+    }
+
+    .main-info .with-icon {
+        width: 100%;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        border-bottom: 1px solid #eeeeee;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        box-sizing: border-box;
+        position: relative;
+    }
+
+        .main-info .with-icon .icon {
+            margin-right: 30px;
+        }
+
+        .main-info .with-icon .title {
+            font-size: 12px;
+            font-weight: normal;
+            letter-spacing: -0.2px;
+            color: #aaaaaa;
+            text-transform: uppercase;
+            margin-bottom: 3px;
+        }
+
+        .main-info .with-icon > a {
+            font-size: 15px;
+            font-weight: 500;
+            color: #406290;
+            margin-left: 41px;
+        }
+
+
+.ticket {
+    width: 100%;
+    height: 60px;
+    border-radius: 1px;
+    background-color: lightgray;
+    font-size: 18px;
+    color: #ffffff;
+    font-weight: bold;
+    text-align: center;
+    position: relative;
+    color: black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: nowrap;
+    flex-direction: row;
+    border-radius: 4px;
+}

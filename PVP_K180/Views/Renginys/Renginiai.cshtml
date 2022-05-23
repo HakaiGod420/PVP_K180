@@ -33,11 +33,11 @@
                     <div class="separator"></div>
                     @if (item.kaina == 0)
                     {
-                    <p class="price">Nemokama</p>
+                        <p class="price">Nemokama</p>
                     }
                     else
                     {
-                    <p class="price">@item.kaina €</p>
+                        <p class="price">@item.kaina €</p>
                     }
                     <div class="additional-info">
                         <p class="info">
@@ -54,7 +54,11 @@
                         </p>
                     </div>
                 </div>
-                <button class="action">INFORMACIJA</button>
+                <span style="text-align:center;">
+                    @Html.ActionLink("INFORMACIJA", "PerziuretiRengini", "Renginys", new { id = item.id_Renginys }, new { @class = "action", @type = "button" })
+                </span>
+              
+
             </div>
         </div>
         }
