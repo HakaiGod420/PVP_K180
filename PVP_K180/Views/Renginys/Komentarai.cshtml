@@ -78,8 +78,8 @@
         </ul>
 </div>
 
-<div>
-    @Html.ActionLink("Atgal", "GautiRenginius")
+<div class="row" style="margin-top:2vh;margin-left:0px; float:left">
+    @Html.ActionLink("< Atgal", "PerziuretiRengini", "Renginys", new { id = Convert.ToInt32(Session["RenginioID"]) }, new { @class = "btn btn-success ", @type = "button" })
 </div>
 
 @section Scripts {
