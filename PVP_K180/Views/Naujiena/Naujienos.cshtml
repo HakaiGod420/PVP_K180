@@ -7,24 +7,35 @@
 
 @Styles.Render("~/Styles/cardNews.css")
 
-<div  style="align-content:center"class="row">
+<link href="~/Styles/newsStyle2.0.css" rel="stylesheet" />
 
-    @foreach (var item in Model)
+<header>
+    <h1>Seniūnijos naujienos</h1>
+</header>
+<div class="band">
+    <div class="item-1">
+        <a href="@(@Url.Action("SkaitytiNaujiena", "Naujiena", new { id = Model.First().naujienos_id }))" class="card">
+            <div class="thumb" style="background-image: url(../../Nuotraukos/@Model.First().pirma_nuotrauka)"></div>
+            <article>
+                <h1>@Model.First().naujienos_antraste</h1>
+                <span>@Model.First().menesioPav @Model.First().data.Day</span>
+            </article>
+        </a>
+    </div>
+
+    @for (var i = 1; i < Model.Count(); i++)
     {
-        <div class="column">
-            <figure class="snip1347">
-
-                <img src="~/Nuotraukos/@item.pirma_nuotrauka" alt="sample87" />
-                <div class="date">@item.menesioPav @item.data.Day, @item.data.Year</div>
-                <figcaption>
-                    <h2>@item.naujienos_antraste</h2>
-                    <p>@Html.Raw(item.trumpasAprasas)</p><a href="@(@Url.Action("SkaitytiNaujiena", "Naujiena", new { id = item.naujienos_id }))" class="read-more">Skaityti daugiau</a>
-                </figcaption>
-            </figure>
+        <div class="item-2">
+            <a href="@(@Url.Action("SkaitytiNaujiena", "Naujiena", new { id = Model.ElementAt(i).naujienos_id }))" class="card">
+                <div class="thumb" style="background-image: url(../../Nuotraukos/@Model.ElementAt(i).pirma_nuotrauka);"></div>
+                <article>
+                    <h1>@Model.ElementAt(i).naujienos_antraste</h1>
+                    <p>@Html.Raw(Model.ElementAt(i).trumpasAprasas)</p>
+                    <span>@Model.ElementAt(i).menesioPav @Model.ElementAt(i).data.Day</span>
+                </article>
+            </a>
         </div>
     }
-
-
 
 
 </div>

@@ -692,6 +692,7 @@
     <Content Include="Views\Renginys\DetaliInformacijaRenginys.cshtml" />
     <Content Include="Views\Apklausa\KeistiApklausosBusena.cshtml" />
     <Content Include="Views\Renginys\KeistiRenginioBusena.cshtml" />
+    <Content Include="Styles\newsStyle2.0.css" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
