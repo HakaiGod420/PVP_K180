@@ -1,0 +1,115 @@
+﻿@model PVP_K180.Models.Renginys
+
+@{
+    ViewBag.Title = Model.pavadinimas;
+}
+
+
+<style>
+
+    /* Create two equal columns that floats next to each other */
+    .column {
+        float: left;
+        width: 50%;
+        padding: 10px;
+      
+    }
+
+    /* Clear floats after the columns */
+    .row:after {
+        content: "";
+        display: table;
+        clear: both;
+    }
+
+    .boxShadow2 {
+        box-shadow: 0 1px 5px rgb(0 0 0 / 0.2);
+        margin: auto;
+        border-radius: 4px;
+        width: 100%;
+        padding: 10px;
+        margin-top: 30px;
+        position: relative;
+        background-color: white;
+    }
+
+    .customImg {
+        max-height: 200px;
+        max-width: 300px;
+        padding-top: 1vh;
+    }
+
+
+
+
+</style>
+<script src="https://kit.fontawesome.com/2e7ea6ec96.js" crossorigin="anonymous"></script>
+<h2>@Model.pavadinimas</h2>
+<link href="~/Styles/SidePanel.css" rel="stylesheet" />
+<div class="row">
+    <div class="column">
+        <div class="boxShadow2">
+            <p>@Html.Raw(Model.aprasymas)</p>
+        </div>
+
+    </div>
+    <div class="column">
+        <div class="boxShadow2">
+            <div class="sticky-items static-top">
+                <div class="main-info">
+                    <div class="time-box">
+                        <div class="date-time-wrap">
+                            <span class="time-date">@Model.pradzios_data.ToString("yyyy-MM-dd")</span> <span class="time-h">@Model.pradzios_data.ToString("HH:mm")</span>
+                        </div>
+                        <div class="duration-wrap">
+                            <div class="duration-text">@Model.pabaigos_data.ToString("yyyy-MM-dd")</div>
+                            <div class="duration">
+                                @Model.pabaigos_data.ToString("HH:mm")
+                            </div>
+                        </div>
+                    </div>
+                    <div class="details-wrap">
+                        <div class="type with-icon">
+                            <div class="title"> <i class="icon fa-solid fa-clock"></i><span style="margin-left:-20px">Renginio būsena</span></div>
+                            <p title="@Model.renginio_busena">
+                                <span>@Model.renginio_busena</span>
+                            </p>
+                        </div>
+                        <div class="place with-icon">
+
+                            <div class="title"><i class="icon fa-solid fa-location-dot"></i><span style="margin-left:-20px">Vieta</span></div>
+                            <p>
+                                <a rel="follow" title="Chemijos g. 4B" href="/4281/kaunas/chemijos-g-4b">
+                                    @Model.adresas <i class="fa fa-angle-double-right" aria-hidden="true"></i>
+                                </a>
+                            </p>
+
+                        </div>
+                    </div>
+                </div>
+
+                @if (Model.kaina == 0)
+                {
+
+
+                    <div class="ticket  ">
+                        <span style="color:green" class="in-event">NEMOKAMA</span>
+                    </div>
+                }
+                else
+                {
+                    <div class="ticket  ">
+                        <span class="in-event">Kaina: <span style="color:green">@Model.kaina €</span> </span>
+                    </div>
+                }
+
+            </div>
+        </div>
+    </div>
+
+    <div style="margin:2vh">
+        <input type="submit" value="< Atgal" onclick="@("window.location.href='" + @Url.Action("Renginiai", "Renginys") + "'");" class="btn btn-info" />
+    </div>
+
+
+

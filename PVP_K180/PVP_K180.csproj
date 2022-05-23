@@ -293,6 +293,7 @@
     <Content Include="Styles\navbar.css" />
     <Content Include="Styles\profileStyle.css" />
     <Content Include="Styles\ProjectStyle.css" />
+    <Content Include="Styles\SidePanel.css" />
     <Content Include="Styles\slideCss.css" />
     <Content Include="Styles\photoStyle.css" />
     <Content Include="Styles\tableStyle.css" />
@@ -693,6 +694,7 @@
     <Content Include="Views\Apklausa\KeistiApklausosBusena.cshtml" />
     <Content Include="Views\Renginys\KeistiRenginioBusena.cshtml" />
     <Content Include="Styles\newsStyle2.0.css" />
+    <Content Include="Views\Renginys\PerziuretiRengini.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

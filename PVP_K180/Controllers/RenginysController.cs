@@ -205,6 +205,16 @@ namespace PVP_K180.Controllers
         public ActionResult Renginiai()
         {
             List<Renginys> renginiai = renginys_Repos.Gauti_Renginius();
+
+            for(var i = 0; i<renginiai.Count;i++)
+            {
+                var length = renginiai[i].aprasymas.Length;
+
+                if(length > 200)
+                {
+                    renginiai[i].aprasymas = renginiai[i].aprasymas.Substring(0, 200);
+                }
+            }
             return View(renginiai);
         }
 
@@ -248,6 +258,13 @@ namespace PVP_K180.Controllers
             Response.Write("<script type='text/javascript' language='javascript'> alert('Renginio būsena pakeista')</script>");
 
             return RedirectToAction("GautiRenginius", "Renginys");
+        }
+
+        public ActionResult PerziuretiRengini(int id)
+        {
+            Renginys renginys = renginys_Repos.Gauti_Rengini(id);
+
+            return View(renginys);
         }
     }
 }
