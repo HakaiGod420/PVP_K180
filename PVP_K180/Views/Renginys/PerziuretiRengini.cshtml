@@ -4,7 +4,13 @@
     ViewBag.Title = Model.pavadinimas;
 }
 
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css"
+      integrity="sha512-hoalWLoI8r4UszCkZ5kL8vayOGVae1oxXe/2A4AO6J9+580uKHDO3JdHb7NzwwzK5xr/Fs0W40kiNHxM9vyTtQ=="
+      crossorigin="" />
 
+<script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js"
+        integrity="sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ=="
+        crossorigin=""></script>
 <style>
 
     /* Create two equal columns that floats next to each other */
@@ -12,7 +18,6 @@
         float: left;
         width: 50%;
         padding: 10px;
-      
     }
 
     /* Clear floats after the columns */
@@ -39,10 +44,23 @@
         padding-top: 1vh;
     }
 
+    #map {
+        height: 500px;
+  
+    }
 
-
-
+    .marker-position {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        z-index: 999;
+        padding: 10px;
+        font-weight: 700;
+        background-color: #fff;
+    }
 </style>
+
+
 <script src="https://kit.fontawesome.com/2e7ea6ec96.js" crossorigin="anonymous"></script>
 <h2>@Model.pavadinimas</h2>
 <link href="~/Styles/SidePanel.css" rel="stylesheet" />
@@ -79,7 +97,7 @@
 
                             <div class="title"><i class="icon fa-solid fa-location-dot"></i><span style="margin-left:-20px">Vieta</span></div>
                             <p>
-                                <a rel="follow" title="Chemijos g. 4B" href="/4281/kaunas/chemijos-g-4b">
+                                <a class="open-list open-list" data-toggle="modal" data-target=".boostrapmodal" rel="follow" title="Chemijos g. 4B" href="">
                                     @Model.adresas <i class="fa fa-angle-double-right" aria-hidden="true"></i>
                                 </a>
                             </p>
@@ -107,9 +125,69 @@
         </div>
     </div>
 
+    
+    <div id="myModal" class="modal fade boostrapmodal">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <b>Renginio vieta</b>
+                </div>
+
+                <div class="modal-body">
+                    <div class="mapStyle">
+
+                        <div id="map"></div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Uždaryti</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div style="margin:2vh">
         <input type="submit" value="< Atgal" onclick="@("window.location.href='" + @Url.Action("Renginiai", "Renginys") + "'");" class="btn btn-info" />
     </div>
 
+    <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+    <script>
+    var arGaliPrideti = true;
+    /* eslint-disable no-undef */
+    /**
+     * add move and delete marker
+     */
+
+    // config map
+    let config = {
+        minZoom: 1,
+        maxZoom: 18,
+    };
+    // magnification with which the map will start
+    const zoom = 15;
+    // co-ordinates
+    const lat = '@Model.zemelapis_ilguma'.replace(",", ".");
+    const lng = '@Model.zemelapis_platuma'.replace(",", ".");
 
 
+    // calling map
+        const map = L.map("map", config).setView([lat, lng], zoom);
+        var main = L.marker([lat, lng]).addTo(map).bindPopup('@Model.pavadinimas');
+
+    // Used to load and display tile layers on the map
+    // Most tile servers require attribution, which you can set under `Layer`
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        attribution:
+            '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    }).addTo(map);
+
+        $(document).ready(function () {
+
+            $('#myModal').on('shown.bs.modal', function () {
+                console.log("Find");
+                map.invalidateSize();
+            });
+        })
+
+    </script>
