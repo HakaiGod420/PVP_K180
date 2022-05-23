@@ -29,6 +29,8 @@ namespace PVP_K180.Models
         [DisplayName("Sukurta vartotojo")]
         public int naujienos_kurejo_ID { get; set; }
 
+
+
         public List<Nuotrauka> nuotraukos { get; set; }
     }
 }

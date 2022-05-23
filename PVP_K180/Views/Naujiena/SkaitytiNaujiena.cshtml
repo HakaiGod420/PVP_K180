@@ -1,106 +1,65 @@
 ﻿@model PVP_K180.Models.Naujiena
 
 @{
-    ViewBag.Title = "SkaitytiNaujiena";
+    ViewBag.Title = Model.pavadinimas;
 }
 
-<script src="~/Scripts/jquery-1.8.2.min.js"></script>
-<script src="~/Scripts/jquery.mousewheel-3.0.6.pack.js"></script>
-<script src="~/Scripts/jquery.fancybox.js"></script>
-<script src="~/Scripts/jquery.fancybox.pack.js"></script>
-<script src="~/Scripts/jquery.fancybox-buttons.js"></script>
-<script src="~/Scripts/jquery.fancybox-media.js"></script>
-<script src="~/Scripts/jquery.fancybox-thumbs.js"></script>
-<link href="~/Content/jquery.fancybox-buttons.css" rel="stylesheet" media="screen" />
-<link href="~/Content/jquery.fancybox-thumbs.css" rel="stylesheet" media="screen" />
-<link href="~/Scripts/jquery.fancybox.css" rel="stylesheet" />
-<script type="text/javascript">
-
-    $(document).ready(function () {
-        $("#ShowImage").fancybox({
-            helpers:
-            {
-                title:
-                {
-                    type: 'float'
-                }
-            }
-        });
-    });
-</script>
+<script src="~/Scripts/lightbox.js"></script>
+<link href="~/Styles/lightbox.css" rel="stylesheet" />
 
 <style>
-    .imgBox {
-        width: 200px;
-        height: 200px;
-        opacity: 1.0;
-        filter: alpha(opacity=100);
+    .boxShadow2 {
+        box-shadow: 0 1px 5px rgb(0 0 0 / 0.2);
+        margin: auto;
+        border-radius: 4px;
+        width: 100%;
+        padding: 10px;
+        margin-top: 30px;
+        position: relative;
+        background-color:white;
     }
-
-    .imgBox:hover {
-       -moz-box-shadow: 0 0 10px #ccc;
-       -webkit-box-shadow: 0 0 10px #ccc;
-        box-shadow: 0 0 10px #ccc;
-        opacity: 0.4;
-        filter: alpha(opacity=40);
-        }
+    .customImg{
+        max-height:200px;
+        max-width:300px;
+        padding-top:1vh;
+    
+    }
 </style>
 
-<h2>@Model.pavadinimas</h2>
-
-<div>
+<div class="boxShadow2">
+    <p style="text-align:right">
+        Publikuota: @Model.naujienos_sukurimo_data.ToString("yyyy-MM-dd")
+        <span style="float:left">
+            Autorius: <span style="font-weight:bold">Gytis Šneideraitis</span>
+        </span>
+    </p>
     <hr />
-    @Model.naujienos_sukurimo_data.ToString("yyyy-MM-dd")
-    <p>admin</p>
+    <p style="font-size:30px">@Model.pavadinimas</p>
     <hr />
-    <dl class="dl-horizontal">
-        <p>@Html.Raw(Model.naujienos_tekstas)</p>
-    </dl>
+    <p>@Html.Raw(Model.naujienos_tekstas)</p>
 </div>
-
-<div class="jumbotron" style="height:600px;">
-    <h3>Nuotraukos</h3>
-    <div style="border-bottom:1px solid Red;"></div>
-    @if (Model.nuotraukos.Count > 0)
+<div style="align-items:center" class="boxShadow2">
+    <H4>Nuotraukų galerija</H4>
+    <hr />
+    @if (Model.nuotraukos.Count != 0)
     {
-        <div class="row-fluid">
-            <div class="span2">
-                <div class="item">
-                    @foreach (var image in Model.nuotraukos)
-                    {
-                        <div style=" margin:10px; float:left; height:200px;
-                         overflow:hidden; width:200px;">
-                            <a id="ShowImage" class="fancybox-button"
-                               data-rel="fancybox-button"
-                               title="Photo" href="@Url.Content("~/Nuotraukos/"+ image.nuotraukos_nuoroda)">
-                                <div class="zoom">
-                                    <img src="@Url.Content("~/Nuotraukos/" + image.nuotraukos_nuoroda)" class="imgBox" />
-                                    <div class="zoom-icon"></div>
-                                </div>
-                            </a>
-                        </div>
-                    }
-                </div>
+        <div class="containerPhoto">
+            <div class="gallery">
+                @foreach (var item in Model.nuotraukos)
+                {
+                    <a href="~/Nuotraukos/@item.nuotraukos_nuoroda" data-lightbox="models" data-title="@item.nuotraukos_nuoroda">
+                        <img class="customImg" src="~/Nuotraukos/@item.nuotraukos_nuoroda" />
+                    </a>
+                }
             </div>
         </div>
     }
+    else
+    {
+        <p>Nuotraukų nebuvo pridėta</p>
+    }
+</div>
+<div style="margin:2vh">
+    <input type="submit" value="< Atgal" onclick="@("window.location.href='" + @Url.Action("Naujienos", "Naujiena") + "'");" class="btn btn-info" />
 </div>
 
-<script type="text/javascript">
-    $(document).ready(function () {
-        $('.imageGallery').fancybox({
-            fitToView: false,
-            width: '600px',
-            height: '400px',
-            autoSize: false,
-            closeClick: false,
-            openEffect: 'none',
-            closeEffect: 'none',
-            padding: 0,
-            closeBtn: false,
-            'afterClose': function () {
-                window.location.reload();
-            },
-        });
-    });
-</script>
