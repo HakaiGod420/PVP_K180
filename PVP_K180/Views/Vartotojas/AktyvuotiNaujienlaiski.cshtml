@@ -25,13 +25,13 @@
     }
 
     .btn-success {
-        border-radius: 200px;
+        border-radius: 100px;
         max-width: 500px;
         min-width: 350px;
     }
 
     .btn-danger {
-        border-radius: 200px;
+        border-radius: 100px;
         max-width: 500px;
         min-width: 350px;
     }
@@ -50,18 +50,19 @@
             <b>Naujienlaiškis neužprenumeruotas</b>
         }
     </p>
+    <div class="button">
+        @if (!Convert.ToBoolean(TempData["Aktyvacija"]))
+        {
+            <input type="submit" value="Užprenumeruoti" onclick="@("window.location.href='" + @Url.Action("AktyvuotiPrenumerata", "Vartotojas") + "'");" class="btn btn-success" />
+        }
+        else
+        {
+            <input type="submit" value="Atšaukti prenumeratą" onclick="@("window.location.href='" + @Url.Action("SalintiPrenumerata", "Vartotojas") + "'");" class="btn btn-danger" />
+        }
+    </div>
 </div>
 
-<div class="button">
-    @if (!Convert.ToBoolean(TempData["Aktyvacija"]))
-    {
-        <input type="submit" value="Užprenumeruoti" onclick="@("window.location.href='" + @Url.Action("AktyvuotiPrenumerata", "Vartotojas") + "'");" class="btn btn-success" />
-    }
-    else
-    {
-        <input type="submit" value="Atšaukti prenumeratą" onclick="@("window.location.href='" + @Url.Action("SalintiPrenumerata", "Vartotojas") + "'");" class="btn btn-danger" />
-    }
-</div>
+
 
 
 <p>
