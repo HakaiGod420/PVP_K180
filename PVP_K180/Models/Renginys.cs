@@ -35,6 +35,8 @@ namespace PVP_K180.Models
         [Required]
         public double kaina { get; set; }
 
+        public string busenos_pavadinimas { get; set; }
+
         [DisplayName("Ilgumos koordinates")]
         public float zemelapis_ilguma { get; set; }
         [DisplayName("Plokštumos koordinates")]

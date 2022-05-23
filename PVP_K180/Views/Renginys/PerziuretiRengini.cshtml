@@ -17,7 +17,7 @@
     .column {
         float: left;
         width: 50%;
-        padding: 10px;
+        padding: 5px;
     }
 
     /* Clear floats after the columns */
@@ -33,7 +33,7 @@
         border-radius: 4px;
         width: 100%;
         padding: 10px;
-        margin-top: 30px;
+        margin-top: 10px;
         position: relative;
         background-color: white;
     }
@@ -46,7 +46,6 @@
 
     #map {
         height: 500px;
-  
     }
 
     .marker-position {
@@ -67,7 +66,13 @@
 <div class="row">
     <div class="column">
         <div class="boxShadow2">
-            <p>@Html.Raw(Model.aprasymas)</p>
+            <div>
+                <img style="width:100%" src="https://codeacoustics.files.wordpress.com/2017/06/pyramid-stage.png?w=1024&h=614&crop=1" />
+            </div>
+            <div style="margin-top:1vh">
+                <p>@Html.Raw(Model.aprasymas)</p>
+            </div>
+
         </div>
 
     </div>
@@ -89,8 +94,8 @@
                     <div class="details-wrap">
                         <div class="type with-icon">
                             <div class="title"> <i class="icon fa-solid fa-clock"></i><span style="margin-left:-20px">Renginio būsena</span></div>
-                            <p title="@Model.renginio_busena">
-                                <span>@Model.renginio_busena</span>
+                            <p title="@Model.busenos_pavadinimas">
+                                <span>@Model.busenos_pavadinimas</span>
                             </p>
                         </div>
                         <div class="place with-icon">
@@ -124,35 +129,47 @@
             </div>
         </div>
     </div>
+</div>
 
-    
-    <div id="myModal" class="modal fade boostrapmodal">
-        <div class="modal-dialog modal-lg modal-dialog-scrollable">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <b>Renginio vieta</b>
+<div class="row">
+    <div class=" column">
+        <div style="" class="boxShadow2">
+            @Html.ActionLink("Komentarai", "Komentarai", "Renginys", new { id = Model.id_Renginys }, new { @class = "btn btn-success ", @type = "button" })
+        </div>    
+    </div>
+    <div class=" column">
+    </div>
+
+</div>
+<div class="row" style="margin-top:2vh;margin-left:-3px; float:left">
+
+    <input type="submit" value="< Atgal" onclick="@("window.location.href='" + @Url.Action("Renginiai", "Renginys") + "'");" class="btn btn-info" />
+</div>
+
+<div id="myModal" class="modal fade boostrapmodal">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <b>Renginio vieta</b>
+            </div>
+
+            <div class="modal-body">
+                <div class="mapStyle">
+
+                    <div id="map"></div>
                 </div>
+            </div>
 
-                <div class="modal-body">
-                    <div class="mapStyle">
-
-                        <div id="map"></div>
-                    </div>
-                </div>
-
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" data-dismiss="modal">Uždaryti</button>
-                </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Uždaryti</button>
             </div>
         </div>
     </div>
+</div>
 
-    <div style="margin:2vh">
-        <input type="submit" value="< Atgal" onclick="@("window.location.href='" + @Url.Action("Renginiai", "Renginys") + "'");" class="btn btn-info" />
-    </div>
 
-    <script src="~/Scripts/jquery-3.4.1.min.js"></script>
-    <script>
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script>
     var arGaliPrideti = true;
     /* eslint-disable no-undef */
     /**
@@ -190,4 +207,4 @@
             });
         })
 
-    </script>
+</script>

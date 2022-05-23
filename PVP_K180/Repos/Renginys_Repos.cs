@@ -48,7 +48,7 @@ namespace PVP_K180.Repos
             Renginys renginys = new Renginys();
             string conn = ConfigurationManager.ConnectionStrings["MysqlConnection"].ConnectionString;
             MySqlConnection mySqlConnection = new MySqlConnection(conn);
-            string sqlquery = "select * from `Renginys` where id_Renginys=" + id;
+            string sqlquery = "SELECT *,Renginio_busena.name as 'busena_name' FROM `Renginys` LEFT JOIN Renginio_busena ON renginio_busena = Renginio_busena.id_Renginio_busena WHERE id_Renginys=" + id;
             MySqlCommand mySqlCommand = new MySqlCommand(sqlquery, mySqlConnection);
             mySqlConnection.Open();
             MySqlDataAdapter mda = new MySqlDataAdapter(mySqlCommand);
@@ -69,6 +69,7 @@ namespace PVP_K180.Repos
                     renginys.zemelapis_ilguma = Convert.ToInt64(item["zemelapis_ilguma"]);
                     renginys.zemelapis_platuma = Convert.ToInt64(item["zemelapis_platuma"]);
                     renginys.adresas = Convert.ToString(item["adresas"]);
+                    renginys.busenos_pavadinimas = Convert.ToString(item["busena_name"]);
                     renginys.kaina = Convert.ToDouble(item["kaina"]);
                     renginys.renginio_busena = Convert.ToInt32(item["renginio_busena"]);
                 }

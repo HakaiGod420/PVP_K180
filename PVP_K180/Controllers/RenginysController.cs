@@ -159,7 +159,9 @@ namespace PVP_K180.Controllers
         {
             KomentaroLangasRenginys komentaruLangas = new KomentaroLangasRenginys();
             komentaruLangas.parasytiKomentarai = renginys_Repos.Gauti_Renginio_Komentarus(id);
-            TempData["RenginioID"] = id;
+            Session["RenginioID"] = id;
+            ViewBag.currentReng = id;
+            komentaruLangas.parasytiKomentarai = komentaruLangas.parasytiKomentarai.OrderByDescending(x => x.parasymo_data).ToList();
             return View(komentaruLangas);
         }
 
@@ -192,7 +194,7 @@ namespace PVP_K180.Controllers
                 TempData["DeleteFail"] = "Komentaro nepavyko ištrinti";
             }
 
-            return RedirectToAction("Komentarai", new { id = Convert.ToInt32(TempData["RenginioID"]) });
+            return RedirectToAction("Komentarai", new { id = Convert.ToInt32(Session["RenginioID"]) });
         }
 
         [HttpPost]
