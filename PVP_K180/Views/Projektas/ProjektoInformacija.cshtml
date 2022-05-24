@@ -1,0 +1,76 @@
+﻿
+@model PVP_K180.ModelView.ProjektoPerziurosPuslapis
+@{
+    ViewBag.Title = "ProjektoInformacija";
+}
+
+<script src="~/Scripts/lightbox.js"></script>
+<link href="~/Styles/lightbox.css" rel="stylesheet" />
+
+<style>
+    .boxShadow2 {
+        box-shadow: 0 1px 5px rgb(0 0 0 / 0.2);
+        margin: auto;
+        border-radius: 4px;
+        width: 100%;
+        padding: 10px;
+        margin-top: 30px;
+        position: relative;
+        background-color: white;
+    }
+
+    .customImg {
+        max-height: 200px;
+        max-width: 200px;
+        padding-top: 1vh;
+    }
+</style>
+
+<div class="boxShadow2">
+    <p style="text-align:right">
+        Publikuota: @Model.perziura.sukurimo_data.ToString("yyyy-MM-dd")
+        <span style="float:left">
+            Būsena: <span style="font-weight:bold">@Model.perziura.busena</span>
+        </span>
+    </p>
+    <hr />
+    <p style="font-size:30px">@Model.projektas.pavadinimas</p>
+    <hr />
+    <p>@Html.Raw(Model.projektas.aprasymas)</p>
+</div>
+
+<div style="display:flex; align-content:space-between;flex-wrap:wrap;flex-direction:column-reverse">
+    <div style="margin-top:10px;width:25%;display:flex"; class="">
+        <div>
+            <a>@Html.ActionLink("Dalyvauti diskusijoje >", "Komentarai", "Projektas", new { id = Model.projektas.id_Projektas }, new { @class = "action btn btn-success", @type = "button" })</a>
+        </div>
+
+    </div>
+</div>
+
+<div style="align-items:center" class="boxShadow2">
+    <H4>Nuotraukų galerija</H4>
+    <hr />
+    @if (Model.projektas.gautosNuotraukos.Count != 0)
+    {
+        <div class="containerPhoto">
+            <div class="gallery">
+                @foreach (var item in Model.projektas.gautosNuotraukos)
+                {
+                    <a href="~/Nuotraukos/@item.nuotraukos_nuoroda" data-lightbox="models" data-title="@item.nuotraukos_nuoroda">
+                        <img class="customImg" src="~/Nuotraukos/@item.nuotraukos_nuoroda" />
+                    </a>
+                }
+            </div>
+        </div>
+    }
+    else
+    {
+        <p>Nuotraukų nebuvo pridėta</p>
+    }
+</div>
+<div style="margin:2vh">
+    <input type="submit" value="< Atgal" onclick="@("window.location.href='" + @Url.Action("Projektai", "Projektas") + "'");" class="btn btn-info" />
+</div>
+
+

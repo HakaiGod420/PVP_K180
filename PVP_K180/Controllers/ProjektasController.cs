@@ -302,5 +302,17 @@ namespace PVP_K180.Controllers
             }
             return RedirectToAction("GautiNuotraukasProjekto", new { id = nuotrauka.priskirtas_id });
         }
+
+        public ActionResult ProjektoInformacija(int id)
+        {
+            ProjektoPerziurosPuslapis perziura = new ProjektoPerziurosPuslapis();
+            Session["ProjektoID"] = id;
+
+            perziura.projektas = projektas_Repos.Gauti_Projekta(id);
+            perziura.projektas.gautosNuotraukos = nuotrauka_Repos.Gauti_Projektu_Nuotraukas(perziura.projektas.id_Projektas);
+            var perziuraList = projektas_Repos.Gauti_Projektus_Atvaizdavimui(true, id);
+            perziura.perziura = perziuraList[0];
+            return View(perziura);
+        }
     }
 }
