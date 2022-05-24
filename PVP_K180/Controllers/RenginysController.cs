@@ -238,7 +238,10 @@ namespace PVP_K180.Controllers
                 {
                     renginiai[i].aprasymas = renginiai[i].aprasymas.Substring(0, 200);
                 }
+                renginiai[i].gautosNuotraukos = nuotrauka_Repos.Gauti__Renginiu_Nuotraukas(renginiai[i].id_Renginys);
             }
+
+     
             return View(renginiai);
         }
 
@@ -287,6 +290,7 @@ namespace PVP_K180.Controllers
         public ActionResult PerziuretiRengini(int id)
         {
             Renginys renginys = renginys_Repos.Gauti_Rengini(id);
+            renginys.gautosNuotraukos = nuotrauka_Repos.Gauti__Renginiu_Nuotraukas(id);
 
             return View(renginys);
         }

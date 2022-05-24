@@ -22,7 +22,15 @@
         {
         <div class="item-container">
             <div class="img-container">
-                <img src="https://www.lrt.lt/img/2019/11/17/550825-741847-756x425.jpg" alt="Event image">
+                @if (item.gautosNuotraukos.Count != 0)
+                {
+                    <img src="~/Nuotraukos/@item.gautosNuotraukos[0].nuotraukos_nuoroda" alt="Event image">
+                }
+                else
+                {
+                         <img src="https://www.lrt.lt/img/2019/11/17/550825-741847-756x425.jpg" alt="Event image">
+                }
+                
             </div>
 
             <div class="body-container">
