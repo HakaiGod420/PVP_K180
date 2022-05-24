@@ -195,6 +195,11 @@ namespace PVP_K180.Controllers
                 projektas[i].menuo = menesiai[projektas[i].sukurimo_data.Month-1];
                 List<Nuotrauka> nuotraukos = nuotrauka_Repos.Gauti_Projektu_Nuotraukas(projektas[i].id_Projektas);
                 projektas[i].pradine_nuotrauka = nuotraukos[0].nuotraukos_nuoroda;
+                if (projektas[i].aprasymas.Length > 150)
+                {
+                    projektas[i].aprasymas = projektas[i].aprasymas.Substring(0, 150);
+                }
+               
             }
             return View(projektas);
         }

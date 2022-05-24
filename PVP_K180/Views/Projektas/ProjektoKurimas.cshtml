@@ -20,7 +20,7 @@
         Value = "3"
     });
 }
-
+<script src="~/Themes/ckeditor/ckeditor.js"></script>
 <h2>Kurti naują projektą</h2>
 
 
@@ -44,11 +44,11 @@
     <div class="form-group">
         @Html.LabelFor(model => model.projektas.aprasymas, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.EditorFor(model => model.projektas.aprasymas, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.TextAreaFor(model => model.projektas.aprasymas, new { htmlAttributes = new { @class = "form-control" } })
             @Html.ValidationMessageFor(model => model.projektas.aprasymas, "", new { @class = "text-danger" })
         </div>
     </div>
-
+    <script>CKEDITOR.replace("projektas_aprasymas");</script>
     <div class="form-group">
         @Html.LabelFor(model => model.projektas.projekto_busena, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">

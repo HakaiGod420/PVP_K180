@@ -17,7 +17,7 @@
                     <div class="date"><span class="day">@item.diena</span><span class="month">@item.menuo</span></div>
                     <h3>@item.pavadinimas</h3>
                     <p>
-                        @item.aprasymas
+                        @Html.Raw(item.aprasymas)
                     </p>
                     <footer>
                         <div class="love"><i class="ion-heart"></i>@item.ivertinimas</div>
