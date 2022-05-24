@@ -161,8 +161,8 @@ namespace PVP_K180.Controllers
                 return View(renginys);
             }
 
-            renginys.zemelapis_ilguma = (float)Convert.ToDouble(TempData["RenginysLang"]);
-            renginys.zemelapis_platuma = (float)Convert.ToDouble(TempData["RenginysLong"]);
+            renginys.zemelapis_ilguma = Convert.ToDouble(TempData["RenginysLang"]);
+            renginys.zemelapis_platuma = Convert.ToDouble(TempData["RenginysLong"]);
 
             bool flag = renginys_Repos.Redaguoti_Rengini(renginys);
             if (flag)
@@ -181,7 +181,9 @@ namespace PVP_K180.Controllers
         {
             KomentaroLangasRenginys komentaruLangas = new KomentaroLangasRenginys();
             komentaruLangas.parasytiKomentarai = renginys_Repos.Gauti_Renginio_Komentarus(id);
-            TempData["RenginioID"] = id;
+            Session["RenginioID"] = id;
+            ViewBag.currentReng = id;
+            komentaruLangas.parasytiKomentarai = komentaruLangas.parasytiKomentarai.OrderByDescending(x => x.parasymo_data).ToList();
             return View(komentaruLangas);
         }
 
@@ -214,7 +216,7 @@ namespace PVP_K180.Controllers
                 TempData["DeleteFail"] = "Komentaro nepavyko ištrinti";
             }
 
-            return RedirectToAction("Komentarai", new { id = Convert.ToInt32(TempData["RenginioID"]) });
+            return RedirectToAction("Komentarai", new { id = Convert.ToInt32(Session["RenginioID"]) });
         }
 
         [HttpPost]
@@ -236,7 +238,10 @@ namespace PVP_K180.Controllers
                 {
                     renginiai[i].aprasymas = renginiai[i].aprasymas.Substring(0, 200);
                 }
+                renginiai[i].gautosNuotraukos = nuotrauka_Repos.Gauti__Renginiu_Nuotraukas(renginiai[i].id_Renginys);
             }
+
+     
             return View(renginiai);
         }
 
@@ -285,6 +290,7 @@ namespace PVP_K180.Controllers
         public ActionResult PerziuretiRengini(int id)
         {
             Renginys renginys = renginys_Repos.Gauti_Rengini(id);
+            renginys.gautosNuotraukos = nuotrauka_Repos.Gauti__Renginiu_Nuotraukas(id);
 
             return View(renginys);
         }

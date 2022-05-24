@@ -4,6 +4,16 @@
     ViewBag.Title = Model.pavadinimas;
 }
 
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css"
+      integrity="sha512-hoalWLoI8r4UszCkZ5kL8vayOGVae1oxXe/2A4AO6J9+580uKHDO3JdHb7NzwwzK5xr/Fs0W40kiNHxM9vyTtQ=="
+      crossorigin="" />
+
+<script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js"
+        integrity="sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ=="
+        crossorigin=""></script>
+
+<script src="~/Scripts/lightbox.js"></script>
+<link href="~/Styles/lightbox.css" rel="stylesheet" />
 
 <style>
 
@@ -11,8 +21,7 @@
     .column {
         float: left;
         width: 50%;
-        padding: 10px;
-      
+        padding: 5px;
     }
 
     /* Clear floats after the columns */
@@ -28,7 +37,7 @@
         border-radius: 4px;
         width: 100%;
         padding: 10px;
-        margin-top: 30px;
+        margin-top: 10px;
         position: relative;
         background-color: white;
     }
@@ -39,17 +48,49 @@
         padding-top: 1vh;
     }
 
+    #map {
+        height: 500px;
+    }
 
+    .customImg {
+        max-height: 100px;
+        max-width: 200px;
+        padding-top: 1vh;
+    }
 
-
+    .marker-position {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        z-index: 999;
+        padding: 10px;
+        font-weight: 700;
+        background-color: #fff;
+    }
 </style>
+
+
 <script src="https://kit.fontawesome.com/2e7ea6ec96.js" crossorigin="anonymous"></script>
 <h2>@Model.pavadinimas</h2>
 <link href="~/Styles/SidePanel.css" rel="stylesheet" />
 <div class="row">
     <div class="column">
         <div class="boxShadow2">
-            <p>@Html.Raw(Model.aprasymas)</p>
+            <div>
+                @if (Model.gautosNuotraukos.Count != 0)
+                {
+                    <img style="width:100%" src="~/Nuotraukos/@Model.gautosNuotraukos[0].nuotraukos_nuoroda" />
+                }
+                else
+                {
+                    <img style="width:100%" src="https://codeacoustics.files.wordpress.com/2017/06/pyramid-stage.png?w=1024&h=614&crop=1" />
+                }
+
+            </div>
+            <div style="margin-top:1vh">
+                <p>@Html.Raw(Model.aprasymas)</p>
+            </div>
+
         </div>
 
     </div>
@@ -71,15 +112,15 @@
                     <div class="details-wrap">
                         <div class="type with-icon">
                             <div class="title"> <i class="icon fa-solid fa-clock"></i><span style="margin-left:-20px">Renginio būsena</span></div>
-                            <p title="@Model.renginio_busena">
-                                <span>@Model.renginio_busena</span>
+                            <p title="@Model.busenos_pavadinimas">
+                                <span>@Model.busenos_pavadinimas</span>
                             </p>
                         </div>
                         <div class="place with-icon">
 
                             <div class="title"><i class="icon fa-solid fa-location-dot"></i><span style="margin-left:-20px">Vieta</span></div>
                             <p>
-                                <a rel="follow" title="Chemijos g. 4B" href="/4281/kaunas/chemijos-g-4b">
+                                <a class="open-list open-list" data-toggle="modal" data-target=".boostrapmodal" rel="follow" title="Chemijos g. 4B" href="">
                                     @Model.adresas <i class="fa fa-angle-double-right" aria-hidden="true"></i>
                                 </a>
                             </p>
@@ -106,10 +147,111 @@
             </div>
         </div>
     </div>
+</div>
 
-    <div style="margin:2vh">
-        <input type="submit" value="< Atgal" onclick="@("window.location.href='" + @Url.Action("Renginiai", "Renginys") + "'");" class="btn btn-info" />
+<div class="row">
+    <div class=" column">
+        <div style="" class="boxShadow2">
+            <h4>Nuotraukų galerija</h4>
+            <hr />
+            @if (Model.gautosNuotraukos.Count != 0)
+            {
+                <div class="containerPhoto">
+                    <div class="gallery">
+                        @foreach (var item in Model.gautosNuotraukos)
+                        {
+                            <a href="~/Nuotraukos/@item.nuotraukos_nuoroda" data-lightbox="models" data-title="@item.nuotraukos_nuoroda">
+                                <img class="customImg" src="~/Nuotraukos/@item.nuotraukos_nuoroda" />
+                            </a>
+                        }
+                    </div>
+                </div>
+            }
+            else
+            {
+                <p>Nuotraukų nebuvo pridėta</p>
+            }
+        </div>
     </div>
+    <div class=" column">
+    </div>
+</div>
+
+<div class="row">
+    <div class=" column">
+        <div style="" class="boxShadow2">
+            @Html.ActionLink("Komentarai", "Komentarai", "Renginys", new { id = Model.id_Renginys }, new { @class = "btn btn-success ", @type = "button" })
+        </div>
+    </div>
+    <div class=" column">
+    </div>
+</div>
 
 
 
+<div class="row" style="margin-top:2vh;margin-left:-3px; float:left">
+
+    <input type="submit" value="< Atgal" onclick="@("window.location.href='" + @Url.Action("Renginiai", "Renginys") + "'");" class="btn btn-info" />
+</div>
+
+<div id="myModal" class="modal fade boostrapmodal">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <b>Renginio vieta</b>
+            </div>
+
+            <div class="modal-body">
+                <div class="mapStyle">
+
+                    <div id="map"></div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Uždaryti</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script>
+    var arGaliPrideti = true;
+    /* eslint-disable no-undef */
+    /**
+     * add move and delete marker
+     */
+
+    // config map
+    let config = {
+        minZoom: 1,
+        maxZoom: 18,
+    };
+    // magnification with which the map will start
+    const zoom = 15;
+    // co-ordinates
+    const lat = '@Model.zemelapis_ilguma'.replace(",", ".");
+    const lng = '@Model.zemelapis_platuma'.replace(",", ".");
+
+
+    // calling map
+        const map = L.map("map", config).setView([lat, lng], zoom);
+        var main = L.marker([lat, lng]).addTo(map).bindPopup('@Model.pavadinimas');
+
+    // Used to load and display tile layers on the map
+    // Most tile servers require attribution, which you can set under `Layer`
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        attribution:
+            '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    }).addTo(map);
+
+        $(document).ready(function () {
+
+            $('#myModal').on('shown.bs.modal', function () {
+                console.log("Find");
+                map.invalidateSize();
+            });
+        })
+
+</script>

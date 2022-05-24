@@ -224,7 +224,7 @@ namespace PVP_K180.Repos
         }
 
 
-        public List<ProjektuPerziura> Gauti_Projektus_Atvaizdavimui()
+        public List<ProjektuPerziura> Gauti_Projektus_Atvaizdavimui(bool OnlyOne = false,int id=-1)
         {
             List<ProjektuPerziura> projektas = new List<ProjektuPerziura>();
             string conn = ConfigurationManager.ConnectionStrings["MysqlConnection"].ConnectionString;
@@ -233,6 +233,13 @@ namespace PVP_K180.Repos
                 "as 'komentarai' FROM `Projektas` " +
                 "LEFT JOIN Projekto_busena ON Projekto_busena.id_Projekto_busena = busena " +
                 "LEFT JOIN Komentaras ON Komentaras.fk_Projektasid_Projektas = Projektas.id_Projektas GROUP BY Projektas.id_Projektas";
+            if(OnlyOne == true)
+            {
+             sqlquery = "SELECT id_Projektas, pavadinimas,aprasymas,sukurimo_data,ivertinimas,Projekto_busena.name as 'busena',COUNT(Komentaras.id_Komentaras) " +
+            "as 'komentarai' FROM `Projektas` " +
+            "LEFT JOIN Projekto_busena ON Projekto_busena.id_Projekto_busena = busena " +
+            "LEFT JOIN Komentaras ON Komentaras.fk_Projektasid_Projektas = Projektas.id_Projektas where id_Projektas="+id +" GROUP BY Projektas.id_Projektas";
+            }
             MySqlCommand mySqlCommand = new MySqlCommand(sqlquery, mySqlConnection);
             mySqlConnection.Open();
             MySqlDataAdapter mda = new MySqlDataAdapter(mySqlCommand);
