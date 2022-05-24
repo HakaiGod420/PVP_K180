@@ -12,6 +12,7 @@ namespace PVP_K180.ModelView
         [DisplayName("Apklausos būsena")]
         public IEnumerable<SelectListItem> Busenos { get; set; }
 
+        [DisplayName("Apklausos būsena")]
         public int apklausos_Busena { get; set; }
     }
 }

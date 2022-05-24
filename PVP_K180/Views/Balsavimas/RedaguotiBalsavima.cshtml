@@ -5,95 +5,110 @@
     var psl_k_count = 0;
 }
 
-<h2>Redaguoti balsavimą</h2>
+
+<style>
+    .boxShadow {
+        box-shadow: 0 1px 10px rgb(0 0 0 / 0.2);
+        border-radius: 5px;
+        width: 100%;
+        padding: 10px;
+        position: relative;
+        background-color: white;
+    }
+</style>
+
+
 
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
 
-    <div class="form-horizontal">
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+<div style="margin-top:20px"  class="form-horizontal boxShadow">
+    <h2>Redaguoti balsavimą</h2>
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.klausimas, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.klausimas, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.klausimas, "", new { @class = "text-danger" })
-            </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.klausimas, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.klausimas, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.klausimas, "", new { @class = "text-danger" })
         </div>
-        <div class="form-group">
-            @Html.LabelFor(model => model.balsavimo_aprasymas, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.balsavimo_aprasymas, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.balsavimo_aprasymas, "", new { @class = "text-danger" })
-            </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.balsavimo_aprasymas, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.balsavimo_aprasymas, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.balsavimo_aprasymas, "", new { @class = "text-danger" })
         </div>
+    </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.sukurimo_data, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.sukurimo_data, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.sukurimo_data, "", new { @class = "text-danger" })
-            </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.sukurimo_data, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.sukurimo_data, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.sukurimo_data, "", new { @class = "text-danger" })
         </div>
+    </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.pabaigos_data, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.pabaigos_data, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.pabaigos_data, "", new { @class = "text-danger" })
-            </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.pabaigos_data, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.pabaigos_data, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.pabaigos_data, "", new { @class = "text-danger" })
         </div>
+    </div>
 
-        @{if (Model.balsavimo_variantai != null)
-            {
-                psl_k_count = Model.balsavimo_variantai.Count;
-            }
-            else
-            {
-                psl_k_count = 0;
-            }
+    @{if (Model.balsavimo_variantai != null)
+        {
+            psl_k_count = Model.balsavimo_variantai.Count;
         }
+        else
+        {
+            psl_k_count = 0;
+        }
+    }
 
 
-        <fieldset>
-            <legend>Balsavimo variantai</legend>
+    <fieldset>
+        <legend>Balsavimo variantai</legend>
 
-            <table class="table table-responsive" id="paslaugos_tbl">
-                <thead>
-                    <tr>
-                        <th>Balsavimo variantas</th>
-                        <th style="width: 100px"></th>
-                    </tr>
-                </thead>
-                <tbody>
+        <table class="table table-responsive" id="paslaugos_tbl">
+            <thead>
+                <tr>
+                    <th>Balsavimo variantas</th>
+                    <th style="width: 100px"></th>
+                </tr>
+            </thead>
+            <tbody>
 
-                    @{
-                        if (Model.balsavimo_variantai != null)
+                @{
+                    if (Model.balsavimo_variantai != null)
+                    {
+                        for (int i = 0; i < Model.balsavimo_variantai.Count; i++)
                         {
-                            for (int i = 0; i < Model.balsavimo_variantai.Count; i++)
-                            {
-                                <tr>
-                                    <td>@Html.EditorFor(model => model.balsavimo_variantai[i].balsavimo_variantas, new { htmlAttributes = new { @class = "form-control" } })</td>
-                                    <td><button type="button" class="btn btn-danger" onclick="salinti(this)">šalinti</button></td>
-                                </tr>
-                            }
+                            <tr>
+                                <td>@Html.EditorFor(model => model.balsavimo_variantai[i].balsavimo_variantas, new { htmlAttributes = new { @class = "form-control" } })</td>
+                                <td><button type="button" class="btn btn-danger" onclick="salinti(this)">šalinti</button></td>
+                            </tr>
                         }
                     }
-                </tbody>
-            </table>
-            <input type="hidden" disabled value="@psl_k_count" id="hCount" />
-            <button type="button" id="prideti" class="btn btn-info pull-right" onclick="uzsakyti($('#hCount').val());"><i class="glyphicon-plus-sign"></i> Pridėti</button>
-        </fieldset>
+                }
+            </tbody>
+        </table>
+        <input type="hidden" disabled value="@psl_k_count" id="hCount" />
+        <button type="button" id="prideti" class="btn btn-info pull-right" onclick="uzsakyti($('#hCount').val());"><i class="glyphicon-plus-sign"></i> Pridėti</button>
+    </fieldset>
 
-
+    <div style="display: flex; flex-direction: column; align-content: space-around; flex-wrap: wrap">
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Išsaugoti" class="btn btn-default" />
+                <input type="submit" value="Išsaugoti balsavimą" class="btn btn-default" />
             </div>
         </div>
     </div>
+
+</div>
 }
 
 <div style="margin-top: 30px;">

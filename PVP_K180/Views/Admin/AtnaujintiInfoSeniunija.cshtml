@@ -5,7 +5,7 @@
 }
 
 <script src="~/Themes/ckeditor/ckeditor.js"></script>
-<h2>Atnaujinti informaciją apie seniūnija</h2>
+
 
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css"
       integrity="sha512-hoalWLoI8r4UszCkZ5kL8vayOGVae1oxXe/2A4AO6J9+580uKHDO3JdHb7NzwwzK5xr/Fs0W40kiNHxM9vyTtQ=="
@@ -17,7 +17,7 @@
 
 <style>
     #map {
-        height: 580px;
+        height: 70vh;
     }
 
     .marker-position {
@@ -39,21 +39,23 @@
         background-color: #f1f1f1;
     }
 
-    .center {
-        margin: 0;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        -ms-transform: translate(-50%, -50%);
-        transform: translate(-50%, -50%);
+    .boxShadow {
+        box-shadow: 0 1px 10px rgb(0 0 0 / 0.2);
+        border-radius: 5px;
+        width: 100%;
+        padding: 10px;
+        position: relative;
+        background-color: white;
     }
+
 </style>
 
 @using (Html.BeginForm("AtnaujintiInfoSeniunija", "Admin"))
 {
     @Html.AntiForgeryToken()
 
-<div class="form-horizontal">
+<div style="margin-top:20px" class="form-horizontal boxShadow">
+    <h2>Atnaujinti informaciją apie seniūnija</h2>
     <hr />
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
@@ -97,24 +99,26 @@
             @Html.ValidationMessageFor(model => model.aprasymas, "", new { @class = "text-danger" })
         </div>
     </div>
-
-    <div class="mapStyle">
-        <div class="marker-position">Paspauskite ant žemėlapio</div>
-        <div id="map"></div>
+    <hr/>
+    <div style="margin-top:10px; display:flex;flex-direction:column;align-content:space-around;flex-wrap:wrap">
+        <p style="text-align:center;font-weight:bold">Pasirinkite vietą, kurioje yra seniūnija</p>
+        <div style="width:75%" class=" boxShadow mapStyle">
+            <div class="marker-position">Paspauskite ant žemėlapio</div>
+            <div id="map"></div>
+        </div>
     </div>
-    <div style="text-align:center; margin-top:10px">
-        <button onclick="saveData()" class="btn btn-success" type="button">Patvirtinti lokaciją</button>
-    </div>
 
-    <div style="margin-top:30px;" class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <input type="submit" value="Atnaujinti" class="btn btn-default" />
+    <div style="display: flex; flex-direction: column; align-content: space-around; flex-wrap: wrap">
+        <div style="margin-top:10px" class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Atnaujinti" class="btn btn-default" />
+            </div>
         </div>
     </div>
 </div>
 }
 
-<div style="margin-top: 30px;">
+<div style="margin-top: 30px;margin-bottom:10px">
     <input type="submit" value="< Atgal" onclick="@("window.location.href='" + @Url.Action("AdminValdymas", "Vartotojas") + "'");" class="btn btn-info" />
 </div>
 
@@ -184,6 +188,8 @@
 
         // event draged marker
         marker.on("dragend", dragedMaker);
+
+        $.post("/Admin/IsaugotiLokacija", { x: saveLat, y: saveLng });
     }
 
 
@@ -209,6 +215,7 @@
     function dragedMaker() {
         markerPlace.textContent = `Pakeista pozicija: ${this.getLatLng().lat}, ${this.getLatLng().lng
             }`;
+        $.post("/Admin/IsaugotiLokacija", { x: saveLat, y: saveLng });
     }
 
     var main = L.marker([lat, lng]).addTo(map).bindPopup(buttonRemove);

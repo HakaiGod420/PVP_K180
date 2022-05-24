@@ -4,7 +4,19 @@
     ViewBag.Title = "SiustiNaujienlaiski";
 }
 <script src="~/Themes/ckeditor/ckeditor.js"></script>
-<h2>Naujienlaiškio siuntimas</h2>
+
+
+<style>
+    .boxShadow {
+        box-shadow: 0 1px 10px rgb(0 0 0 / 0.2);
+        border-radius: 5px;
+        width: 100%;
+        padding: 10px;
+        position: relative;
+        background-color: white;
+    }
+
+</style>
 
 @if (TempData["Succsess"] != null)
 {
@@ -15,9 +27,9 @@
 {
     @Html.AntiForgeryToken()
 
-    <div class="form-horizontal">
+    <div style="margin-top:20px" class="form-horizontal boxShadow">
 
-        <h4>Laiškas</h4>
+        <h2>Naujienlaiškio siuntimas</h2>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">

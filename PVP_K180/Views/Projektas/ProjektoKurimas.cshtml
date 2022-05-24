@@ -21,15 +21,25 @@
     });
 }
 <script src="~/Themes/ckeditor/ckeditor.js"></script>
-<h2>Kurti naują projektą</h2>
 
+
+<style>
+    .boxShadow {
+        box-shadow: 0 1px 10px rgb(0 0 0 / 0.2);
+        border-radius: 5px;
+        width: 100%;
+        padding: 10px;
+        position: relative;
+        background-color: white;
+    }
+</style>
 
 @using (Html.BeginForm("ProjektoKurimas", "Projektas", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
 
-<div class="form-horizontal">
-    <h4>Projektas</h4>
+<div style="margin-top:20px" class="form-horizontal boxShadow">
+    <h2>Kurti naują projektą</h2>
     <hr />
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
