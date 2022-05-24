@@ -695,6 +695,10 @@
     <Content Include="Views\Renginys\KeistiRenginioBusena.cshtml" />
     <Content Include="Styles\newsStyle2.0.css" />
     <Content Include="Views\Renginys\PerziuretiRengini.cshtml" />
+    <Content Include="Views\Renginys\PridetiNuotraukuRenginiui.cshtml" />
+    <Content Include="Views\Renginys\GautiNuotraukasRenginio.cshtml" />
+    <Content Include="Views\Projektas\GautiNuotraukasProjekto.cshtml" />
+    <Content Include="Views\Projektas\PridetiNuotraukuProjektui.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

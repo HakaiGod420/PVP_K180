@@ -58,6 +58,8 @@
                 <td class="text-left">
                     @Html.ActionLink("Redaguoti", "RedaguotiProjekta", new { id = item.id_Projektas }) |
                     @Html.ActionLink("Pašalinti", "TrintiProjekta", new { id = item.id_Projektas }) |
+                    @Html.ActionLink("Pridėti nuotraukų", "PridetiNuotraukuProjektui", new { id = item.id_Projektas }) |
+                    @Html.ActionLink("Nuotraukos", "GautiNuotraukasProjekto", new { id = item.id_Projektas }) |
                     @Html.ActionLink("Rašyti komentarą", "Komentarai", new { id = item.id_Projektas }) |
                     @Html.ActionLink("Detali informacija", "DetaliInformacijaProjektas", new { id = item.id_Projektas })
                 </td>

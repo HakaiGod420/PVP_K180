@@ -128,6 +128,8 @@
             <td class="text-left">
                 @Html.ActionLink("Redaguoti", "RedaguotiRengini", new { id = item.id_Renginys }) |
                 @Html.ActionLink("Keisti būseną", "KeistiRenginioBusena", new { id = item.id_Renginys }) |
+                @Html.ActionLink("Pridėti nuotraukų", "PridetiNuotraukuRenginiui", new { id = item.id_Renginys }) |
+                @Html.ActionLink("Nuotraukos", "GautiNuotraukasRenginio", new { id = item.id_Renginys }) |
                 @Html.ActionLink("Rašyti komentarą", "Komentarai", new { id = item.id_Renginys }) |
                 @Html.ActionLink("Detali informacija", "DetaliInformacijaRenginys", new { id = item.id_Renginys })
             </td>
