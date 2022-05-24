@@ -40,8 +40,8 @@
     </div>
 </div>
 }
-<div>
-    @Html.ActionLink("Atgal", "ZiuretiApklausas")
+<div style="margin-top: 30px;">
+    <input type="submit" value="< Atgal" onclick="@("window.location.href='" + @Url.Action("ZiuretiApklausas") + "'");" class="btn btn-info" />
 </div>
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

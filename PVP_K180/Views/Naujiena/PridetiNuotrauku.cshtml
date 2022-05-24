@@ -31,6 +31,6 @@
 </div>
 }
 
-<div>
-    @Html.ActionLink("Atgal", "GautiNaujienas","Naujiena")
+<div style="margin-top: 30px;">
+    <input type="submit" value="< Atgal" onclick="@("window.location.href='" + @Url.Action("GautiNaujienas", "Naujiena") + "'");" class="btn btn-info" />
 </div>

@@ -65,7 +65,7 @@
 
 
 
-<p>
-    @Html.ActionLink("Atgal", "ProfilioValdymas", "Vartotojas")
-</p>
+<div style="margin:2vh">
+    <input type="submit" value="< Atgal" onclick="@("window.location.href='" + @Url.Action("ProfilioValdymas", "Vartotojas") + "'");" class="btn btn-info" />
+</div>
 

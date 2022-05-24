@@ -139,9 +139,10 @@
 
     </div>
 </div>
-<p style="margin-top:20px">
-    @Html.ActionLink("Atgal", "GautiRenginius")
-</p>
+<div style="margin-top: 30px;">
+    <input type="submit" value="< Atgal" onclick="@("window.location.href='" + @Url.Action("GautiRenginius") + "'");" class="btn btn-info" />
+</div>
+
 
 
 <script>
