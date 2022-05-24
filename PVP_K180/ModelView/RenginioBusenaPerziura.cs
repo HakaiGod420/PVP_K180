@@ -12,6 +12,7 @@ namespace PVP_K180.ModelView
         [DisplayName("Renginio būsena")]
         public IEnumerable<SelectListItem> Busenos { get; set; }
 
+        [DisplayName("Renginio būsena")]
         public int renginio_Busena { get; set; }
     }
 }

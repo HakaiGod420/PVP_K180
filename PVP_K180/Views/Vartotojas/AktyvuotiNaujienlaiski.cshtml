@@ -10,10 +10,10 @@
 }
 <style>
     .textbox {
-        box-shadow: 0 3px 20px rgb(0 0 0 / 0.2);
+        box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
         padding: 0px 20px;
         box-sizing: border-box;
-        border-radius: 20px;
+        border-radius: 10px;
         font-size: 16px;
         resize: none;
         display: block;
@@ -25,13 +25,13 @@
     }
 
     .btn-success {
-        border-radius: 100px;
+        border-radius: 20px;
         max-width: 500px;
         min-width: 350px;
     }
 
     .btn-danger {
-        border-radius: 100px;
+        border-radius: 20px;
         max-width: 500px;
         min-width: 350px;
     }
@@ -53,7 +53,7 @@
     <div class="button">
         @if (!Convert.ToBoolean(TempData["Aktyvacija"]))
         {
-            <input type="submit" value="Užprenumeruoti" onclick="@("window.location.href='" + @Url.Action("AktyvuotiPrenumerata", "Vartotojas") + "'");" class="btn btn-success" />
+            <input style="margin:2vh" type="submit" value="Užprenumeruoti" onclick="@("window.location.href='" + @Url.Action("AktyvuotiPrenumerata", "Vartotojas") + "'");" class="btn btn-success" />
         }
         else
         {

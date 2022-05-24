@@ -3,14 +3,27 @@
 @{
     ViewBag.Title = "NaujienosKurimas";
 }
+
+<style>
+    .boxShadow {
+        box-shadow: 0 1px 10px rgb(0 0 0 / 0.2);
+        border-radius: 5px;
+        width: 100%;
+        padding: 10px;
+        position: relative;
+        background-color: white;
+    }
+</style>
+
 <script src="~/Themes/ckeditor/ckeditor.js"></script>
-<h2>Naujienos kurimas</h2>
+
 
 @using (Html.BeginForm("NaujienosKurimas", "Naujiena", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
 
-<div class="form-horizontal">
+<div style="margin-top:20px" class="boxShadow form-horizontal">
+    <h2>Naujienos kurimas</h2>
     <hr />
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 

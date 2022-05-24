@@ -20,8 +20,8 @@
     }
 
     #map {
-        width: 100%;
         height: 70vh;
+
     }
 
     .marker-position {
@@ -42,15 +42,23 @@
         padding: 0;
         background-color: #f1f1f1;
     }
+
+    .boxShadow {
+        box-shadow: 0 1px 10px rgb(0 0 0 / 0.2);
+        border-radius: 5px;
+        width: 100%;
+        padding: 10px;
+        position: relative;
+        background-color: white;
+    }
 </style>
 
-<h2>Skelbti atsitikimą</h2>
 
 @using (Html.BeginForm("SkelbtiAtsitikima", "Atsitikimas", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
 
-<div class="form-horizontal">
+<div style="margin-top:20px" class=" boxShadow form-horizontal">
     <h4>Atsitikimo suvestinė</h4>
     <hr />
     @if (TempData["AtsitikmasFail"] != null)
@@ -88,21 +96,26 @@
             @Html.ValidationMessageFor(model => model.nuotraukos, "", new { @class = "text-danger" })
         </div>
     </div>
-
-    <div class="mapStyle">
-        <div class="marker-position">Paspauskite ant žemėlapio</div>
-        <div id="map"></div>
-    </div>
-
-    <div style="margin-top:10px" class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <input type="submit" value="Paskelbti" class="btn btn-default" />
+    <div style="display:flex;flex-direction:column;align-content:space-around;flex-wrap:wrap">
+        <p style="text-align:center;font-weight:bold">Pasirinkite vietą, kurioje yra įvykis</p>
+        <div style="width:75%" class=" boxShadow mapStyle">
+            <div class="marker-position">Paspauskite ant žemėlapio</div>
+            <div id="map"></div>
         </div>
     </div>
+
+    <div style="display: flex; flex-direction: column; align-content: space-around; flex-wrap: wrap">
+        <div style="margin-top:10px" class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Paskelbti" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+
 </div>
 }
 
-<div>
+<div style="margin-top:20px;margin-bottom:10px;">
     <input type="submit" value="< Atgal" onclick="@("window.location.href='" + @Url.Action("ProfilioValdymas", "Vartotojas") + "'");" class="btn btn-info" />
 </div>
 
