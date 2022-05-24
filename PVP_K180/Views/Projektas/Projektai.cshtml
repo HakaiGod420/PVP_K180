@@ -25,13 +25,15 @@
                         <div class="comments"><i class="fa-solid fa-check"></i>@item.busena</div>
                     </footer>
                 </figcaption>
-                <a href="#"></a>
+                <a>@Html.ActionLink(" ", "ProjektoInformacija", "Projektas", new { id = item.id_Projektas }, new { @class = "action", @type = "button" })</a>
             </figure>
             </div>
             }
         </div>
 
+<div class="row" style="margin-top:2vh;margin-left:20px;margin-bottom:10px; float:left">
+    <input type="submit" value="< Atgal" onclick="@("window.location.href='" + @Url.Action("Index", "Home") + "'");" class="btn btn-info" />
+</div>
         <script>
-            /* Demo purposes only */
 
         </script>

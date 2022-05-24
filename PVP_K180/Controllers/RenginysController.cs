@@ -161,8 +161,8 @@ namespace PVP_K180.Controllers
                 return View(renginys);
             }
 
-            renginys.zemelapis_ilguma = (float)Convert.ToDouble(TempData["RenginysLang"]);
-            renginys.zemelapis_platuma = (float)Convert.ToDouble(TempData["RenginysLong"]);
+            renginys.zemelapis_ilguma = Convert.ToDouble(TempData["RenginysLang"]);
+            renginys.zemelapis_platuma = Convert.ToDouble(TempData["RenginysLong"]);
 
             bool flag = renginys_Repos.Redaguoti_Rengini(renginys);
             if (flag)

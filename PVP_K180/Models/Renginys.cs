@@ -38,9 +38,9 @@ namespace PVP_K180.Models
         public string busenos_pavadinimas { get; set; }
 
         [DisplayName("Ilgumos koordinates")]
-        public float zemelapis_ilguma { get; set; }
+        public double zemelapis_ilguma { get; set; }
         [DisplayName("Plokštumos koordinates")]
-        public float zemelapis_platuma { get; set; }
+        public double zemelapis_platuma { get; set; }
         [DisplayName("Būsena")]
         public int renginio_busena { get; set; }
         [DisplayName("Sukurta vartotojo")]

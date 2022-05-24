@@ -66,8 +66,8 @@ namespace PVP_K180.Repos
                     renginys.paskelbimo_data = Convert.ToDateTime(item["paskelbimo_data"]);
                     renginys.pradzios_data = Convert.ToDateTime(item["pradzios_data"]);
                     renginys.pabaigos_data = Convert.ToDateTime(item["pabaigos_data"]);
-                    renginys.zemelapis_ilguma = Convert.ToInt64(item["zemelapis_ilguma"]);
-                    renginys.zemelapis_platuma = Convert.ToInt64(item["zemelapis_platuma"]);
+                    renginys.zemelapis_ilguma = Convert.ToDouble(item["zemelapis_ilguma"]);
+                    renginys.zemelapis_platuma = Convert.ToDouble(item["zemelapis_platuma"]);
                     renginys.adresas = Convert.ToString(item["adresas"]);
                     renginys.busenos_pavadinimas = Convert.ToString(item["busena_name"]);
                     renginys.kaina = Convert.ToDouble(item["kaina"]);
