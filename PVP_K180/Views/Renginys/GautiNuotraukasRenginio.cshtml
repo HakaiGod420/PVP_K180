@@ -1,0 +1,35 @@
+﻿@model IEnumerable<PVP_K180.Models.Nuotrauka>
+
+@{
+    ViewBag.Title = "GautiNuotraukasRenginio";
+}
+
+<h2>Nuotraukų sąrašas</h2>
+
+
+<table class="table">
+    <tr>
+        <th>
+            Nuotrauka
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                <img src="@(item.nuotraukos_nuoroda)" />
+            </td>
+            <td>
+                @Html.ActionLink("Ištrinti", "TrintiNuotrauka", new { id = item.id_Nuotrauka })
+            </td>
+        </tr>
+
+    }
+
+
+</table>
+<div>
+    @Html.ActionLink("Atgal", "GautiRenginius")
+</div>

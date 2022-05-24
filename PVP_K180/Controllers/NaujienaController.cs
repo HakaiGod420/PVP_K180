@@ -234,8 +234,6 @@ namespace PVP_K180.Controllers
                     nuotrauka.nuotraukos_nuoroda = random;
                     nuotrauka.priskirtas_id = nuotrauku_Duomenys.priskirtas_id;
                     nuotrauka_Repos.Prideti_Naujienos_Nuotraukas(nuotrauka);
-
-
                 }
             }
 
@@ -248,9 +246,7 @@ namespace PVP_K180.Controllers
                 Session["Message"] = true;
             }
 
-
             return RedirectToAction("GautiNaujienas");
-
         }
 
         public ActionResult Naujienos()

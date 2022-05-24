@@ -96,6 +96,28 @@ namespace PVP_K180.Controllers
 
         public ActionResult GautiRenginius(int? busena, DateTime? nuo, DateTime? iki)
         {
+            if (Session["UserID"] == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            else if (!Session["Role"].Equals("Administratorius"))
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            if (Session["Message"] != null)
+            {
+                if (Convert.ToBoolean(Session["Message"]))
+                {
+                    Response.Write("<script type='text/javascript' language='javascript'> alert('Nuotrauka pridėta sėkmingai!')</script>");
+                    Session.Remove("Message");
+                }
+                else
+                {
+                    Response.Write("<script type='text/javascript' language='javascript'> alert('Nuotrauka pridėta nesėkmingai!')</script>");
+                    Session.Remove("Message");
+                }
+            }
+
             List<Renginys> renginys = renginys_Repos.Gauti_Renginius();
             if (busena != null)
             {
@@ -265,6 +287,103 @@ namespace PVP_K180.Controllers
             Renginys renginys = renginys_Repos.Gauti_Rengini(id);
 
             return View(renginys);
+        }
+
+        public ActionResult PridetiNuotraukuRenginiui(int id)
+        {
+            if (Session["UserID"] == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            else if (!Session["Role"].Equals("Administratorius"))
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            Nuotrauku_Duomenys nuotrauku_Duomenys = new Nuotrauku_Duomenys();
+            Session["RenginioID"] = id;
+            return View(nuotrauku_Duomenys);
+        }
+
+        [HttpPost]
+        public ActionResult PridetiNuotraukuRenginiui(Nuotrauku_Duomenys nuotrauku_Duomenys)
+        {
+            List<string> posiblesExtensions = new List<string>() { ".jpg", ".png", ".JPG", ".PNG", ".jpeg", ".JPEG" };
+            nuotrauku_Duomenys.priskirtas_id = Convert.ToInt32(Session["RenginioID"]);
+            Session.Remove("RenginioID");
+
+            int photoCount = 0;
+            foreach (HttpPostedFileBase file in nuotrauku_Duomenys.nuotraukos)
+            {
+                if (file != null)
+                {
+                    photoCount++;
+                    var InputFileName = Path.GetFileName(file.FileName);
+                    var extension = Path.GetExtension(file.FileName);
+
+                    if (!posiblesExtensions.Contains(extension))
+                    {
+                        Response.Write("<script type='text/javascript' language='javascript'> alert('Įkeltas su netinkamu formatu')</script>");
+                        return View();
+                    }
+
+                    var random = Guid.NewGuid() + InputFileName;
+                    var ServerSavePath = Path.Combine(Server.MapPath("~/Nuotraukos/") + random);
+
+
+                    file.SaveAs(ServerSavePath);
+                    Nuotrauka nuotrauka = new Nuotrauka();
+                    nuotrauka.nuotraukos_nuoroda = random;
+                    nuotrauka.priskirtas_id = nuotrauku_Duomenys.priskirtas_id;
+                    nuotrauka_Repos.Prideti_Renginio_Nuotraukas(nuotrauka);
+                }
+            }
+
+            if (photoCount == 0)
+            {
+                Session["Message"] = false;
+            }
+            else
+            {
+                Session["Message"] = true;
+            }
+
+            return RedirectToAction("GautiRenginius");
+        }
+
+        public ActionResult GautiNuotraukasRenginio(int id)
+        {
+            if (Session["UserID"] == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            else if (!Session["Role"].Equals("Administratorius"))
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            Nuotrauka_Repos nuotrauka_Repos = new Nuotrauka_Repos();
+            List<Nuotrauka> nuotraukos = nuotrauka_Repos.Gauti__Renginiu_Nuotraukas(id);
+            foreach (var item in nuotraukos)
+            {
+                var path = Path.Combine(("/Nuotraukos/") + item.nuotraukos_nuoroda);
+                item.nuotraukos_nuoroda = path;
+            }
+
+            return View(nuotraukos);
+        }
+
+        public ActionResult TrintiNuotrauka(int id)
+        {
+            Nuotrauka_Repos nuotrauka_Repos = new Nuotrauka_Repos();
+            Nuotrauka nuotrauka = nuotrauka_Repos.Gauti_Renginio_Nuotrauka(id);
+            var ServerSavePath = Path.Combine(Server.MapPath("~/Nuotraukos/") + nuotrauka.nuotraukos_nuoroda);
+            if (System.IO.File.Exists(ServerSavePath))
+            {
+                System.IO.File.Delete(ServerSavePath);
+                bool flag = nuotrauka_Repos.Trinti_Nuotrauka(id);
+            }
+            return RedirectToAction("GautiNuotraukasRenginio", new { id = nuotrauka.priskirtas_id });
         }
     }
 }
