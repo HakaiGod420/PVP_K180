@@ -145,7 +145,6 @@
 
 /* Create two equal columns that sits next to each other */
 .column {
-    flex: 10%;
     padding: 0 25px;
     align-content: center;
 }
