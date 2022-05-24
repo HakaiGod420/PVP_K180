@@ -83,7 +83,6 @@
             <li>
                 @foreach (var item in Model.parasytiKomentarai)
                 {
-
                     <div class="comment-main-level">
                         <!-- Avatar -->
                         <div class="comment-avatar"><img src="~/Nuotraukos/@item.nuotrauka_location" alt=""></div>
@@ -112,6 +111,6 @@
     @Html.ActionLink("< Atgal", "PerziuretiRengini", "Renginys", new { id = Convert.ToInt32(Session["RenginioID"]) }, new { @class = "btn btn-info ", @type = "button" })
 </div>
 
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-}
+    @section Scripts {
+        @Scripts.Render("~/bundles/jqueryval")
+    }

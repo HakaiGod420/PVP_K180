@@ -103,7 +103,7 @@
 }
 
 <div>
-    @Html.ActionLink("Atgal", "ProfilioValdymas", "Vartotojas")
+    <input type="submit" value="< Atgal" onclick="@("window.location.href='" + @Url.Action("ProfilioValdymas", "Vartotojas") + "'");" class="btn btn-info" />
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@0.76.0/dist/L.Control.Locate.min.js" charset="utf-8"></script>

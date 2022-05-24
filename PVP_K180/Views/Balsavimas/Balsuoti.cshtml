@@ -140,6 +140,6 @@
         <p>Aktyvaus balsavimo dabar nėra</p>
     }
 </div>
-<p>
-    @Html.ActionLink("Atgal", "Index", "Home")
-</p>
+<div style="margin:2vh">
+    <input type="submit" value="< Atgal" onclick="@("window.location.href='" + @Url.Action("Index", "Home") + "'");" class="btn btn-info" />
+</div>
