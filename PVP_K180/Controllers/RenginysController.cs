@@ -46,7 +46,7 @@ namespace PVP_K180.Controllers
 
             if (Convert.ToDouble(TempData["RenginysLang"]) == 0 || Convert.ToDouble(TempData["RenginysLong"]) == 0)
             {
-                Response.Write("<script type='text/javascript' language='javascript'> alert('Turite patvirtinti teisingą lokaciją')</script>");
+                TempData["Fail"] = "Turite patvirtinti teisingą lokaciją";
                 return View();
             }
 
@@ -67,7 +67,7 @@ namespace PVP_K180.Controllers
                         var extension = Path.GetExtension(file.FileName);
                         if (!posiblesExtensions.Contains(extension))
                         {
-                            Response.Write("<script type='text/javascript' language='javascript'> alert('Įkeltas su netinkamu formatu')</script>");
+                            TempData["Fail"] = "Įkeltas su netinkamu formatu";
                             return View();
                         }
 
@@ -83,12 +83,11 @@ namespace PVP_K180.Controllers
 
                     }
                 }
-
-                Response.Write("<script type='text/javascript' language='javascript'> alert('Renginys sėkmingai sukurtas!')</script>");
+                TempData["Succ"] = "Renginys sėkmingai sukurtas!";
             }
             else
             {
-                Response.Write("<script type='text/javascript' language='javascript'> alert('Renginys nesukurtas!')</script>");
+                TempData["Fail"] = "Renginys nesukurtas!";
 
             }
             return View();
@@ -157,7 +156,7 @@ namespace PVP_K180.Controllers
 
             if (Convert.ToDouble(TempData["RenginysLang"]) == 0 || Convert.ToDouble(TempData["RenginysLong"]) == 0)
             {
-                Response.Write("<script type='text/javascript' language='javascript'> alert('Turite patvirtinti teisingą lokaciją')</script>");
+                TempData["Fail"] = "Turite patvirtinti teisingą lokaciją";
                 return View(renginys);
             }
 
@@ -167,10 +166,12 @@ namespace PVP_K180.Controllers
             bool flag = renginys_Repos.Redaguoti_Rengini(renginys);
             if (flag)
             {
-                Response.Write("<script type='text/javascript' language='javascript'> alert('Projektas sėkmingai redaguotas!')</script>");
+                TempData["Succ"] = "Renginys sėkmingai redaguotas!";
             }
             else
             {
+                TempData["Fail"] = "Renginys neredaguotas!";
+
                 Response.Write("<script type='text/javascript' language='javascript'> alert('Projektas neredaguotas!')</script>");
             }
             return View(renginys);

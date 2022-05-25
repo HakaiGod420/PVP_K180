@@ -162,11 +162,11 @@ namespace PVP_K180.Controllers
             bool flag = apklausos_Repos.Redaguoti_Apklausa(apklausa);
             if (flag)
             {
-                Response.Write("<script type='text/javascript' language='javascript'> alert('Apklausa sėkmingai redaguota!')</script>");
+                TempData["Succ"] = "Apklausa sėkmingai redaguota!";
             }
             else
             {
-                Response.Write("<script type='text/javascript' language='javascript'> alert('Apklausa neredaguota!')</script>");
+                TempData["Fail"] = "Apklausa neredaguota!";
 
             }
             return View(apklausa);
