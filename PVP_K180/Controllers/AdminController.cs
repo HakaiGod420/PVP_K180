@@ -51,14 +51,14 @@ namespace PVP_K180.Controllers
 
             if (Convert.ToDouble(TempData["SeniunijaLang"]) == 0 || Convert.ToDouble(TempData["SeniunijaLong"]) == 0)
             {
-                Response.Write("<script type='text/javascript' language='javascript'> alert('Turite patvirtinti teisingą lokaciją')</script>");
+                TempData["Fail"] = "Turite patvirtinti teisingą lokaciją";
                 return View(seniunija);
             }
 
             seniunija.zemelapis_ilguma = (float)Convert.ToDouble(TempData["SeniunijaLang"]);
             seniunija.zemelapis_platuma = (float)Convert.ToDouble(TempData["SeniunijaLong"]);
             seniunija_Repos.AtnaujintiSeniunijosInfo(seniunija);
-            Response.Write("<script type='text/javascript' language='javascript'> alert('Informacija yra atnaujinta')</script>");
+            TempData["Succ"] = "Informacija yra atnaujinta";
             return View(seniunija);
         }
 
@@ -147,12 +147,12 @@ namespace PVP_K180.Controllers
             {
                 vartotojoBusenosPerziura.vartotojo_busena = null;
                 vartotojas_Repos.AtnaujintiVartotojoBusena(id, vartotojoBusenosPerziura.vartotojo_busena);
-                Response.Write("<script type='text/javascript' language='javascript'> alert('Vartotojo būsena pakeista')</script>");
+                TempData["Succ"] = "Vartotojo būsena pakeista";
                 vartotojoBusenosPerziura.vartotojo_busena = 0;
                 return View(vartotojoBusenosPerziura);
             }
             vartotojas_Repos.AtnaujintiVartotojoBusena(id, vartotojoBusenosPerziura.vartotojo_busena);
-            Response.Write("<script type='text/javascript' language='javascript'> alert('Vartotojo būsena pakeista')</script>");
+            TempData["Succ"] = "Vartotojo būsena pakeista";
 
             return View(vartotojoBusenosPerziura);
         }
@@ -180,7 +180,7 @@ namespace PVP_K180.Controllers
         {
             UzpildytiRoles(vartotojoRolesPerziura);
             vartotojas_Repos.AtnaujintiVartotojoRole(id, vartotojoRolesPerziura.vartotojo_role);
-            Response.Write("<script type='text/javascript' language='javascript'> alert('Vartotojo rolė pakeista')</script>");
+            TempData["Succ"] = "Vartotojo rolė pakeista";
 
             return View(vartotojoRolesPerziura);
         }

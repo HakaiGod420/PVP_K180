@@ -43,13 +43,13 @@ namespace PVP_K180.Controllers
                 }
                 if (count <= 1)
                 {
-                    Response.Write("<script type='text/javascript' language='javascript'> alert('Balsavimų variantų turi būti daugiau nei vienas')</script>");
+                    TempData["Fail"] = "Balsavimų variantų turi būti daugiau nei vienas";
                     return View();
                 }
             }
             else
             {
-                Response.Write("<script type='text/javascript' language='javascript'> alert('Balsavimų variantų turi būti daugiau nei vienas')</script>");
+                TempData["Fail"] = "Balsavimų variantų turi būti daugiau nei vienas";
                 return View();
             }
             balsavimas.sukurimo_data = DateTime.Now;
@@ -64,7 +64,7 @@ namespace PVP_K180.Controllers
 
                 balsavimas_Repos.Prideti_Varianta(item);
             }
-            Response.Write("<script type='text/javascript' language='javascript'> alert('Balsavimas sėkmingai sukurtas')</script>");
+            TempData["Succ"] = "Balsavimas sėkmingai sukurtas";
             return View();
         }
 
@@ -174,16 +174,16 @@ namespace PVP_K180.Controllers
                 }
                 else
                 {
-                    Response.Write("<script type='text/javascript' language='javascript'> alert('Balsavime turi būti bent du pasirinkimai')</script>");
+                    TempData["Fail"] = "Balsavime turi būti bent du pasirinkimai";
                     return View(balsavimas);
                 }
             }
             else
             {
-                Response.Write("<script type='text/javascript' language='javascript'> alert('Balsavime turi būti bent du pasirinkimai')</script>");
+                TempData["Fail"] = "Balsavime turi būti bent du pasirinkimai";
                 return View(balsavimas);
             }
-            Response.Write("<script type='text/javascript' language='javascript'> alert('Balsavimas sėkmingai redaguotas')</script>");
+            TempData["Succ"] = "Balsavimas sėkmingai redaguotas";
             return View(balsavimas);
         }
 

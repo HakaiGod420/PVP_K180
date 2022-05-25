@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
 using PVP_K180.Models;
@@ -58,7 +59,7 @@ namespace PVP_K180.Controllers
                         var extension = Path.GetExtension(file.FileName);
                         if (!posiblesExtensions.Contains(extension))
                         {
-                            Response.Write("<script type='text/javascript' language='javascript'> alert('Įkeltas su netinkamu formatu')</script>");
+                            TempData["Fail"] = "Įkeltas su netinkamu formatu";
                             return View();
                         }
 
@@ -74,12 +75,12 @@ namespace PVP_K180.Controllers
 
                     }
                 }
-
-                Response.Write("<script type='text/javascript' language='javascript'> alert('Naujiena sėkmingai sukurta!')</script>");
+                TempData["Succ"] = "Naujiena sėkmingai sukurta!";
+               
             }
             else
             {
-                Response.Write("<script type='text/javascript' language='javascript'> alert('Naujiena nesukurta!')</script>");
+                TempData["Fail"] = "Naujiena nesukurta!";
 
             }
             return View();
@@ -176,11 +177,11 @@ namespace PVP_K180.Controllers
             bool flag = naujiena_Repos.Redaguoti_Naujiena(naujiena);
             if (flag)
             {
-                Response.Write("<script type='text/javascript' language='javascript'> alert('Naujiena sėkmingai redaguota!')</script>");
+                TempData["Succ"] = "Naujiena sėkmingai redaguota!";
             }
             else
             {
-                Response.Write("<script type='text/javascript' language='javascript'> alert('Naujiena neredaguota!')</script>");
+                TempData["Fail"] = "Naujiena neredaguota!";
 
             }
             TempData["naujienosID"] = naujiena.id_Naujiena;
@@ -221,7 +222,7 @@ namespace PVP_K180.Controllers
 
                     if(!posiblesExtensions.Contains(extension))
                     {
-                        Response.Write("<script type='text/javascript' language='javascript'> alert('Įkeltas su netinkamu formatu')</script>");
+                        TempData["Fail"] = "Įkeltas su netinkamu formatu";
                         return View();
                     }
 
@@ -270,6 +271,7 @@ namespace PVP_K180.Controllers
                 if (item.naujienos_tekstas.Length > 150)
                 {
                     naujiena.trumpasAprasas = item.naujienos_tekstas.Substring(0, 150);
+                    naujiena.trumpasAprasas = StripHTML(naujiena.trumpasAprasas);
                 }
                 else
                 {
@@ -286,6 +288,11 @@ namespace PVP_K180.Controllers
             naujiena.nuotraukos = nuotrauka_Repos.Gauti__Naujienu_Nuotraukas(naujiena.id_Naujiena);
 
             return View(naujiena);
+        }
+
+        public static string StripHTML(string input)
+        {
+            return Regex.Replace(input, "<.*?>", String.Empty);
         }
     }
 }

@@ -17,7 +17,7 @@
 <input id="myInput" type="text" placeholder="Įveskit pagal ką filtruosit">
 <br><br>
 <p>
-    @Html.ActionLink("Sukurti balsavimą", "KurtiBalsavima")
+    @Html.ActionLink("Sukurti balsavimą", "KurtiBalsavima", new { }, new { @class = "btn btn-primary", @type = "button" })
 </p>
 @Styles.Render("~/Styles/tableStyle.css")
 <table class="table-fill">

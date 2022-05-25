@@ -55,7 +55,7 @@ namespace PVP_K180.Controllers
                         var extension = Path.GetExtension(file.FileName);
                         if (!posiblesExtensions.Contains(extension))
                         {
-                            Response.Write("<script type='text/javascript' language='javascript'> alert('Įkeltas su netinkamu formatu')</script>");
+                            TempData["Fail"] = "Įkeltas su netinkamu formatu";
                             return View();
                         }
 
@@ -71,12 +71,12 @@ namespace PVP_K180.Controllers
 
                     }
                 }
-
+                TempData["Succ"] = "Projektas sėkmingai sukurtas!";
                 Response.Write("<script type='text/javascript' language='javascript'> alert('Projektas sėkmingai sukurtas!')</script>");
             }
             else
             {
-                Response.Write("<script type='text/javascript' language='javascript'> alert('Projektas nesukurtas!')</script>");
+                TempData["Fail"] = "Projektas nesukurtas!";
 
             }
 
@@ -99,11 +99,11 @@ namespace PVP_K180.Controllers
             bool flag = projektas_Repos.Redaguoti_Projekta(projektas);
             if (flag)
             {
-                Response.Write("<script type='text/javascript' language='javascript'> alert('Projektas sėkmingai redaguotas!')</script>");
+                TempData["Succ"] = "Projektas sėkmingai redaguotas!";
             }
             else
             {
-                Response.Write("<script type='text/javascript' language='javascript'> alert('Projektas neredaguotas!')</script>");
+                TempData["Fail"] = "Projektas neredaguotas!";
             }
             return View(projektas);
         }

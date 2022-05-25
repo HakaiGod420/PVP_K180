@@ -86,9 +86,7 @@ namespace PVP_K180.Controllers
             pasto_Duomenys.id_vartotojas = Convert.ToInt32(Session["UserID"]);
 
             vartotojas_Repos.AtnaujintiEmail(pasto_Duomenys);
-
-            Response.Write("<script type='text/javascript' language='javascript'> alert('Paštas sėkmingai pakeistas!')</script>");
-
+            TempData["Succ"] = "Paštas sėkmingai pakeistas!";
             return View(pasto_Duomenys);
         }
 
@@ -119,12 +117,12 @@ namespace PVP_K180.Controllers
                 pass_Data.id_Vartotojas = Convert.ToInt32(Session["UserID"]);
                 pass_Data.naujas_slaptazodis = pass_Data.EncodePassword(pass_Data.naujas_slaptazodis);
                 vartotojas_Repos.AtnaujintiPass(pass_Data);
-                Response.Write("<script type='text/javascript' language='javascript'> alert('Slaptažodis sėkmingai pakeistas!')</script>");
+                TempData["Succ"] = "Slaptažodis sėkmingai pakeistas!";
                 return View(pass_Data);
             }
             else
             {
-                Response.Write("<script type='text/javascript' language='javascript'> alert('Senas slaptažodis netinka!')</script>");
+                TempData["Senas slaptažodis netinka!"] = "Slaptažodis sėkmingai pakeistas!";
                 return View(pass_Data);
             }
 
@@ -161,7 +159,7 @@ namespace PVP_K180.Controllers
 
             vartotojas_Repos.AtnaujintiPagrDuomenis(atnaujinami_Vartotojo_Duomenys);
 
-            Response.Write("<script type='text/javascript' language='javascript'> alert('Duomenys sėkmingai pakeisti!')</script>");
+            TempData["Succ"] = "Duomenys sėkmingai pakeisti!";
 
             return View(atnaujinami_Vartotojo_Duomenys);
         }
@@ -185,7 +183,7 @@ namespace PVP_K180.Controllers
             int photoCount = 0;
             if(nuotrauku_Duomenys.nuotraukos.Count() > 1)
             {
-                Response.Write("<script type='text/javascript' language='javascript'> alert('Gali būti tik viena pridėta nuotrauka')</script>");
+                TempData["Fail"] = "Gali būti tik viena pridėta nuotrauka";
             }
             foreach (HttpPostedFileBase file in nuotrauku_Duomenys.nuotraukos)
             {
@@ -197,7 +195,7 @@ namespace PVP_K180.Controllers
 
                     if (!posiblesExtensions.Contains(extension))
                     {
-                        Response.Write("<script type='text/javascript' language='javascript'> alert('Įkeltas su netinkamu formatu')</script>");
+                        TempData["Fail"] = "Įkeltas su netinkamu formatu";
                         return View();
                     }
 
@@ -226,12 +224,12 @@ namespace PVP_K180.Controllers
 
             if (photoCount == 0)
             {
-                Response.Write("<script type='text/javascript' language='javascript'> alert('Turi būti pasirinkta viena nuotrauka')</script>");
+                TempData["Fail"] = "Turi būti pasirinkta viena nuotrauka";
                 return View();
             }
             else
             {
-                Response.Write("<script type='text/javascript' language='javascript'> alert('Profilio nuotrauka sėkmingai atnaujinta')</script>");
+                TempData["Succ"] = "Profilio nuotrauka sėkmingai atnaujinta";
             }
             return View();
 

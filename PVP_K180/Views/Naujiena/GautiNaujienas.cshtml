@@ -18,7 +18,7 @@
 <input id="myInput" type="text" placeholder="Įveskit pagal ką filtruosit">
 <br><br>
 <p>
-    @Html.ActionLink("Sukurti naujieną", "NaujienosKurimas")
+    @Html.ActionLink("Sukurti naujieną", "NaujienosKurimas", new { }, new {@class ="btn btn-primary", @type="button"})
 </p>
 <table class="table-fill">
     <thead>
@@ -50,7 +50,7 @@
                     @Html.DisplayFor(modelItem => item.pavadinimas)
                 </td>
                 <td class="text-left">
-                    @Html.DisplayFor(modelItem => item.naujienos_sukurimo_data)
+                    @item.naujienos_sukurimo_data.ToString("yyyy-MM-dd")
                 </td>
                 <td class="text-left">
                     @Html.DisplayFor(modelItem => item.naujienos_kurejo_ID)

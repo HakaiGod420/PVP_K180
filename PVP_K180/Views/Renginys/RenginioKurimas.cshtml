@@ -78,6 +78,15 @@
 
 <div style="margin-top:20px" class="form-horizontal boxShadow">
     <h2>Renginio Kurimas</h2>
+    @if (TempData["Fail"] != null)
+    {
+        <p class="alert alert-danger" id="successMessage">@Convert.ToString(TempData["Fail"])</p>
+    }
+
+    @if (TempData["Succ"] != null)
+    {
+        <p class="alert alert-success" id="successMessage">@Convert.ToString(TempData["Succ"])</p>
+    }
     <hr />
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 

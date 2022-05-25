@@ -35,7 +35,7 @@
 <h2>Esami renginiai</h2>
 @Styles.Render("~/Styles/tableStyle.css")
 <p>
-    @Html.ActionLink("Sukurti naują renginį", "RenginioKurimas")
+    @Html.ActionLink("Sukurti naują renginį", "RenginioKurimas", new { }, new { @class = "btn btn-primary", @type = "button" })
 </p>
 @using (Html.BeginForm())
 {
