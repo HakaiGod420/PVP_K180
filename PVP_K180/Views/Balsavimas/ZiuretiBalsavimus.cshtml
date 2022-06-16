@@ -1,4 +1,8 @@
-﻿@model IEnumerable<PVP_K180.Models.Balsavimas>
+﻿
+
+@model PagedList.IPagedList<PVP_K180.Models.Balsavimas>
+@using PagedList;
+@using PagedList.Mvc;
 @{
     ViewBag.Title = "Balsavimų sąrašas";
 }
@@ -15,7 +19,8 @@
 </script>
 <h2>Balsavimų sąrašas</h2>
 <input id="myInput" type="text" placeholder="Įveskit pagal ką filtruosit">
-<br><br>
+<br>
+<br>
 <p>
     @Html.ActionLink("Sukurti balsavimą", "KurtiBalsavima", new { }, new { @class = "btn btn-primary", @type = "button" })
 </p>
@@ -24,31 +29,31 @@
     <thead>
         <tr>
             <th class="text-left">
-                @Html.DisplayNameFor(model => model.klausimas)
+                @Html.DisplayNameFor(model => model.FirstOrDefault().klausimas)
             </th>
             <th class="text-left">
-                @Html.DisplayNameFor(model => model.balsavimo_aprasymas)
+                @Html.DisplayNameFor(model => model.FirstOrDefault().balsavimo_aprasymas)
             </th>
             <th class="text-left">
-                @Html.DisplayNameFor(model => model.dalyviu_skaicius)
+                @Html.DisplayNameFor(model => model.FirstOrDefault().dalyviu_skaicius)
             </th>
             <th class="text-left">
-                @Html.DisplayNameFor(model => model.sukurimo_data)
+                @Html.DisplayNameFor(model => model.FirstOrDefault().sukurimo_data)
             </th>
             <th class="text-left">
-                @Html.DisplayNameFor(model => model.pabaigos_data)
+                @Html.DisplayNameFor(model => model.FirstOrDefault().pabaigos_data)
             </th>
             <th class="text-left">
-                @Html.DisplayNameFor(model => model.Sukurejas)
+                @Html.DisplayNameFor(model => model.FirstOrDefault().Sukurejas)
             </th>
             <th class="text-left">
-                @Html.DisplayNameFor(model => model.busenos_pavadinimas)
+                @Html.DisplayNameFor(model => model.FirstOrDefault().busenos_pavadinimas)
             </th>
             <th>Funkcijos</th>
         </tr>
     </thead>
 
-    <tbody class="table-hover"id="myTable">
+    <tbody class="table-hover" id="myTable">
         @foreach (var item in Model)
         {
             <tr>
@@ -91,6 +96,10 @@
     </tbody>
 
 </table>
+
+<div id="pager">
+    @Html.PagedListPager(Model, page => Url.Action("ZiuretiBalsavimus", new { page }))
+</div>
 
 <div style="margin-top: 30px;">
     <input type="submit" value="< Atgal" onclick="@("window.location.href='" + @Url.Action("AdminValdymas", "Vartotojas") + "'");" class="btn btn-info" />

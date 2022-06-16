@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
+using PagedList;
 using PVP_K180.Models;
 using PVP_K180.ModelView;
 using PVP_K180.Repos;
@@ -17,7 +18,7 @@ namespace PVP_K180.Controllers
         Naujiena_Repos naujiena_Repos = new Naujiena_Repos();
         Nuotrauka_Repos nuotrauka_Repos = new Nuotrauka_Repos();
         string[] menesiai = new string[12] { "Sausis", "Vasaris", "Kovas", "Balandis", "Gegužis", "Bižrelis", "Liepa", "Lapkritis", "Rugsėjis", "Spalis", "Lapkritis", "Gruodis" };
-
+        private const int pageSize = 5;
 
         // GET: Naujiena
         public ActionResult Index()
@@ -86,7 +87,7 @@ namespace PVP_K180.Controllers
             return View();
         }
 
-        public ActionResult GautiNaujienas()
+        public ActionResult GautiNaujienas(int? page)
         {
 
             if (Session["UserID"] == null)
@@ -112,7 +113,8 @@ namespace PVP_K180.Controllers
             }
             Naujiena_Repos naujiena_Repos = new Naujiena_Repos();
             List<Naujiena> naujienos = naujiena_Repos.Gauti_Naujienas();
-            return View(naujienos);
+            int pageNumber = (page ?? 1);
+            return View(naujienos.ToPagedList(pageNumber, pageSize));
         }
 
         public ActionResult GautiNuotraukas(int id)

@@ -7,6 +7,7 @@ using PVP_K180.Repos;
 using PVP_K180.Models;
 using PVP_K180.ModelView;
 using System.IO;
+using PagedList;
 
 namespace PVP_K180.Controllers
 {
@@ -15,6 +16,7 @@ namespace PVP_K180.Controllers
 
         private Renginys_Repos renginys_Repos = new Renginys_Repos();
         Nuotrauka_Repos nuotrauka_Repos = new Nuotrauka_Repos();
+        private const int pageSize = 5;
 
         // GET: Renginys
         public ActionResult Index()
@@ -93,7 +95,7 @@ namespace PVP_K180.Controllers
             return View();
         }
 
-        public ActionResult GautiRenginius(int? busena, DateTime? nuo, DateTime? iki)
+        public ActionResult GautiRenginius(int? busena, DateTime? nuo, DateTime? iki,int? page)
         {
             if (Session["UserID"] == null)
             {
@@ -116,24 +118,27 @@ namespace PVP_K180.Controllers
                     Session.Remove("Message");
                 }
             }
-
+            int pageNumber = (page ?? 1);
             List<Renginys> renginys = renginys_Repos.Gauti_Renginius();
             if (busena != null)
             {
+                pageNumber = 1;
                 renginys = renginys.Where(x => x.renginio_busena == busena).ToList();
             }
             if (nuo != null)
             {
+                pageNumber = 1;
                 var data = (DateTime)nuo;
                 renginys = renginys.Where(x => x.pabaigos_data.Date >= (DateTime)data.Date).ToList();
             }
 
             if (iki != null)
             {
+                pageNumber = 1;
                 var data = (DateTime)iki;
                 renginys = renginys.Where(x => x.pabaigos_data.Date <= (DateTime)data.Date).ToList();
             }
-            return View(renginys);
+            return View(renginys.ToPagedList(pageNumber, pageSize));
         }
 
         public ActionResult RedaguotiRengini(int id)

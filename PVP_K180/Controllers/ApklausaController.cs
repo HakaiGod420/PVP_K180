@@ -7,6 +7,7 @@ using PVP_K180.ModelView;
 using PVP_K180.Repos;
 using System.Web.Mvc;
 using System.Threading.Tasks;
+using PagedList;
 
 namespace PVP_K180.Controllers
 {
@@ -14,6 +15,7 @@ namespace PVP_K180.Controllers
     {
         Apklausa apklausa = new Apklausa();
         Apklausos_Repos apklausa_Repos = new Apklausos_Repos();
+        private const int pageSize = 5;
 
 
         public ActionResult KurtiApklausa()
@@ -70,7 +72,7 @@ namespace PVP_K180.Controllers
             return View();
         }
 
-        public ActionResult ZiuretiApklausas()
+        public ActionResult ZiuretiApklausas(int? page)
         {
             if (Session["UserID"] == null)
             {
@@ -82,7 +84,8 @@ namespace PVP_K180.Controllers
             }
 
             List<Apklausa> apklausos = apklausa_Repos.GautiApklausas();
-            return View(apklausos);
+            int pageNumber = (page ?? 1);
+            return View(apklausos.ToPagedList(pageNumber, pageSize));
 
         }
 

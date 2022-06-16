@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Newtonsoft.Json;
+using PagedList;
 using PVP_K180.Models;
 using PVP_K180.ModelView;
 using PVP_K180.Repos;
@@ -13,7 +14,8 @@ namespace PVP_K180.Controllers
     public class BalsavimasController : Controller
     {
         Balsavimas_Repos balsavimas_Repos = new Balsavimas_Repos();
- 
+        private const int pageSize = 5;
+
 
         public ActionResult KurtiBalsavima()
         {
@@ -68,7 +70,7 @@ namespace PVP_K180.Controllers
             return View();
         }
 
-        public ActionResult ZiuretiBalsavimus()
+        public ActionResult ZiuretiBalsavimus(int? page)
         {
             if (Session["UserID"] == null)
             {
@@ -94,7 +96,8 @@ namespace PVP_K180.Controllers
             }
 
             List <Balsavimas> balsavimai = balsavimas_Repos.GautiBalsavimus();
-            return View(balsavimai);
+            int pageNumber = (page ?? 1);
+            return View(balsavimai.ToPagedList(pageNumber, pageSize));
 
         }
 

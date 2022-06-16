@@ -10,6 +10,7 @@ using System.IO;
 using System.Net;
 using EASendMail;
 using SmtpClient = EASendMail.SmtpClient;
+using PagedList;
 
 namespace PVP_K180.Controllers
 {
@@ -18,6 +19,7 @@ namespace PVP_K180.Controllers
         Seniunija_Repos seniunija_Repos = new Seniunija_Repos();
         Vartotojas_Repos vartotojas_Repos = new Vartotojas_Repos();
         Role_Repos roles_Repos = new Role_Repos();
+        private const int pageSize = 5;
         public ActionResult AtnaujintiInfoSeniunija()
         {
             if (Session["UserID"] == null)
@@ -71,9 +73,9 @@ namespace PVP_K180.Controllers
 
 
 
-        public ActionResult VartotojuSarasas()
+        public ActionResult VartotojuSarasas(int? page)
         {
-
+            int pageNumber = (page ?? 1);
             if (Session["UserID"] == null)
             {
                 return RedirectToAction("Index", "Home");
@@ -90,7 +92,7 @@ namespace PVP_K180.Controllers
                 Response.Write("<script type='text/javascript' language='javascript'> alert('Vartotojas sėkmingai ištrintas')</script>");
             }
 
-            return View(vartotojai);
+            return View(vartotojai.ToPagedList(pageNumber, pageSize));
         }
 
         public ActionResult TrintiVartotoja(int id)

@@ -1,4 +1,5 @@
-﻿using PVP_K180.Models;
+﻿using PagedList;
+using PVP_K180.Models;
 using PVP_K180.ModelView;
 using PVP_K180.Repos;
 using System;
@@ -14,6 +15,7 @@ namespace PVP_K180.Controllers
         private Projektas_Repos projektas_Repos = new Projektas_Repos();
         private Nuotrauka_Repos nuotrauka_Repos = new Nuotrauka_Repos();
         string[] menesiai = new string[12] { "SAU", "VAS", "KOV", "BAL", "GEG", "BIR", "LIE", "LAP", "RUG", "SPA", "LAP", "GRU" };
+        private const int pageSize = 5;
 
         // GET: Projektas
         public ActionResult Index()
@@ -115,7 +117,7 @@ namespace PVP_K180.Controllers
             return RedirectToAction("GautiProjektus");
         }
 
-        public ActionResult GautiProjektus()
+        public ActionResult GautiProjektus(int? page)
         {
             if (Session["UserID"] == null)
             {
@@ -141,7 +143,8 @@ namespace PVP_K180.Controllers
 
             Projektas_Repos projektas_Repos = new Projektas_Repos();
             List<Projektas> projektas = projektas_Repos.Gauti_Projektus();
-            return View(projektas);
+            int pageNumber = (page ?? 1);
+            return View(projektas.ToPagedList(pageNumber, pageSize));
         }
 
         public ActionResult Komentarai(int id)

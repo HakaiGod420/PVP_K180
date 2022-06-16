@@ -1,4 +1,7 @@
-﻿@model IEnumerable<PVP_K180.Models.Naujiena>
+﻿
+@model PagedList.IPagedList<PVP_K180.Models.Naujiena>
+@using PagedList;
+@using PagedList.Mvc;
 @{
     ViewBag.Title = "Naujienų sąrašas";
 }
@@ -16,30 +19,28 @@
 </script>
 <h2>Naujienų sąrašas</h2>
 <input id="myInput" type="text" placeholder="Įveskit pagal ką filtruosit">
-<br><br>
+<br>
+<br>
 <p>
-    @Html.ActionLink("Sukurti naujieną", "NaujienosKurimas", new { }, new {@class ="btn btn-primary", @type="button"})
+    @Html.ActionLink("Sukurti naujieną", "NaujienosKurimas", new { }, new { @class = "btn btn-primary", @type = "button" })
 </p>
 <table class="table-fill">
     <thead>
         <tr>
             <th class="text-left">
-                @Html.DisplayNameFor(model => model.id_Naujiena)
+                @Html.DisplayNameFor(model => model.FirstOrDefault().id_Naujiena)
             </th>
             <th class="text-left">
-                @Html.DisplayNameFor(model => model.pavadinimas)
+                @Html.DisplayNameFor(model => model.FirstOrDefault().pavadinimas)
             </th>
             <th class="text-left">
-                @Html.DisplayNameFor(model => model.naujienos_sukurimo_data)
-            </th>
-            <th class="text-left">
-                @Html.DisplayNameFor(model => model.naujienos_kurejo_ID)
+                @Html.DisplayNameFor(model => model.FirstOrDefault().naujienos_sukurimo_data)
             </th>
             <th>Funkcijos</th>
         </tr>
     </thead>
 
-    <tbody class="table-hover", id="myTable">
+    <tbody class="table-hover" , id="myTable">
         @foreach (var item in Model)
         {
             <tr>
@@ -53,9 +54,6 @@
                     @item.naujienos_sukurimo_data.ToString("yyyy-MM-dd")
                 </td>
                 <td class="text-left">
-                    @Html.DisplayFor(modelItem => item.naujienos_kurejo_ID)
-                </td>
-                <td class="text-left">
                     @Html.ActionLink("Redaguoti", "RedaguotiNaujiena", new { id = item.id_Naujiena }) |
                     @Html.ActionLink("Pašalinti", "TrintiNaujiena", new { id = item.id_Naujiena }) |
                     @Html.ActionLink("Pridėti nuotraukų", "PridetiNuotrauku", new { id = item.id_Naujiena }) |
@@ -65,6 +63,10 @@
         }
     </tbody>
 </table>
+
+<div id="pager">
+    @Html.PagedListPager(Model, page => Url.Action("GautiNaujienas", new { page }))
+</div>
 
 <div style="margin-top:30px;">
     <input type="submit" value="< Atgal" onclick="@("window.location.href='" + @Url.Action("AdminValdymas", "Vartotojas") + "'");" class="btn btn-info" />
