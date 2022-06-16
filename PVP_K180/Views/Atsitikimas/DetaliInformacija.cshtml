@@ -137,11 +137,16 @@
 <p style="margin-top:20px">
     @if (Convert.ToBoolean(TempData["AdminMenu"]) == true)
     {
-        @Html.ActionLink("Atgal", "AtsitikimuSarasas")
+        <div style="margin-left:9vh">
+            <input type="submit" value="< Atgal" onclick="@("window.location.href='" + @Url.Action("AtsitikimuSarasas") + "'");" class="btn btn-info" />
+        </div>
+
     }
     else
     {
-        @Html.ActionLink("Atgal", "AtsitikimuIstorija")
+        <div style="margin-left:9vh">
+            <input type="submit" value="< Atgal" onclick="@("window.location.href='" + @Url.Action("AtsitikimuIstorija") + "'");" class="btn btn-info" />
+        </div>
     }
 
 </p>

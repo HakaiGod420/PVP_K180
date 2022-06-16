@@ -1,4 +1,7 @@
-﻿@model IEnumerable<PVP_K180.Models.Atsitikimas>
+﻿
+@model PagedList.IPagedList<PVP_K180.Models.Atsitikimas>
+@using PagedList;
+@using PagedList.Mvc;
 
 @{
     ViewBag.Title = "Atsitikimu Istorija";
@@ -58,9 +61,8 @@
 
 
 <style>
-    .grid-item{
-        margin:10px;
-        
+    .grid-item {
+        margin: 10px;
     }
 
     .grid-container {
@@ -71,43 +73,43 @@
 
 @using (Html.BeginForm())
 {
-<div class="filter grid-container">
-    <div class="grid-item">
-        <b>Atsitikimo Būsena</b>
-        @Html.DropDownList("busena", listItems, "-- Rodyti visus --", new { @class = "form-control" })
+    <div class="filter grid-container">
+        <div class="grid-item">
+            <b>Atsitikimo Būsena</b>
+            @Html.DropDownList("busena", listItems, "-- Rodyti visus --", new { @class = "form-control" })
+        </div>
+        <div class="grid-item">
+            <b>Atsitikimo Tipas</b>
+            @Html.DropDownList("tipas", listItemsTipas, "-- Rodyti visus --", new { @class = "form-control" })
+        </div>
+        <div class="grid-item">
+            <b>Atistikimo paskelbimo pradžios data</b>
+            @Html.TextBox("nuo", "", new { @class = "form-control", @type = "date", @placeholder = "yyyy-MM-dd" })
+        </div>
+        <div class="grid-item">
+            <b>Atistikimo paskelbimo Renginių pabaigos data</b>
+            @Html.TextBox("iki", "", new { @class = "form-control", @type = "date" })
+        </div>
+        <div class="grid-item">
+            <input type="submit" value="Filtruoti" />
+        </div>
     </div>
-    <div class="grid-item">
-        <b>Atsitikimo Tipas</b>
-        @Html.DropDownList("tipas", listItemsTipas, "-- Rodyti visus --", new { @class = "form-control" })
-    </div>
-    <div class="grid-item">
-        <b>Atistikimo paskelbimo pradžios data</b>
-        @Html.TextBox("nuo","", new {@class= "form-control", @type = "date", @placeholder="yyyy-MM-dd" })
-    </div>
-    <div class="grid-item">
-        <b>Atistikimo paskelbimo Renginių pabaigos data</b>
-        @Html.TextBox("iki", "", new { @class = "form-control", @type = "date" })
-    </div>
-    <div class="grid-item">
-        <input type="submit" value="Filtruoti" />
-    </div>
-</div>
 }
 
 <table class="table-fill">
     <thead>
         <tr>
             <th class="text-left">
-                @Html.DisplayNameFor(model => model.paskelbimo_data)
+                Paskelbimo data
             </th>
             <th class="text-left">
-                @Html.DisplayNameFor(model => model.tvirtintojas)
+                Tvirtintojas
             </th>
             <th class="text-left">
-                @Html.DisplayNameFor(model => model.tipas)
+                Tipas
             </th>
             <th class="text-left">
-                @Html.DisplayNameFor(model => model.busena)
+                Būsena
             </th>
             <th class="text-left">Papildomos funkcijos</th>
         </tr>
@@ -143,6 +145,10 @@
 
 
 </table>
+
+<div id="pager">
+    @Html.PagedListPager(Model, page => Url.Action("AtsitikimuIstorija", new { page }))
+</div>
 
 <div style="margin-top:30px;">
     <input type="submit" value="< Atgal" onclick="@("window.location.href='" + @Url.Action("ProfilioValdymas", "Vartotojas") + "'");" class="btn btn-info" />

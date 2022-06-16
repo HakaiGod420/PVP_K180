@@ -7,6 +7,7 @@ using PVP_K180.Models;
 using PVP_K180.Repos;
 using PVP_K180.ModelView;
 using System.IO;
+using PagedList;
 
 namespace PVP_K180.Controllers
 {
@@ -14,7 +15,7 @@ namespace PVP_K180.Controllers
     {
         Atsitikimas_Repos atsitikimas_Repos = new Atsitikimas_Repos();
         Nuotrauka_Repos nuotrauka_Repos = new Nuotrauka_Repos();
-
+        private const int pageSize = 5;
         public ActionResult SkelbtiAtsitikima()
         {
             if (Session["UserID"] == null)
@@ -113,7 +114,7 @@ namespace PVP_K180.Controllers
         }
 
 
-        public ActionResult AtsitikimuIstorija(int? busena,int? tipas, DateTime? nuo, DateTime? iki)
+        public ActionResult AtsitikimuIstorija(int? busena,int? tipas, DateTime? nuo, DateTime? iki,int? page)
         {
             if (Session["UserID"] == null)
             {
@@ -140,10 +141,11 @@ namespace PVP_K180.Controllers
                 var data = (DateTime)iki;
                 atsitikimai = atsitikimai.Where(x => x.paskelbimo_data.Date <= (DateTime)data.Date).ToList();
             }
-            return View(atsitikimai.Where(x=>x.fk_Vartotojasid_Pranesejas==Convert.ToInt32(Session["UserID"])).ToList());
+            int pageNumber = (page ?? 1);
+            return View(atsitikimai.Where(x=>x.fk_Vartotojasid_Pranesejas==Convert.ToInt32(Session["UserID"])).ToList().ToPagedList(pageNumber,pageSize));
         }
 
-        public ActionResult AtsitikimuSarasas(int? busena, int? tipas, DateTime? nuo, DateTime? iki)
+        public ActionResult AtsitikimuSarasas(int? busena, int? tipas, DateTime? nuo, DateTime? iki,int? page)
         {
             if (Session["UserID"] == null)
             {
@@ -174,7 +176,8 @@ namespace PVP_K180.Controllers
                 var data = (DateTime)iki;
                 atsitikimai = atsitikimai.Where(x => x.paskelbimo_data.Date <= (DateTime)data.Date).ToList();
             }
-            return View(atsitikimai);
+            int pageNumber = (page ?? 1);
+            return View(atsitikimai.ToPagedList(pageNumber, pageSize));
         }
 
         public ActionResult DetaliInformacija(int id)

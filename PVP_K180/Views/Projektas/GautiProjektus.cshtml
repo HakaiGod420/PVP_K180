@@ -1,4 +1,7 @@
-﻿@model IEnumerable<PVP_K180.Models.Projektas>
+﻿
+@model PagedList.IPagedList<PVP_K180.Models.Projektas>
+@using PagedList;
+@using PagedList.Mvc;
 
 @{
     ViewBag.Title = "GautiProjektus";
@@ -13,13 +16,13 @@
     <thead>
         <tr>
             <th class="text-left">
-                @Html.DisplayNameFor(model => model.id_Projektas)
+                @Html.DisplayNameFor(model => model.FirstOrDefault().id_Projektas)
             </th>
-            <th >
-                @Html.DisplayNameFor(model => model.pavadinimas)
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().pavadinimas)
             </th>
             <th class="text-left">
-                @Html.DisplayNameFor(model => model.projekto_busena)
+                @Html.DisplayNameFor(model => model.FirstOrDefault().projekto_busena)
             </th>
             <th>Funckijos</th>
         </tr>
@@ -32,7 +35,7 @@
                 <td class="text-left">
                     @Html.DisplayFor(modelItem => item.id_Projektas)
                 </td>
-                <td >
+                <td>
                     @Html.DisplayFor(modelItem => item.pavadinimas)
                 </td>
                 <td class="text-left">
@@ -60,9 +63,13 @@
             </tr>
         }
     </tbody>
-    
+
 
 </table>
+
+<div id="pager">
+    @Html.PagedListPager(Model, page => Url.Action("GautiProjektus", new { page }))
+</div>
 
 <div style="margin-top: 30px;">
     <input type="submit" value="< Atgal" onclick="@("window.location.href='" + @Url.Action("AdminValdymas", "Vartotojas") + "'");" class="btn btn-info" />

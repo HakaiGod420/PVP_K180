@@ -1,5 +1,6 @@
-﻿@model IEnumerable<PVP_K180.Models.Atsitikimas>
-
+﻿@model PagedList.IPagedList<PVP_K180.Models.Atsitikimas>
+@using PagedList;
+@using PagedList.Mvc;
 @{
     ViewBag.Title = "Atsitikų sąrašas";
 
@@ -96,19 +97,19 @@
     <thead>
         <tr>
             <th class="text-left">
-                @Html.DisplayNameFor(model => model.paskelbimo_data)
+                @Html.DisplayNameFor(model => model.FirstOrDefault().paskelbimo_data)
             </th>
             <th class="text-left">
-                @Html.DisplayNameFor(model => model.tvirtintojas)
+                @Html.DisplayNameFor(model => model.FirstOrDefault().tvirtintojas)
             </th>
             <th class="text-left">
-                @Html.DisplayNameFor(model => model.pranesejas)
+                @Html.DisplayNameFor(model => model.FirstOrDefault().pranesejas)
             </th>
             <th class="text-left">
-                @Html.DisplayNameFor(model => model.tipas)
+                @Html.DisplayNameFor(model => model.FirstOrDefault().tipas)
             </th>
             <th class="text-left">
-                @Html.DisplayNameFor(model => model.busena)
+                @Html.DisplayNameFor(model => model.FirstOrDefault().busena)
             </th>
             <th class="text-left">Papildomos funkcijos</th>
         </tr>
@@ -145,8 +146,11 @@
         }
     </tbody>
 
-
 </table>
+
+<div id="pager">
+    @Html.PagedListPager(Model, page => Url.Action("AtsitikimuSarasas", new { page }))
+</div>
 
 <div style="margin-top: 30px;">
     <input type="submit" value="< Atgal" onclick="@("window.location.href='" + @Url.Action("AdminValdymas", "Vartotojas") + "'");" class="btn btn-info" />

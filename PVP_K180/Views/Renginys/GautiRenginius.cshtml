@@ -1,4 +1,7 @@
-﻿@model IEnumerable<PVP_K180.Models.Renginys>
+﻿
+@model PagedList.IPagedList<PVP_K180.Models.Renginys>
+@using PagedList;
+@using PagedList.Mvc;
 
 @{
     ViewBag.Title = "GautiRenginius";
@@ -28,8 +31,8 @@
 
 
 <style>
-    .filter{
-        margin-bottom:10px;
+    .filter {
+        margin-bottom: 10px;
     }
 </style>
 <h2>Esami renginiai</h2>
@@ -39,43 +42,40 @@
 </p>
 @using (Html.BeginForm())
 {
-<div class="filter"> 
-    <b>Renginio Būsena</b>
-    @Html.DropDownList("busena", listItems, "-- Rodyti visus --")
-    <b>Renginių pradžios data</b>
-    @Html.TextBox("nuo")
-    <b>Renginių pabaigos data</b>
-    @Html.TextBox("iki")
+    <div class="filter">
+        <b>Renginio Būsena</b>
+        @Html.DropDownList("busena", listItems, "-- Rodyti visus --")
+        <b>Renginių pradžios data</b>
+        @Html.TextBox("nuo")
+        <b>Renginių pabaigos data</b>
+        @Html.TextBox("iki")
 
-    <input type="submit" value="Filtruoti" />
-</div>
+        <input type="submit" value="Filtruoti" />
+    </div>
 }
 <table class="table-fill">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.pavadinimas)
-            </th>
-            <th class="text-left">
-                @Html.DisplayNameFor(model => model.reitingas)
+                @Html.DisplayNameFor(model => model.FirstOrDefault().pavadinimas)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.paskelbimo_data)
+                @Html.DisplayNameFor(model => model.FirstOrDefault().paskelbimo_data)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.pradzios_data)
+                @Html.DisplayNameFor(model => model.FirstOrDefault().pradzios_data)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.pabaigos_data)
+                @Html.DisplayNameFor(model => model.FirstOrDefault().pabaigos_data)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.adresas)
+                @Html.DisplayNameFor(model => model.FirstOrDefault().adresas)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.kaina)
+                @Html.DisplayNameFor(model => model.FirstOrDefault().kaina)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.renginio_busena)
+                @Html.DisplayNameFor(model => model.FirstOrDefault().renginio_busena)
             </th>
 
             <th>Funckijos</th>
@@ -85,60 +85,61 @@
     <tbody class="table-hover">
         @foreach (var item in Model)
         {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.pavadinimas)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.reitingas)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.pradzios_data)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.paskelbimo_data)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.pabaigos_data)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.adresas)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.kaina)
-            </td>
-            <td>
-                @if (item.renginio_busena == 1)
-                {
-                    @Html.DisplayName("Atšauktas")
-                }
-                else if (item.renginio_busena == 2)
-                {
-                    @Html.DisplayName("Pasibaigęs")
-                }
-                else if (item.renginio_busena == 3)
-                {
-                    @Html.DisplayName("Neįvykęs")
-                }
-                else if (item.renginio_busena == 4)
-                {
-                    @Html.DisplayName("Būsimas")
-                }
-            </td>
-            <td class="text-left">
-                @Html.ActionLink("Redaguoti", "RedaguotiRengini", new { id = item.id_Renginys }) |
-                @Html.ActionLink("Keisti būseną", "KeistiRenginioBusena", new { id = item.id_Renginys }) |
-                @Html.ActionLink("Pridėti nuotraukų", "PridetiNuotraukuRenginiui", new { id = item.id_Renginys }) |
-                @Html.ActionLink("Nuotraukos", "GautiNuotraukasRenginio", new { id = item.id_Renginys }) |
-                @Html.ActionLink("Rašyti komentarą", "Komentarai", new { id = item.id_Renginys }) |
-                @Html.ActionLink("Detali informacija", "DetaliInformacijaRenginys", new { id = item.id_Renginys })
-            </td>
-        </tr>
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.pavadinimas)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.pradzios_data)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.paskelbimo_data)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.pabaigos_data)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.adresas)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.kaina)
+                </td>
+                <td>
+                    @if (item.renginio_busena == 1)
+                    {
+                        @Html.DisplayName("Atšauktas")
+                    }
+                    else if (item.renginio_busena == 2)
+                    {
+                        @Html.DisplayName("Pasibaigęs")
+                    }
+                    else if (item.renginio_busena == 3)
+                    {
+                        @Html.DisplayName("Neįvykęs")
+                    }
+                    else if (item.renginio_busena == 4)
+                    {
+                        @Html.DisplayName("Būsimas")
+                    }
+                </td>
+                <td class="text-left">
+                    @Html.ActionLink("Redaguoti", "RedaguotiRengini", new { id = item.id_Renginys }) |
+                    @Html.ActionLink("Keisti būseną", "KeistiRenginioBusena", new { id = item.id_Renginys }) |
+                    @Html.ActionLink("Pridėti nuotraukų", "PridetiNuotraukuRenginiui", new { id = item.id_Renginys }) |
+                    @Html.ActionLink("Nuotraukos", "GautiNuotraukasRenginio", new { id = item.id_Renginys }) |
+                    @Html.ActionLink("Rašyti komentarą", "Komentarai", new { id = item.id_Renginys }) |
+                    @Html.ActionLink("Detali informacija", "DetaliInformacijaRenginys", new { id = item.id_Renginys })
+                </td>
+            </tr>
         }
     </tbody>
 
 
 </table>
+
+<div id="pager">
+    @Html.PagedListPager(Model, page => Url.Action("GautiRenginius", new { page }))
+</div>
 
 <div style="margin-top: 30px;">
     <input type="submit" value="< Atgal" onclick="@("window.location.href='" + @Url.Action("AdminValdymas", "Vartotojas") + "'");" class="btn btn-info" />

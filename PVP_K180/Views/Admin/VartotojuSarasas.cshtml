@@ -1,4 +1,7 @@
-﻿@model IEnumerable<PVP_K180.Models.Vartotojas>
+﻿@model PagedList.IPagedList<PVP_K180.Models.Vartotojas>
+@using PagedList;
+@using PagedList.Mvc;
+
 @{
     ViewBag.Title = "VartotojuSarasas";
 }
@@ -15,37 +18,38 @@
 </script>
 <h2>Esamų vartotojų sąrašas</h2>
 <input id="myInput" type="text" placeholder="Įveskit pagal ką filtruosit">
-<br><br>
+<br>
+<br>
 @Styles.Render("~/Styles/tableStyle.css")
 <table class="table-fill">
     <thead>
         <tr>
             <th class="text-left">
-                @Html.DisplayNameFor(model => model.slapyvardis)
+                @Html.DisplayNameFor(model => model.FirstOrDefault().slapyvardis)
             </th>
             <th class="text-left">
-                @Html.DisplayNameFor(model => model.el_pastas)
+                @Html.DisplayNameFor(model => model.FirstOrDefault().el_pastas)
             </th>
             <th class="text-left">
-                @Html.DisplayNameFor(model => model.gimimo_data)
+                @Html.DisplayNameFor(model => model.FirstOrDefault().gimimo_data)
             </th>
             <th class="text-left">
-                @Html.DisplayNameFor(model => model.vardas)
+                @Html.DisplayNameFor(model => model.FirstOrDefault().vardas)
             </th>
             <th class="text-left">
-                @Html.DisplayNameFor(model => model.pavarde)
+                @Html.DisplayNameFor(model => model.FirstOrDefault().pavarde)
             </th>
             <th class="text-left">
-                @Html.DisplayNameFor(model => model.tel_nr)
+                @Html.DisplayNameFor(model => model.FirstOrDefault().tel_nr)
             </th>
             <th class="text-left">
-                @Html.DisplayNameFor(model => model.sukurimo_data)
+                @Html.DisplayNameFor(model => model.FirstOrDefault().sukurimo_data)
             </th>
             <th>Funkcijos</th>
         </tr>
     </thead>
 
-    <tbody class="table-hover", id="myTable">
+    <tbody class="table-hover" , id="myTable">
         @foreach (var item in Model)
         {
             <tr>
@@ -81,6 +85,11 @@
     </tbody>
 
 </table>
+
+<div id="pager">
+    @Html.PagedListPager(Model, page => Url.Action("VartotojuSarasas", new { page }))
+</div>
+
 <div style="margin-top: 30px;">
     <input type="submit" value="< Atgal" onclick="@("window.location.href='" + @Url.Action("AdminValdymas", "Vartotojas") + "'");" class="btn btn-info" />
 </div>
