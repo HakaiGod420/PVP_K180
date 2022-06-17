@@ -1,4 +1,6 @@
-﻿@model IEnumerable<PVP_K180.ModelView.ProjektuPerziura>
+﻿@model PagedList.IPagedList<PVP_K180.ModelView.ProjektuPerziura>
+@using PagedList;
+@using PagedList.Mvc;
 @{
     ViewBag.Title = "Projektai";
 }
@@ -11,7 +13,7 @@
         <div class="column">
             <figure class="snip1493" style="height:500px">
                 <div class="image">
-                <img src="~/Nuotraukos/@item.pradine_nuotrauka" alt="ls-sample1" />
+                    <img src="~/Nuotraukos/@item.pradine_nuotrauka" alt="ls-sample1" />
                 </div>
                 <figcaption>
                     <div class="date"><span class="day">@item.diena</span><span class="month">@item.menuo</span></div>
@@ -27,13 +29,17 @@
                 </figcaption>
                 <a>@Html.ActionLink(" ", "ProjektoInformacija", "Projektas", new { id = item.id_Projektas }, new { @class = "action", @type = "button" })</a>
             </figure>
-            </div>
-            }
         </div>
+    }
+</div>
+
+<div id="pager" style="text-align:center">
+    @Html.PagedListPager(Model, page => Url.Action("Naujienos", new { page }))
+</div>
 
 <div class="row" style="margin-top:2vh;margin-left:20px;margin-bottom:10px; float:left">
     <input type="submit" value="< Atgal" onclick="@("window.location.href='" + @Url.Action("Index", "Home") + "'");" class="btn btn-info" />
 </div>
-        <script>
+<script>
 
-        </script>
+</script>

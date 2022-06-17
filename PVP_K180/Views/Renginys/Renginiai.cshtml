@@ -1,4 +1,6 @@
-﻿@model IEnumerable<PVP_K180.Models.Renginys>
+﻿@model PagedList.IPagedList<PVP_K180.Models.Renginys>
+@using PagedList;
+@using PagedList.Mvc;
 @{
     ViewBag.Title = "Renginiai";
 }
@@ -73,9 +75,17 @@
 
 </body>
 
-<div class="row" style="margin-top:2vh;margin-left:40px;margin-bottom:10px; float:left">
-    <input type="submit" value="< Atgal" onclick="@("window.location.href='" + @Url.Action("Index", "Home") + "'");" class="btn btn-info" />
+<div id="pager" style="text-align:center;flex:auto">
+    @Html.PagedListPager(Model, page => Url.Action("Naujienos", new { page }))
 </div>
+@*
+        <div class="row" style="">
+        <p>
+            <input type="submit" value="< Atgal" onclick="@("window.location.href='" + @Url.Action("Index", "Home") + "'");" class="btn btn-info" />
+        </p>
+    </div>
+*@
+
 
 </html>
 

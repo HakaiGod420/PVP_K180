@@ -17,6 +17,7 @@ namespace PVP_K180.Controllers
         private Renginys_Repos renginys_Repos = new Renginys_Repos();
         Nuotrauka_Repos nuotrauka_Repos = new Nuotrauka_Repos();
         private const int pageSize = 5;
+        private const int pageSizeView = 6;
 
         // GET: Renginys
         public ActionResult Index()
@@ -232,7 +233,7 @@ namespace PVP_K180.Controllers
             TempData["RenginysLong"] = y;
         }
 
-        public ActionResult Renginiai()
+        public ActionResult Renginiai(int? page)
         {
             List<Renginys> renginiai = renginys_Repos.Gauti_Renginius();
 
@@ -247,8 +248,8 @@ namespace PVP_K180.Controllers
                 renginiai[i].gautosNuotraukos = nuotrauka_Repos.Gauti__Renginiu_Nuotraukas(renginiai[i].id_Renginys);
             }
 
-     
-            return View(renginiai);
+            int pageNumber = (page ?? 1);
+            return View(renginiai.ToPagedList(pageNumber, pageSizeView));
         }
 
         public ActionResult DetaliInformacijaRenginys(int id)
