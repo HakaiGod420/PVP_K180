@@ -16,6 +16,7 @@ namespace PVP_K180.Controllers
         private Nuotrauka_Repos nuotrauka_Repos = new Nuotrauka_Repos();
         string[] menesiai = new string[12] { "SAU", "VAS", "KOV", "BAL", "GEG", "BIR", "LIE", "LAP", "RUG", "SPA", "LAP", "GRU" };
         private const int pageSize = 5;
+        private const int pageSizeView = 6;
 
         // GET: Projektas
         public ActionResult Index()
@@ -187,7 +188,7 @@ namespace PVP_K180.Controllers
             return RedirectToAction("Komentarai", new { id = Convert.ToInt32(TempData["ProjektoID"]) });
         }
 
-        public ActionResult Projektai()
+        public ActionResult Projektai(int? page)
         {
             Projektas_Repos projektas_Repos = new Projektas_Repos();
             List<ProjektuPerziura> projektas = projektas_Repos.Gauti_Projektus_Atvaizdavimui();
@@ -204,7 +205,8 @@ namespace PVP_K180.Controllers
                 }
                
             }
-            return View(projektas);
+            int pageNumber = (page ?? 1);
+            return View(projektas.ToPagedList(pageNumber, pageSizeView));
         }
 
         public ActionResult DetaliInformacijaProjektas(int id)

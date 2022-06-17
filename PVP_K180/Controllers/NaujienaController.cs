@@ -19,6 +19,7 @@ namespace PVP_K180.Controllers
         Nuotrauka_Repos nuotrauka_Repos = new Nuotrauka_Repos();
         string[] menesiai = new string[12] { "Sausis", "Vasaris", "Kovas", "Balandis", "Gegužis", "Bižrelis", "Liepa", "Lapkritis", "Rugsėjis", "Spalis", "Lapkritis", "Gruodis" };
         private const int pageSize = 5;
+        private const int pageSizeNewsView = 10;
 
         // GET: Naujiena
         public ActionResult Index()
@@ -252,7 +253,7 @@ namespace PVP_K180.Controllers
             return RedirectToAction("GautiNaujienas");
         }
 
-        public ActionResult Naujienos()
+        public ActionResult Naujienos(int? page)
         {
             List<Naujiena> naujienos = naujiena_Repos.Gauti_Naujienas();
             List<NaujienuSarasas> naujienosPerziurai = new List<NaujienuSarasas>();
@@ -281,7 +282,8 @@ namespace PVP_K180.Controllers
                 }
                 naujienosPerziurai.Add(naujiena);
             }
-            return View(naujienosPerziurai);
+            int pageNumber = (page ?? 1);
+            return View(naujienosPerziurai.ToPagedList(pageNumber, pageSizeNewsView));
         }
 
         public ActionResult SkaitytiNaujiena(int id)
