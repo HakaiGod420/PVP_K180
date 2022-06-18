@@ -2,54 +2,64 @@
 
 @{
     ViewBag.Title = "DalyvautiApklausoje";
+    Styles.Render("~/Content/");
 }
+
+
+<style>
+    .boxShadow2 {
+        box-shadow: 0 1px 10px rgb(0 0 0 / 0.2);
+        margin: auto;
+        border-radius: 4px;
+        width: 100%;
+        text-align: center;
+        padding: 10px;
+        margin-top: 30px;
+        position: relative;
+        background-color: white;
+    }
+</style>
 
 @using (Html.BeginForm())
 {
-    <h2>DalyvautiApklausoje</h2>
-
+    <h2 class="text-left">Aktyvi apklausa</h2>
     <div>
-        <h4>Aktyvi apklausa</h4>
-        @if (TempData["SuccsessAtsakimas"] != null)
-        {
-            <p class="alert alert-success" id="successMessage">@Convert.ToString(TempData["SuccsessAtsakimas"])</p>
-        }
-        <hr />
+
 
         <dl class="dl-horizontal">
             @if (Model.apklausa.sukurimo_data != null)
             {
-                <dt>
-                    @Html.DisplayNameFor(model => model.apklausa.aprasymas)
-                </dt>
+                <h4 class="text-left">@Model.apklausa.aprasymas</h4>
+                if (TempData["SuccsessAtsakimas"] != null)
+                {
+                    <p class="alert alert-success" id="successMessage">@Convert.ToString(TempData["SuccsessAtsakimas"])</p>
+                }
+                <hr />
 
-                <dd>
-                    @Html.DisplayFor(model => model.apklausa.aprasymas)
-                </dd>
+                <div class="boxShadow2">
+                    <p style="text-align:left;font-size:20px; font-weight:bold">
+                        Apklausoje jūs:
+                        @if (Convert.ToBoolean(TempData["Answered"]) == true)
+                        {
 
-                <dt>
-                    @Html.DisplayNameFor(model => model.apklausa.dalyviu_skaicius)
-                </dt>
-
-                <dd>
-                    @Html.DisplayFor(model => model.apklausa.dalyviu_skaicius)
-                </dd>
-
-                <dt>
-                    @Html.DisplayNameFor(model => model.apklausa.sukurimo_data)
-                </dt>
-
-                <dd>
-                    @Html.DisplayFor(model => model.apklausa.sukurimo_data)
-                </dd>
-
-                <dt>
-                    @Html.DisplayNameFor(model => model.apklausa.pabaigos_data)
-                </dt>
-
-                <dd>
-                    @Html.DisplayFor(model => model.apklausa.pabaigos_data)
-                </dd>
+                            <span>Dalyvavote</span>
+                            <span style="float:right;">
+                                <a class="open-list btn btn-success" data-toggle="modal" data-target=".boostrapmodal" style="margin-bottom:5px; padding:1px 40px">Atsakymai</a>
+                            </span>
+                        }
+                        else
+                        {
+                            <span>Nedalyvavote</span>
+                        }
+                    </p>
+                    <hr />
+                    <p style="text-align:left">
+                        Iš viso dalyvavo: <b>@Model.apklausa.dalyviu_skaicius</b>
+                        <span style="float:right;">
+                            Apklausos pabaiga: <b>@Convert.ToDateTime(Model.apklausa.pabaigos_data).ToString("yyyy-MM-dd")</b>
+                        </span>
+                    </p>
+                </div>
             }
             else
             {
@@ -57,55 +67,130 @@
             }
         </dl>
     </div>
-    if (Convert.ToBoolean(TempData["Answered"]) == false)
-    {
-        if (Model.apklausa.sukurimo_data != null)
-        {
-            <h2>Atsakyti į klausimus</h2>
-            <div>
-                <dl class="dl-horizontal">
-                    @for (var i = 0; i < Model.klausimai.Count; i++)
-                    {
-                        <b><p>@Model.klausimai[i].klausimo_tekstas</p></b>
-                        <div class="col-md-20">
-                            @Html.EditorFor(model => model.atsakymai[i], new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.atsakymai[i], "", new { @class = "text-danger" })
-                        </div>
-                    }
-                </dl>
 
-                <div class="form-group">
-                    <div class="col-md-offset-0 col-md-20">
-                        <input type="submit" value="Tvirtinti apklausą" class="btn btn-default" />
+    <div class="modal fade boostrapmodal">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <b>Atsakymai į apklausą</b>
+                </div>
+
+                <div class="modal-body">
+                    <div id="add_to_me">
+                        @if (Model.gautiAtsakymai != null && Model.gautiAtsakymai.Count != 0 )
+                        {
+                        <h2>Tavo atsakymai į apklausą</h2>
+                        <div>
+                            <dl class="dl-horizontal">
+                                @for (var i = 0; i < Model.klausimai.Count; i++)
+                                {
+                                    var temp = i + 1;
+                                    <p><b>@temp. @Model.klausimai[i].klausimo_tekstas</b></p>
+                                    if (Model.gautiAtsakymai[i] != "")
+                                    {
+                                        <p>@Model.gautiAtsakymai[i]</p>
+                                    }
+                                    else
+                                    {
+                                        <p>[Atsakymas nepateiktas]</p>
+
+                                    }
+
+                                }
+                            </dl>
+                        </div>
+                        }
                     </div>
                 </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Uždaryti</button>
+                </div>
             </div>
-        }
-    }
-    else
+        </div>
+    </div>
+
+    if (Convert.ToInt16(Session["UserID"]) != 0)
     {
-        if (Model.apklausa.sukurimo_data != null)
-        {
-            <h2>Tavo atsakymai į apklausą</h2>
-            <div>
-                <dl class="dl-horizontal">
-                    @for (var i = 0; i < Model.klausimai.Count; i++)
-                    {
-                        <p><b>@Model.klausimai[i].klausimo_tekstas</b></p>
-                        if (Model.gautiAtsakymai[i] != "")
-                        {
-                            <p>@Model.gautiAtsakymai[i]</p>
- }
-                        else
-                        {
-                            <p>[Atsakymas nepateiktas]</p>
+        <div style="align-content:center">
+            <style>
+                .boxShadow {
+                    box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
+                    margin: 20px;
+                    border-radius: 10px;
+                    width: 50%;
+                    background-color: white;
+                }
 
-                        }
+                .center {
+                    width: 500px;
+                    margin: auto;
+                    width: auto;
+                    padding: 10px;
+                    margin-bottom: 20px;
+                }
 
-                    }
-                </dl>
-            </div>
-        }
+                textarea {
+                    min-width: auto;
+                    max-width: 1000px;
+                    width: 100%;
+                    height: 100px;
+                    padding: 0px 20px;
+                    box-sizing: border-box;
+                    border: 2px solid #ccc;
+                    border-radius: 10px;
+                    background-color: #f8f8f8;
+                    font-size: 16px;
+                    resize: none;
+                    display: block;
+                    margin-left: auto;
+                    margin-right: auto;
+                }
+            </style>
+            @if (Convert.ToBoolean(TempData["Answered"]) == false)
+            {
+                if (Model.apklausa.sukurimo_data != null)
+                {
+                    <h2 style="text-align:center">Atsakyti į klausimus</h2>
+                    <div class="center">
+                        <dl class="dl-horizontal">
+                            @for (var i = 0; i < Model.klausimai.Count; i++)
+                            {
+                                var temp = i + 1;
+                                <div class="boxShadow center">
+
+
+                                    <b><p>#@temp Klausimas: @Model.klausimai[i].klausimo_tekstas</p></b>
+                                    <div class="col-md-25 center inputFiled" style="margin-bottom:10px; align-items:center">
+                                        @Html.TextAreaFor(model => model.atsakymai[i], new { htmlAttributes = new { @class = "form-control inputFiled" } })
+                                        @Html.ValidationMessageFor(model => model.atsakymai[i], "", new { @class = "text-danger" })
+                                    </div>
+
+
+                                </div>
+
+                            }
+                        </dl>
+
+                        <div class="form-group">
+                            <div class="col-md-offset-5 col-md-20">
+                                <input type="submit" value="Tvirtinti apklausą" class="btn btn-success" />
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                if (Model.apklausa.sukurimo_data != null)
+                {
+                }
+            }
+        </div>
+
     }
-
 }
+
+<div class="row" style="margin-bottom:1vh;margin-top:1vh;margin-left:0px; float:left">
+    <input type="submit" value="< Atgal" onclick="@("window.location.href='" + @Url.Action("Index", "Home") + "'");" class="btn btn-info" />
+</div>

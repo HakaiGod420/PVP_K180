@@ -1,87 +1,98 @@
-﻿@model IEnumerable<PVP_K180.Models.Vartotojas>
+﻿@model PagedList.IPagedList<PVP_K180.Models.Vartotojas>
+@using PagedList;
+@using PagedList.Mvc;
 
 @{
     ViewBag.Title = "VartotojuSarasas";
 }
-
-<h2>VartotojuSarasas</h2>
-
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.slapyvardis)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.el_pastas)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.gimimo_data)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.vardas)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.pavarde)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.tel_nr)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.sukurimo_data)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.role)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.vartotojo_busena)
-        </th>
-        <th></th>
-    </tr>
-
-    @foreach (var item in Model)
-    {
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#myInput").on("keyup", function () {
+            var value = $(this).val().toLowerCase();
+            $("#myTable tr").filter(function () {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+    });
+</script>
+<h2>Esamų vartotojų sąrašas</h2>
+<input id="myInput" type="text" placeholder="Įveskit pagal ką filtruosit">
+<br>
+<br>
+@Styles.Render("~/Styles/tableStyle.css")
+<table class="table-fill">
+    <thead>
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.slapyvardis)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.el_pastas)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.gimimo_data)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.vardas)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.pavarde)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.tel_nr)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.sukurimo_data)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.role)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.vartotojo_busena)
-            </td>
-            <td>
-                <a href="@(@Url.Action("ProfilioPerziura", "Vartotojas", new { id = item.id_Vartotojas}))">Profilis</a> |
-                @Html.ActionLink("Trinti", "TrintiVartotoja", new { id = item.id_Vartotojas, onclick = "return DeleteConfirm()" }) |
-                <a href="@(@Url.Action("KeistiBusena", "Admin", new { id = item.id_Vartotojas}))">Būsenos keitimas</a> |
-                <a href="@(@Url.Action("KeistiROle", "Admin", new { id = item.id_Vartotojas}))">Rolės keitimas</a>
-            </td>
+            <th class="text-left">
+                @Html.DisplayNameFor(model => model.FirstOrDefault().slapyvardis)
+            </th>
+            <th class="text-left">
+                @Html.DisplayNameFor(model => model.FirstOrDefault().el_pastas)
+            </th>
+            <th class="text-left">
+                @Html.DisplayNameFor(model => model.FirstOrDefault().gimimo_data)
+            </th>
+            <th class="text-left">
+                @Html.DisplayNameFor(model => model.FirstOrDefault().vardas)
+            </th>
+            <th class="text-left">
+                @Html.DisplayNameFor(model => model.FirstOrDefault().pavarde)
+            </th>
+            <th class="text-left">
+                @Html.DisplayNameFor(model => model.FirstOrDefault().tel_nr)
+            </th>
+            <th class="text-left">
+                @Html.DisplayNameFor(model => model.FirstOrDefault().sukurimo_data)
+            </th>
+            <th>Funkcijos</th>
         </tr>
-    }
+    </thead>
+
+    <tbody class="table-hover" , id="myTable">
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td class="text-left">
+                    @Html.DisplayFor(modelItem => item.slapyvardis)
+                </td>
+                <td class="text-left">
+                    @Html.DisplayFor(modelItem => item.el_pastas)
+                </td>
+                <td class="text-left">
+                    @Html.DisplayFor(modelItem => item.gimimo_data)
+                </td>
+                <td class="text-left">
+                    @Html.DisplayFor(modelItem => item.vardas)
+                </td>
+                <td class="text-left">
+                    @Html.DisplayFor(modelItem => item.pavarde)
+                </td>
+                <td class="text-left">
+                    @Html.DisplayFor(modelItem => item.tel_nr)
+                </td>
+                <td class="text-left">
+                    @Html.DisplayFor(modelItem => item.sukurimo_data)
+                </td>
+                <td class="text-left">
+                    <a href="@(@Url.Action("ProfilioPerziura", "Vartotojas", new { id = item.id_Vartotojas}))">Profilis</a> |
+                    @Html.ActionLink("Trinti", "TrintiVartotoja", new { id = item.id_Vartotojas, onclick = "return DeleteConfirm()" }) |
+                    <a href="@(@Url.Action("KeistiBusena", "Admin", new { id = item.id_Vartotojas}))">Būsenos keitimas</a> |
+                    <a href="@(@Url.Action("KeistiROle", "Admin", new { id = item.id_Vartotojas}))">Rolės keitimas</a>
+                </td>
+            </tr>
+        }
+    </tbody>
 
 </table>
 
+<div id="pager">
+    @Html.PagedListPager(Model, page => Url.Action("VartotojuSarasas", new { page }))
+</div>
+
+<div style="margin-top: 30px;">
+    <input type="submit" value="< Atgal" onclick="@("window.location.href='" + @Url.Action("AdminValdymas", "Vartotojas") + "'");" class="btn btn-info" />
+</div>
 <script>
     function DeleteConfirm() {
         if (confirm("Are you sure want to delete record"))

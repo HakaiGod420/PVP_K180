@@ -1,99 +1,106 @@
-﻿@model IEnumerable<PVP_K180.Models.Balsavimas>
+﻿
 
+@model PagedList.IPagedList<PVP_K180.Models.Balsavimas>
+@using PagedList;
+@using PagedList.Mvc;
 @{
     ViewBag.Title = "Balsavimų sąrašas";
 }
-
-<style>
-table, th, td, tr {
-  border: 1px solid black;
-  border-collapse: collapse;
-  padding-top: 10px;
-  padding-bottom: 10px;
-  padding-left: 5px;
-}
-</style>
-
-<style>
-table {
-  width: 100%;
-  max-width: 100%;
-
-}
-</style>
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#myInput").on("keyup", function () {
+            var value = $(this).val().toLowerCase();
+            $("#myTable tr").filter(function () {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+    });
+</script>
 <h2>Balsavimų sąrašas</h2>
-
+<input id="myInput" type="text" placeholder="Įveskit pagal ką filtruosit">
+<br>
+<br>
 <p>
-    @Html.ActionLink("Sukurti balsavimą", "KurtiBalsavima")
+    @Html.ActionLink("Sukurti balsavimą", "KurtiBalsavima", new { }, new { @class = "btn btn-primary", @type = "button" })
 </p>
+@Styles.Render("~/Styles/tableStyle.css")
+<table class="table-fill">
+    <thead>
+        <tr>
+            <th class="text-left">
+                @Html.DisplayNameFor(model => model.FirstOrDefault().klausimas)
+            </th>
+            <th class="text-left">
+                @Html.DisplayNameFor(model => model.FirstOrDefault().balsavimo_aprasymas)
+            </th>
+            <th class="text-left">
+                @Html.DisplayNameFor(model => model.FirstOrDefault().dalyviu_skaicius)
+            </th>
+            <th class="text-left">
+                @Html.DisplayNameFor(model => model.FirstOrDefault().sukurimo_data)
+            </th>
+            <th class="text-left">
+                @Html.DisplayNameFor(model => model.FirstOrDefault().pabaigos_data)
+            </th>
+            <th class="text-left">
+                @Html.DisplayNameFor(model => model.FirstOrDefault().Sukurejas)
+            </th>
+            <th class="text-left">
+                @Html.DisplayNameFor(model => model.FirstOrDefault().busenos_pavadinimas)
+            </th>
+            <th>Funkcijos</th>
+        </tr>
+    </thead>
 
-<table>
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.klausimas)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.balsavimo_aprasymas)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.dalyviu_skaicius)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.sukurimo_data)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.pabaigos_data)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Sukurejas)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.busenos_pavadinimas)
-        </th>
-        <th></th>
-    </tr>
-
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.klausimas)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.balsavimo_aprasymas)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.dalyviu_skaicius)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.sukurimo_data)
-        </td>
-        @if (item.pabaigos_data != null)
+    <tbody class="table-hover" id="myTable">
+        @foreach (var item in Model)
         {
-        <td>
-            @Html.DisplayFor(modelItem => item.pabaigos_data)
-        </td>
+            <tr>
+                <td class="text-left">
+                    @Html.DisplayFor(modelItem => item.klausimas)
+                </td>
+                <td class="text-left">
+                    @Html.DisplayFor(modelItem => item.balsavimo_aprasymas)
+                </td>
+                <td class="text-left">
+                    @Html.DisplayFor(modelItem => item.dalyviu_skaicius)
+                </td>
+                <td class="text-left">
+                    @Html.DisplayFor(modelItem => item.sukurimo_data)
+                </td>
+                @if (item.pabaigos_data != null)
+                {
+                    <td class="text-left">
+                        @Html.DisplayFor(modelItem => item.pabaigos_data)
+                    </td>
+                }
+                else
+                {
+                    <td class="text-left">-</td>
+                }
+                <td class="text-left">
+                    @Html.DisplayFor(modelItem => item.Sukurejas)
+                </td>
+                <td class="text-left">
+                    @Html.DisplayFor(modelItem => item.busenos_pavadinimas)
+                </td>
+                <td class="text-left">
+                    @Html.ActionLink("Redaguoti", "RedaguotiBalsavima", new { id = item.id_Balsavimas }) |
+                    @Html.ActionLink("Trinti", "TrintiBalsavima", new { id = item.id_Balsavimas }) |
+                    @Html.ActionLink("Keisti būseną", "KeistiBalsavimoBusena", new { id = item.id_Balsavimas }) |
+                    @Html.ActionLink("Rezultatai", "Rezultatai", new { id = item.id_Balsavimas })
+                </td>
+            </tr>
         }
-        else
-        {
-            <td>-</td>
-        }
-        <td>
-            @Html.DisplayFor(modelItem => item.Sukurejas)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.busenos_pavadinimas)
-        </td>
-        <td>
-
-            @Html.ActionLink("Redaguoti", "RedaguotiBalsavima", new { id = item.id_Balsavimas }) |
-            @Html.ActionLink("Trinti", "TrintiBalsavima", new { id = item.id_Balsavimas }) |
-            @Html.ActionLink("Keisti būseną", "KeistiBalsavimoBusena", new { id = item.id_Balsavimas })
-        </td>
-    </tr>
-}
+    </tbody>
 
 </table>
-<div>
-    @Html.ActionLink("Atgal", "AdminValdymas", "Vartotojas")
+
+<div id="pager">
+    @Html.PagedListPager(Model, page => Url.Action("ZiuretiBalsavimus", new { page }))
+</div>
+
+<div style="margin-top: 30px;">
+    <input type="submit" value="< Atgal" onclick="@("window.location.href='" + @Url.Action("AdminValdymas", "Vartotojas") + "'");" class="btn btn-info" />
 </div>

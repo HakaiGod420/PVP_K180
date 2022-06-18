@@ -339,9 +339,7 @@ namespace PVP_K180.Repos
                     return Convert.ToInt32(data["fk_Vartotojo_Busenaid_Vartotojo_Busena"]);
                 }
             }
-
             return null;
-
 
         }
 
@@ -429,6 +427,81 @@ namespace PVP_K180.Repos
             catch (Exception e)
             {
                 return false;
+            }
+        }
+
+        public int Gauti_Naujienlaiskio_Prenumerata(int id)
+        {
+            try
+            {
+                int index = -1;
+                string conn = ConfigurationManager.ConnectionStrings["MysqlConnection"].ConnectionString;
+                MySqlConnection mySqlConnection = new MySqlConnection(conn);
+                string sqlquery = "SELECT * FROM `Vartotojas` WHERE id_Vartotojas="+id;
+                MySqlCommand mySqlCommand = new MySqlCommand(sqlquery, mySqlConnection);
+                mySqlConnection.Open();
+                MySqlDataAdapter mda = new MySqlDataAdapter(mySqlCommand);
+                DataTable dt = new DataTable();
+                mda.Fill(dt);
+                mySqlConnection.Close();
+
+                foreach (DataRow item in dt.Rows)
+                {
+                    index = Convert.ToInt32(item["aktyvaves_naujienlaiski"]);
+                }
+                return index;
+            }
+            catch (Exception ex)
+            {
+                return -1;
+            }
+        }
+
+        public bool AtnaujintiNaujienlaiskioPrenumerata(int vartotojo_id, int prenumerata)
+        {
+            try
+            {
+                string conn = ConfigurationManager.ConnectionStrings["MysqlConnection"].ConnectionString;
+                MySqlConnection mySqlConnection = new MySqlConnection(conn);
+                string sqlquery = "UPDATE `Vartotojas` SET `aktyvaves_naujienlaiski`=?aktyvaves_naujienlaiski WHERE id_Vartotojas=" + vartotojo_id;
+                MySqlCommand mySqlCommand = new MySqlCommand(sqlquery, mySqlConnection);
+                mySqlCommand.Parameters.Add("?aktyvaves_naujienlaiski", MySqlDbType.Int32).Value = prenumerata;
+                mySqlConnection.Open();
+                mySqlCommand.ExecuteNonQuery();
+                mySqlConnection.Close();
+                return true;
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+        }
+
+        public List<string> GautiEmailSub()
+        {
+            try
+            {
+                List<string> email = new List<string>();
+                string conn = ConfigurationManager.ConnectionStrings["MysqlConnection"].ConnectionString;
+                MySqlConnection mySqlConnection = new MySqlConnection(conn);
+                string sqlquery = "SELECT el_pastas FROM `Vartotojas` WHERE aktyvaves_naujienlaiski=1";
+                MySqlCommand mySqlCommand = new MySqlCommand(sqlquery, mySqlConnection);
+                mySqlConnection.Open();
+                MySqlDataAdapter mda = new MySqlDataAdapter(mySqlCommand);
+                DataTable dt = new DataTable();
+                mda.Fill(dt);
+                mySqlConnection.Close();
+
+                foreach (DataRow item in dt.Rows)
+                {
+                    email.Add(Convert.ToString(item["el_pastas"]));
+                }
+                return email;
+            }
+
+            catch (Exception ex)
+            {
+                return null;
             }
         }
     }

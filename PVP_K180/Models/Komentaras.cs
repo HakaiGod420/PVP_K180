@@ -24,5 +24,6 @@ namespace PVP_K180.Models
         public int fk_Vartotojasid_Vartotojas { get; set; }
         [DisplayName("Vartotoju slapyvardis")]
         public string varotojo_slapyvardis { get; set;}
+        public string nuotrauka_location { get; set; }
     }
 }

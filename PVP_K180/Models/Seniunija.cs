@@ -29,5 +29,24 @@ namespace PVP_K180.Models
 
         [DisplayName("Žemėlapio platuma")]
         public float? zemelapis_platuma { get; set; }
+
+        [DisplayName("Seniunijos el. paštas")]
+        [Required(ErrorMessage = "Privalo būti įvestas pavadinimas")]
+        public string el_pastas { get; set; }
+
+        [DisplayName("Seniunijos tel. nr.")]
+        [Required(ErrorMessage = "Privalo būti įvestas pavadinimas")]
+        public string tel_nr { get; set; }
+
+        [DisplayName("Seniunijos adresas")]
+        [Required(ErrorMessage = "Privalo būti įvestas pavadinimas")]
+        public string adresas { get; set; }
+
+        List<Nuotrauka> nuotraukosPerziurai { get; set; }
+
+        [DisplayName("Nuotraukos")]
+
+        public HttpPostedFileBase[] nuotraukos { get; set; }
+
     }
 }

@@ -1,0 +1,225 @@
+﻿@model PVP_K180.Models.Atsitikimas
+
+@{
+    ViewBag.Title = "Skelbti Atsitikima";
+}
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css"
+      integrity="sha512-hoalWLoI8r4UszCkZ5kL8vayOGVae1oxXe/2A4AO6J9+580uKHDO3JdHb7NzwwzK5xr/Fs0W40kiNHxM9vyTtQ=="
+      crossorigin="" />
+<script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js"
+        integrity="sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ=="
+        crossorigin=""></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@v0.76.0/dist/L.Control.Locate.min.css" />
+
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+    }
+
+    #map {
+        height: 70vh;
+
+    }
+
+    .marker-position {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        z-index: 999;
+        padding: 10px;
+        font-weight: 700;
+        background-color: #fff;
+    }
+
+    .mapStyle {
+        position: relative;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+        min-height: 0;
+        margin: 0;
+        padding: 0;
+        background-color: #f1f1f1;
+    }
+
+    .boxShadow {
+        box-shadow: 0 1px 10px rgb(0 0 0 / 0.2);
+        border-radius: 5px;
+        width: 100%;
+        padding: 10px;
+        position: relative;
+        background-color: white;
+    }
+</style>
+
+
+@using (Html.BeginForm("SkelbtiAtsitikima", "Atsitikimas", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+<div style="margin-top:20px" class=" boxShadow form-horizontal">
+    <h4>Atsitikimo suvestinė</h4>
+    <hr />
+    @if (TempData["AtsitikmasFail"] != null)
+    {
+        <p class="alert alert-danger" id="successMessage">@Convert.ToString(TempData["AtsitikmasFail"])</p>
+    }
+
+    @if (TempData["AtsitikmasSuccsess"] != null)
+    {
+        <p class="alert alert-success" id="successMessage">@Convert.ToString(TempData["AtsitikmasSuccsess"])</p>
+    }
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.atsitikimo_tipas, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownListFor(model => model.atsitikimo_tipas, Model.atsitikimo_tipai, "---Pasirinkite tipą---", new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.atsitikimo_tipai, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.aprasymas, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.aprasymas, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.aprasymas, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.nuotraukos, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(model => model.nuotraukos, "", new { @type = "file", @multiple = "multiple" })
+            @Html.ValidationMessageFor(model => model.nuotraukos, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div style="display:flex;flex-direction:column;align-content:space-around;flex-wrap:wrap">
+        <p style="text-align:center;font-weight:bold">Pasirinkite vietą, kurioje yra įvykis</p>
+        <div style="width:75%" class=" boxShadow mapStyle">
+            <div class="marker-position">Paspauskite ant žemėlapio</div>
+            <div id="map"></div>
+        </div>
+    </div>
+
+    <div style="display: flex; flex-direction: column; align-content: space-around; flex-wrap: wrap">
+        <div style="margin-top:10px" class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Paskelbti" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+
+</div>
+}
+
+<div style="margin-top:20px;margin-bottom:10px;">
+    <input type="submit" value="< Atgal" onclick="@("window.location.href='" + @Url.Action("ProfilioValdymas", "Vartotojas") + "'");" class="btn btn-info" />
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@0.76.0/dist/L.Control.Locate.min.js" charset="utf-8"></script>
+<script>
+
+    var arGaliPrideti = true;
+
+    let config = {
+        minZoom: 3,
+        maxZoom: 18,
+    };
+
+    const zoom = 18;
+
+    const lat = 54.905545;
+    const lng = 23.961254;
+    // Map initialization 
+    var map = L.map('map').setView([lat, lng], 8);
+
+    var saveLat = 0;
+    var saveLng = 0;
+
+    //osm layer
+    var osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    });
+    osm.addTo(map);
+
+
+    map.on("click", addMarker);
+
+    function saveData() {
+
+        console.log(saveLng);
+        $.post("/Atsitikimas/IsaugotiLokacija", { x: saveLat, y: saveLng });
+    }
+
+    function addMarker(e) {
+        // Add marker to map at click location
+        if (arGaliPrideti == false) {
+            const markerPlace = document.querySelector(".marker-position");
+            markerPlace.textContent = `Gali būti tik vienas pridėtas markeris vienu metu`;
+            return;
+        } else {
+            arGaliPrideti = false;
+        }
+        saveLat = e.latlng.lat;
+        saveLng = e.latlng.lng;
+        const markerPlace = document.querySelector(".marker-position");
+        markerPlace.textContent = `Naujas markeris: ${e.latlng.lat}, ${e.latlng.lng}`;
+
+        const marker = new L.marker(e.latlng, {
+            draggable: true,
+        })
+            .addTo(map)
+            .bindPopup(buttonRemove);
+
+        // event remove marker
+        marker.on("popupopen", removeMarker);
+
+        // event draged marker
+        marker.on("dragend", dragedMaker);
+
+        $.post("/Atsitikimas/IsaugotiLokacija", { x: saveLat, y: saveLng });
+    }
+
+    const buttonRemove =
+        '<button type="button" class="remove">Ištrinti</button>';
+
+    const markerPlace = document.querySelector(".marker-position");
+
+    // remove marker
+    function removeMarker() {
+        const marker = this;
+        const btn = document.querySelector(".remove");
+        btn.addEventListener("click", function () {
+            markerPlace.textContent = "Markeris ištrintas";
+            map.removeLayer(marker);
+            arGaliPrideti = true;
+            saveLat = 0;
+            saveLng = 0;
+        });
+    }
+
+    // draged
+    function dragedMaker() {
+        markerPlace.textContent = `Pakeista pozicija: ${this.getLatLng().lat}, ${this.getLatLng().lng
+            }`;
+        saveLat = this.getLatLng().lat;
+        saveLng = this.getLatLng().lng;
+        $.post("/Atsitikimas/IsaugotiLokacija", { x: saveLat, y: saveLng });
+    }
+
+
+
+    L.control.locate({
+        showPopup: true,
+        position: 'topleft',
+        strings: {
+            metersUnit: "metrai",
+            feetUnit: "pėdos",
+            title: "Mano lokacija",
+            popup: "Tu randies {distance} {unit} nuo šito taško",
+        },
+    }).addTo(map);
+</script>

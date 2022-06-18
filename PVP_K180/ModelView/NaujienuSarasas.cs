@@ -10,7 +10,11 @@ namespace PVP_K180.ModelView
     {
         public int naujienos_id { get; set; }
         [AllowHtml]
+        public string trumpasAprasas { get; set; }
         public string naujienos_antraste { get; set; }
         public string pirma_nuotrauka { get; set; }
+
+        public DateTime data { get; set; }
+        public string menesioPav { get; set; }
     }
 }

@@ -29,13 +29,16 @@ namespace PVP_K180.Repos
                 seniunija.id_Seniunyja = Convert.ToInt32(item["id_Seniunyja"]);
                 seniunija.seniunyjos_pavadinimas = Convert.ToString(item["seniunyjos_pavadinimas"]);
                 seniunija.aprasymas = Convert.ToString(item["aprasymas"]);
+                seniunija.tel_nr = Convert.ToString(item["tel_nr"]);
+                seniunija.el_pastas = Convert.ToString(item["el_pastas"]);
+                seniunija.adresas = Convert.ToString(item["adresas"]);
                 if (item["zemelapis_ilguma"] == DBNull.Value)
                 {
                     seniunija.zemelapis_ilguma = null;
                 }
                 else
                 {
-                    seniunija.zemelapis_ilguma = (float)Convert.ToDouble(item["gimimo_Data"]);
+                    seniunija.zemelapis_ilguma = (float)Convert.ToDouble(item["zemelapis_ilguma"]);
                 }
 
                 if (item["zemelapis_platuma"] == DBNull.Value)
@@ -56,12 +59,15 @@ namespace PVP_K180.Repos
             {
                 string conn = ConfigurationManager.ConnectionStrings["MysqlConnection"].ConnectionString;
                 MySqlConnection mySqlConnection = new MySqlConnection(conn);
-                string sqlquery = "UPDATE `Seniunyja` SET `seniunyjos_pavadinimas`=?pavadinimas,`aprasymas`=?aprasymas,`zemelapis_ilguma`=?zemelapis_ilguma,`zemelapis_platuma`=?zemelapis_platuma WHERE id_Seniunyja=" +1;
+                string sqlquery = "UPDATE `Seniunyja` SET `seniunyjos_pavadinimas`=?pavadinimas,`aprasymas`=?aprasymas,`zemelapis_ilguma`=?zemelapis_ilguma,`zemelapis_platuma`=?zemelapis_platuma,`tel_nr`=?tel_nr,`el_pastas`=?el_pastas,`adresas`=?adresas WHERE id_Seniunyja=" +1;
                 MySqlCommand mySqlCommand = new MySqlCommand(sqlquery, mySqlConnection);
                 mySqlCommand.Parameters.Add("?pavadinimas", MySqlDbType.VarChar).Value = seniunijaData.seniunyjos_pavadinimas;
                 mySqlCommand.Parameters.Add("?aprasymas", MySqlDbType.VarChar).Value = seniunijaData.aprasymas;
                 mySqlCommand.Parameters.Add("?zemelapis_ilguma", MySqlDbType.Float).Value = seniunijaData.zemelapis_ilguma;
                 mySqlCommand.Parameters.Add("?zemelapis_platuma", MySqlDbType.Float).Value = seniunijaData.zemelapis_platuma;
+                mySqlCommand.Parameters.Add("?tel_nr", MySqlDbType.VarChar).Value = seniunijaData.tel_nr;
+                mySqlCommand.Parameters.Add("?el_pastas", MySqlDbType.VarChar).Value = seniunijaData.el_pastas;
+                mySqlCommand.Parameters.Add("?adresas", MySqlDbType.VarChar).Value = seniunijaData.adresas;
                 mySqlConnection.Open();
                 mySqlCommand.ExecuteNonQuery();
                 mySqlConnection.Close();

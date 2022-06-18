@@ -6,6 +6,11 @@ using System.Web.Mvc;
 using PVP_K180.Models;
 using PVP_K180.ModelView;
 using PVP_K180.Repos;
+using System.IO;
+using System.Net;
+using EASendMail;
+using SmtpClient = EASendMail.SmtpClient;
+using PagedList;
 
 namespace PVP_K180.Controllers
 {
@@ -14,6 +19,7 @@ namespace PVP_K180.Controllers
         Seniunija_Repos seniunija_Repos = new Seniunija_Repos();
         Vartotojas_Repos vartotojas_Repos = new Vartotojas_Repos();
         Role_Repos roles_Repos = new Role_Repos();
+        private const int pageSize = 5;
         public ActionResult AtnaujintiInfoSeniunija()
         {
             if (Session["UserID"] == null)
@@ -41,14 +47,35 @@ namespace PVP_K180.Controllers
                 return RedirectToAction("Index", "Home");
             }
 
+            Seniunija seniunija2 = seniunija_Repos.Gauti_Seniunija();
+            seniunija.zemelapis_ilguma = seniunija2.zemelapis_ilguma;
+            seniunija.zemelapis_platuma = seniunija2.zemelapis_platuma;
+
+            if (Convert.ToDouble(TempData["SeniunijaLang"]) == 0 || Convert.ToDouble(TempData["SeniunijaLong"]) == 0)
+            {
+                TempData["Fail"] = "Turite patvirtinti teisingą lokaciją";
+                return View(seniunija);
+            }
+
+            seniunija.zemelapis_ilguma = (float)Convert.ToDouble(TempData["SeniunijaLang"]);
+            seniunija.zemelapis_platuma = (float)Convert.ToDouble(TempData["SeniunijaLong"]);
             seniunija_Repos.AtnaujintiSeniunijosInfo(seniunija);
-            Response.Write("<script type='text/javascript' language='javascript'> alert('Informacija yra atnaujinta')</script>");
+            TempData["Succ"] = "Informacija yra atnaujinta";
             return View(seniunija);
         }
 
-        public ActionResult VartotojuSarasas()
+        [HttpPost]
+        public void IsaugotiLokacija(float x, float y)
         {
+            TempData["SeniunijaLang"] = x;
+            TempData["SeniunijaLong"] = y;
+        }
 
+
+
+        public ActionResult VartotojuSarasas(int? page)
+        {
+            int pageNumber = (page ?? 1);
             if (Session["UserID"] == null)
             {
                 return RedirectToAction("Index", "Home");
@@ -65,7 +92,7 @@ namespace PVP_K180.Controllers
                 Response.Write("<script type='text/javascript' language='javascript'> alert('Vartotojas sėkmingai ištrintas')</script>");
             }
 
-            return View(vartotojai);
+            return View(vartotojai.ToPagedList(pageNumber, pageSize));
         }
 
         public ActionResult TrintiVartotoja(int id)
@@ -122,12 +149,12 @@ namespace PVP_K180.Controllers
             {
                 vartotojoBusenosPerziura.vartotojo_busena = null;
                 vartotojas_Repos.AtnaujintiVartotojoBusena(id, vartotojoBusenosPerziura.vartotojo_busena);
-                Response.Write("<script type='text/javascript' language='javascript'> alert('Vartotojo būsena pakeista')</script>");
+                TempData["Succ"] = "Vartotojo būsena pakeista";
                 vartotojoBusenosPerziura.vartotojo_busena = 0;
                 return View(vartotojoBusenosPerziura);
             }
             vartotojas_Repos.AtnaujintiVartotojoBusena(id, vartotojoBusenosPerziura.vartotojo_busena);
-            Response.Write("<script type='text/javascript' language='javascript'> alert('Vartotojo būsena pakeista')</script>");
+            TempData["Succ"] = "Vartotojo būsena pakeista";
 
             return View(vartotojoBusenosPerziura);
         }
@@ -153,17 +180,9 @@ namespace PVP_K180.Controllers
         [HttpPost]
         public ActionResult KeistiRole(int id, VartotojoRolesPerziura vartotojoRolesPerziura)
         {
-            if (Session["UserID"] == null)
-            {
-                return RedirectToAction("Index", "Home");
-            }
-            else if (!Session["Role"].Equals("Administratorius"))
-            {
-                return RedirectToAction("Index", "Home");
-            }
             UzpildytiRoles(vartotojoRolesPerziura);
             vartotojas_Repos.AtnaujintiVartotojoRole(id, vartotojoRolesPerziura.vartotojo_role);
-            Response.Write("<script type='text/javascript' language='javascript'> alert('Vartotojo rolė pakeista')</script>");
+            TempData["Succ"] = "Vartotojo rolė pakeista";
 
             return View(vartotojoRolesPerziura);
         }
@@ -190,6 +209,110 @@ namespace PVP_K180.Controllers
                 rolesList.Add(new SelectListItem { Value = item.id_Role.ToString(), Text = item.name });
             }
             vartotojoRolesPerziura.role = rolesList;
+        }
+
+        public ActionResult SiustiNaujienlaiski()
+        {
+            if (Session["UserID"] == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            else if (!Session["Role"].Equals("Administratorius"))
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult SiustiNaujienlaiski(EmaiModel model)
+        {
+            if (Session["UserID"] == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            else if (!Session["Role"].Equals("Administratorius"))
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            if(!ModelState.IsValid)
+            {
+                return View();
+            }
+
+            List<string> emails = vartotojas_Repos.GautiEmailSub();
+
+            try
+            {
+                SmtpMail oMail = new SmtpMail("TryIt");
+
+                if(model.Attachment[0] != null)
+                {
+                    foreach(var item in model.Attachment)
+                    {
+                        string fileName = Path.GetFileName(item.FileName);
+                        var ServerSavePath = Path.Combine(Server.MapPath("~/Nuotraukos/") + fileName);
+                        item.SaveAs(ServerSavePath);
+                        oMail.AddAttachment(ServerSavePath);
+                    }
+                }
+
+                // Set sender email address, please change it to yours
+                oMail.From = "noreply@k180.vhost.lt";
+
+                // Set email subject
+                oMail.Subject = model.Subject;
+
+                // Set email body
+                oMail.HtmlBody = model.Body;
+
+                // Your SMTP server address
+                SmtpServer oServer = new SmtpServer("mail.k180.vhost.lt");
+
+                // User and password for ESMTP authentication, if your server doesn't require
+                // User authentication, please remove the following codes.
+                oServer.User = "noreply@k180.vhost.lt";
+                oServer.Password = "1721420858!";
+
+                // Set 465 SMTP port
+                oServer.Port = 465;
+
+                // Enable SSL connection
+                oServer.ConnectType = SmtpConnectType.ConnectSSLAuto;
+
+
+                SmtpClient oSmtp = new SmtpClient();
+                
+
+                foreach(var item in emails)
+                {
+                    oMail.To.Add(item);
+                    
+                }
+
+                oSmtp.SendMail(oServer, oMail);
+                if (model.Attachment[0] != null)
+                {
+                    foreach (var item in model.Attachment)
+                    {
+                        string fileName = Path.GetFileName(item.FileName);
+                        var ServerSavePath = Path.Combine(Server.MapPath("~/Nuotraukos/") + fileName);
+                        item.SaveAs(ServerSavePath);
+                        if (System.IO.File.Exists(ServerSavePath))
+                        {
+                            System.IO.File.Delete(ServerSavePath);
+                        }
+                    }
+                }
+
+                TempData["Succsess"] = "Laiškai sėkmingai išiųsti " + emails.Count() + " vartotojams";
+            }
+            catch (Exception ep)
+            {
+                throw ep;
+            }
+            return View();
         }
 
     }

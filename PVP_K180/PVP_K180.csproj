@@ -47,8 +47,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="BouncyCastle.Crypto, Version=1.8.5.0, Culture=neutral, PublicKeyToken=0e99375e54769942">
-      <HintPath>packages\BouncyCastle.1.8.5\lib\BouncyCastle.Crypto.dll</HintPath>
+    <Reference Include="BouncyCastle.Crypto, Version=1.9.0.0, Culture=neutral, PublicKeyToken=0e99375e54769942, processorArchitecture=MSIL">
+      <HintPath>packages\Portable.BouncyCastle.1.9.0\lib\net40\BouncyCastle.Crypto.dll</HintPath>
+    </Reference>
+    <Reference Include="EASendMail, Version=7.8.0.7, Culture=neutral, PublicKeyToken=88adb80ecd66540b, processorArchitecture=MSIL">
+      <HintPath>packages\EASendMail.7.8.0.7\lib\net461\EASendMail.dll</HintPath>
     </Reference>
     <Reference Include="Google.Protobuf, Version=3.14.0.0, Culture=neutral, PublicKeyToken=a7d26565bac4d604, processorArchitecture=MSIL">
       <HintPath>packages\Google.Protobuf.3.14.0\lib\net45\Google.Protobuf.dll</HintPath>
@@ -94,6 +97,11 @@
     </Reference>
     <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>packages\System.Runtime.CompilerServices.Unsafe.5.0.0\lib\net45\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Text.Encoding.CodePages, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>packages\System.Text.Encoding.CodePages.4.5.1\lib\net461\System.Text.Encoding.CodePages.dll</HintPath>
     </Reference>
     <Reference Include="System.Transactions" />
     <Reference Include="System.Web.DynamicData" />
@@ -168,10 +176,12 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\ApklausaController.cs" />
+    <Compile Include="Controllers\AtsitikimasController.cs" />
     <Compile Include="Controllers\BalsavimasController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\NaujienaController.cs" />
     <Compile Include="Controllers\ProjektasController.cs" />
+    <Compile Include="Controllers\RenginysController.cs" />
     <Compile Include="Controllers\VartotojasController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -179,6 +189,9 @@
     <Compile Include="Models\Apklausa.cs" />
     <Compile Include="Models\Apklausos_Busena.cs" />
     <Compile Include="Models\Atsakymas.cs" />
+    <Compile Include="Models\Atsitikimas.cs" />
+    <Compile Include="Models\Atsitikimo_Busena.cs" />
+    <Compile Include="Models\Atsitikimo_Tipas.cs" />
     <Compile Include="Models\Balsavimas.cs" />
     <Compile Include="Models\Balsavimo_Busena.cs" />
     <Compile Include="Models\Balsavimo_Variantas.cs" />
@@ -187,29 +200,44 @@
     <Compile Include="Models\Naujiena.cs" />
     <Compile Include="Models\Nuotrauka.cs" />
     <Compile Include="Models\Projektas.cs" />
+    <Compile Include="Models\RastiRengini.cs" />
+    <Compile Include="Models\Renginio_Busena.cs" />
+    <Compile Include="Models\Renginys.cs" />
     <Compile Include="Models\Role.cs" />
     <Compile Include="Models\Seniunija.cs" />
     <Compile Include="Models\Varianto_Pasirinkimas.cs" />
     <Compile Include="Models\Vartotojas.cs" />
     <Compile Include="Models\Vartotojo_Busena.cs" />
     <Compile Include="ModelView\ApklausosAtsakymai.cs" />
+    <Compile Include="ModelView\ApklausosBusenaPerziura.cs" />
     <Compile Include="ModelView\Atnaujinami_Vartotojo_Duomenys.cs" />
+    <Compile Include="ModelView\AtsitikimuKeitimasPerziura.cs" />
     <Compile Include="ModelView\BalsavimoBusenaPerziura.cs" />
+    <Compile Include="ModelView\BalsavimuDiagrama.cs" />
+    <Compile Include="ModelView\EmaiModel.cs" />
+    <Compile Include="ModelView\KomentaroLangasRenginys.cs" />
     <Compile Include="ModelView\KomentaroLangasProjektas.cs" />
+    <Compile Include="ModelView\ProjektoPerziurosPuslapis.cs" />
+    <Compile Include="ModelView\Projekto_duomenys.cs" />
+    <Compile Include="ModelView\ProjektuPerziura.cs" />
     <Compile Include="ModelView\NaujienuSarasas.cs" />
     <Compile Include="ModelView\Nuotrauku_Duomenys.cs" />
     <Compile Include="ModelView\Pasto_duomenys.cs" />
     <Compile Include="ModelView\Prisijungimo_Duomenys.cs" />
     <Compile Include="ModelView\Naujienos_duomenys.cs" />
+    <Compile Include="ModelView\RenginioBusenaPerziura.cs" />
+    <Compile Include="ModelView\Renginio_duomenys.cs" />
     <Compile Include="ModelView\Slaptazodzio_Atnaujinimo_Duomenys.cs" />
     <Compile Include="ModelView\VartotojoBusenosPerziura.cs" />
     <Compile Include="ModelView\VartotojoRolesPerziura.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repos\Apklausos_Repos.cs" />
+    <Compile Include="Repos\Atsitikimas_Repos.cs" />
     <Compile Include="Repos\Balsavimas_Repos.cs" />
     <Compile Include="Repos\Naujiena_Repos.cs" />
     <Compile Include="Repos\Nuotrauka_Repos.cs" />
     <Compile Include="Repos\Projektas_Repos.cs" />
+    <Compile Include="Repos\Renginys_Repos.cs" />
     <Compile Include="Repos\Role_Repos.cs" />
     <Compile Include="Repos\Seniunija_Repos.cs" />
     <Compile Include="Repos\Vartotojas_Repos.cs" />
@@ -219,6 +247,18 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\Chart.css" />
+    <Content Include="Content\Chart.min.css" />
+    <Content Include="Content\fancybox\blank.gif" />
+    <Content Include="Content\fancybox\fancybox_buttons.png" />
+    <Content Include="Content\fancybox\fancybox_loading%402x.gif" />
+    <Content Include="Content\fancybox\fancybox_loading.gif" />
+    <Content Include="Content\fancybox\fancybox_overlay.png" />
+    <Content Include="Content\fancybox\fancybox_sprite%402x.png" />
+    <Content Include="Content\fancybox\fancybox_sprite.png" />
+    <Content Include="Content\jquery.fancybox-buttons.css" />
+    <Content Include="Content\jquery.fancybox-thumbs.css" />
+    <Content Include="Content\jquery.fancybox.css" />
     <Content Include="Content\PagedList.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -227,16 +267,38 @@
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
+    <Content Include="Scripts\Chart.js" />
+    <Content Include="Scripts\Chart.min.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
     <Content Include="Scripts\jquery-3.4.1.slim.js" />
     <Content Include="Scripts\jquery-3.4.1.slim.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.fancybox-buttons.js" />
+    <Content Include="Scripts\jquery.fancybox-media.js" />
+    <Content Include="Scripts\jquery.fancybox-thumbs.js" />
+    <Content Include="Scripts\jquery.fancybox.js" />
+    <Content Include="Scripts\jquery.fancybox.pack.js" />
+    <Content Include="Scripts\jquery.mousewheel-3.0.6.pack.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\lightbox.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Styles\comment.css" />
+    <Content Include="Styles\deleteButton.css" />
+    <Content Include="Styles\dropdownMenu.css" />
+    <Content Include="Styles\EventStyle.css" />
+    <Content Include="Styles\lightbox.css" />
+    <Content Include="Styles\MainPage.css" />
+    <Content Include="Styles\navbar.css" />
+    <Content Include="Styles\profileStyle.css" />
+    <Content Include="Styles\ProjectStyle.css" />
+    <Content Include="Styles\SidePanel.css" />
+    <Content Include="Styles\slideCss.css" />
+    <Content Include="Styles\photoStyle.css" />
+    <Content Include="Styles\tableStyle.css" />
     <Content Include="Themes\ckeditor\adapters\jquery.js" />
     <Content Include="Themes\ckeditor\build-config.js" />
     <Content Include="Themes\ckeditor\ckeditor.js" />
@@ -611,11 +673,39 @@
     <Content Include="Views\Apklausa\DalyvautiApklausoje.cshtml" />
     <Content Include="Views\Apklausa\RedaguotiApklausa.cshtml" />
     <Content Include="Views\Projektas\Komentarai.cshtml" />
+    <Content Include="Views\Naujiena\Naujienos.cshtml" />
+    <Content Include="Views\Naujiena\SkaitytiNaujiena.cshtml" />
+    <Content Include="Styles\cardNews.css" />
+    <Content Include="Views\Vartotojas\AktyvuotiNaujienlaiski.cshtml" />
+    <Content Include="Views\Admin\SiustiNaujienlaiski.cshtml" />
+    <Content Include="Views\Balsavimas\Rezultatai.cshtml" />
+    <Content Include="Views\Renginys\RenginioKurimas.cshtml" />
+    <Content Include="Views\Renginys\GautiRenginius.cshtml" />
+    <Content Include="Views\Renginys\RedaguotiRengini.cshtml" />
+    <Content Include="Views\Apklausa\Rezultatai.cshtml" />
+    <Content Include="Views\Renginys\Komentarai.cshtml" />
+    <Content Include="Views\Renginys\Renginiai.cshtml" />
+    <Content Include="Views\Projektas\Projektai.cshtml" />
+    <Content Include="Views\Atsitikimas\SkelbtiAtsitikima.cshtml" />
+    <Content Include="Views\Atsitikimas\AtsitikimuIstorija.cshtml" />
+    <Content Include="Views\Atsitikimas\AtsitikimuSarasas.cshtml" />
+    <Content Include="Views\Atsitikimas\DetaliInformacija.cshtml" />
+    <Content Include="Views\Atsitikimas\KeistiAtsitikimoBusena.cshtml" />
+    <Content Include="Views\Projektas\DetaliInformacijaProjektas.cshtml" />
+    <Content Include="Views\Renginys\DetaliInformacijaRenginys.cshtml" />
+    <Content Include="Views\Apklausa\KeistiApklausosBusena.cshtml" />
+    <Content Include="Views\Renginys\KeistiRenginioBusena.cshtml" />
+    <Content Include="Styles\newsStyle2.0.css" />
+    <Content Include="Views\Renginys\PerziuretiRengini.cshtml" />
+    <Content Include="Views\Renginys\PridetiNuotraukuRenginiui.cshtml" />
+    <Content Include="Views\Renginys\GautiNuotraukasRenginio.cshtml" />
+    <Content Include="Views\Projektas\GautiNuotraukasProjekto.cshtml" />
+    <Content Include="Views\Projektas\PridetiNuotraukuProjektui.cshtml" />
+    <Content Include="Views\Projektas\ProjektoInformacija.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Nuotraukos\" />
-    <Folder Include="Styles\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
+using PagedList;
 using PVP_K180.Models;
 using PVP_K180.ModelView;
 using PVP_K180.Repos;
@@ -15,7 +17,9 @@ namespace PVP_K180.Controllers
         Naujiena naujiena = new Naujiena();
         Naujiena_Repos naujiena_Repos = new Naujiena_Repos();
         Nuotrauka_Repos nuotrauka_Repos = new Nuotrauka_Repos();
-
+        string[] menesiai = new string[12] { "Sausis", "Vasaris", "Kovas", "Balandis", "Gegužis", "Bižrelis", "Liepa", "Lapkritis", "Rugsėjis", "Spalis", "Lapkritis", "Gruodis" };
+        private const int pageSize = 5;
+        private const int pageSizeNewsView = 10;
 
         // GET: Naujiena
         public ActionResult Index()
@@ -57,7 +61,7 @@ namespace PVP_K180.Controllers
                         var extension = Path.GetExtension(file.FileName);
                         if (!posiblesExtensions.Contains(extension))
                         {
-                            Response.Write("<script type='text/javascript' language='javascript'> alert('Įkeltas su netinkamu formatu')</script>");
+                            TempData["Fail"] = "Įkeltas su netinkamu formatu";
                             return View();
                         }
 
@@ -73,18 +77,18 @@ namespace PVP_K180.Controllers
 
                     }
                 }
-
-                Response.Write("<script type='text/javascript' language='javascript'> alert('Naujiena sėkmingai sukurta!')</script>");
+                TempData["Succ"] = "Naujiena sėkmingai sukurta!";
+               
             }
             else
             {
-                Response.Write("<script type='text/javascript' language='javascript'> alert('Naujiena nesukurta!')</script>");
+                TempData["Fail"] = "Naujiena nesukurta!";
 
             }
             return View();
         }
 
-        public ActionResult GautiNaujienas()
+        public ActionResult GautiNaujienas(int? page)
         {
 
             if (Session["UserID"] == null)
@@ -110,7 +114,8 @@ namespace PVP_K180.Controllers
             }
             Naujiena_Repos naujiena_Repos = new Naujiena_Repos();
             List<Naujiena> naujienos = naujiena_Repos.Gauti_Naujienas();
-            return View(naujienos);
+            int pageNumber = (page ?? 1);
+            return View(naujienos.ToPagedList(pageNumber, pageSize));
         }
 
         public ActionResult GautiNuotraukas(int id)
@@ -125,7 +130,7 @@ namespace PVP_K180.Controllers
             }
 
             Nuotrauka_Repos nuotrauka_Repos = new Nuotrauka_Repos();
-            List<Nuotrauka> nuotraukos = nuotrauka_Repos.Gauti_Nuotraukas(id);
+            List<Nuotrauka> nuotraukos = nuotrauka_Repos.Gauti__Naujienu_Nuotraukas(id);
             foreach (var item in nuotraukos)
             {
                 var path = Path.Combine(("/Nuotraukos/") + item.nuotraukos_nuoroda);
@@ -161,25 +166,28 @@ namespace PVP_K180.Controllers
         {
             Naujiena_Repos naujiena_Repos = new Naujiena_Repos();
             naujiena = naujiena_Repos.Gauti_Naujiena(id);
+            TempData["naujienosID"] = id;
             return View(naujiena);
         }
 
         [HttpPost]
-        public ActionResult RedaguotiNaujiena(Naujiena naujiena)
+        public ActionResult RedaguotiNaujiena(int? naujienosID, Naujiena naujiena)
         {
             Naujiena_Repos naujiena_Repos = new Naujiena_Repos();
+            naujiena.id_Naujiena = Convert.ToInt32(TempData["naujienosID"]);
             naujiena.naujienos_kurejo_ID = (int)Session["UserID"];
             naujiena.naujienos_sukurimo_data = DateTime.Now;
             bool flag = naujiena_Repos.Redaguoti_Naujiena(naujiena);
             if (flag)
             {
-                Response.Write("<script type='text/javascript' language='javascript'> alert('Naujiena sėkmingai redaguota!')</script>");
+                TempData["Succ"] = "Naujiena sėkmingai redaguota!";
             }
             else
             {
-                Response.Write("<script type='text/javascript' language='javascript'> alert('Naujiena neredaguota!')</script>");
+                TempData["Fail"] = "Naujiena neredaguota!";
 
             }
+            TempData["naujienosID"] = naujiena.id_Naujiena;
             return View(naujiena);
         }
 
@@ -217,7 +225,7 @@ namespace PVP_K180.Controllers
 
                     if(!posiblesExtensions.Contains(extension))
                     {
-                        Response.Write("<script type='text/javascript' language='javascript'> alert('Įkeltas su netinkamu formatu')</script>");
+                        TempData["Fail"] = "Įkeltas su netinkamu formatu";
                         return View();
                     }
 
@@ -230,8 +238,6 @@ namespace PVP_K180.Controllers
                     nuotrauka.nuotraukos_nuoroda = random;
                     nuotrauka.priskirtas_id = nuotrauku_Duomenys.priskirtas_id;
                     nuotrauka_Repos.Prideti_Naujienos_Nuotraukas(nuotrauka);
-
-
                 }
             }
 
@@ -244,15 +250,53 @@ namespace PVP_K180.Controllers
                 Session["Message"] = true;
             }
 
-
             return RedirectToAction("GautiNaujienas");
-
         }
 
-        public ActionResult Naujienos()
+        public ActionResult Naujienos(int? page)
         {
             List<Naujiena> naujienos = naujiena_Repos.Gauti_Naujienas();
-            return View();
+            List<NaujienuSarasas> naujienosPerziurai = new List<NaujienuSarasas>();
+
+            foreach(var item in naujienos)
+            {
+                NaujienuSarasas naujiena = new NaujienuSarasas();
+
+                naujiena.naujienos_id = item.id_Naujiena;
+                naujiena.naujienos_antraste = item.pavadinimas;
+                List<Nuotrauka> nuotraukos = nuotrauka_Repos.Gauti__Naujienu_Nuotraukas(naujiena.naujienos_id);
+                naujiena.data = item.naujienos_sukurimo_data;
+                naujiena.menesioPav = menesiai[naujiena.data.Month-1];
+                if (nuotrauka_Repos.Gauti__Naujienu_Nuotraukas(naujiena.naujienos_id).Count > 0)
+                {
+                    naujiena.pirma_nuotrauka = nuotraukos[0].nuotraukos_nuoroda;
+                }
+                if (item.naujienos_tekstas.Length > 150)
+                {
+                    naujiena.trumpasAprasas = item.naujienos_tekstas.Substring(0, 150);
+                    naujiena.trumpasAprasas = StripHTML(naujiena.trumpasAprasas);
+                }
+                else
+                {
+                    continue;
+                }
+                naujienosPerziurai.Add(naujiena);
+            }
+            int pageNumber = (page ?? 1);
+            return View(naujienosPerziurai.ToPagedList(pageNumber, pageSizeNewsView));
+        }
+
+        public ActionResult SkaitytiNaujiena(int id)
+        {
+            Naujiena naujiena = naujiena_Repos.Gauti_Naujiena(id);
+            naujiena.nuotraukos = nuotrauka_Repos.Gauti__Naujienu_Nuotraukas(naujiena.id_Naujiena);
+
+            return View(naujiena);
+        }
+
+        public static string StripHTML(string input)
+        {
+            return Regex.Replace(input, "<.*?>", String.Empty);
         }
     }
 }

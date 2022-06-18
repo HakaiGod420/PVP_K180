@@ -5,15 +5,25 @@
     var psl_k_count = 0;
 }
 
-<h2>Kurti apklausą</h2>
+<style>
+    .boxShadow {
+        box-shadow: 0 1px 10px rgb(0 0 0 / 0.2);
+        border-radius: 5px;
+        width: 100%;
+        padding: 10px;
+        position: relative;
+        background-color: white;
+    }
+</style>
+
 
 
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
 
-<div class="form-horizontal">
-    <h4>Apklausos forma</h4>
+<div style="margin-top:20px" class="form-horizontal boxShadow">
+    <h2>Kurti apklausą</h2>
     @if (TempData["SuccsessApklausa"] != null)
     {
         <p class="alert alert-success" id="successMessage">@Convert.ToString(TempData["SuccsessApklausa"])</p>
@@ -81,16 +91,19 @@
         <button type="button" id="prideti" class="btn btn-info pull-right" onclick="uzsakyti($('#hCount').val());"> Pridėti</button>
     </fieldset>
 
-    <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <input type="submit" value="Create" class="btn btn-default" />
+    <div style="display: flex; flex-direction: column; align-content: space-around; flex-wrap: wrap">
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Kurti apklausą" class="btn btn-default" />
+            </div>
         </div>
     </div>
+
 </div>
 }
 
-<div>
-    @Html.ActionLink("Grižti į apklausų sąrašą", "ZiuretiApklausas")
+<div style="margin-top: 30px;">
+    <input type="submit" value="< Atgal" onclick="@("window.location.href='" + @Url.Action("ZiuretiApklausas") + "'");" class="btn btn-info" />
 </div>
 
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>

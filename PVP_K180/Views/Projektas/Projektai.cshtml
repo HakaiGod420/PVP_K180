@@ -1,0 +1,45 @@
+﻿@model PagedList.IPagedList<PVP_K180.ModelView.ProjektuPerziura>
+@using PagedList;
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "Projektai";
+}
+<link href="~/Styles/ProjectStyle.css" rel="stylesheet" />
+<script src="https://kit.fontawesome.com/2e7ea6ec96.js" crossorigin="anonymous"></script>
+<h2 style="text-align:center">Projektai</h2>
+<div style="align-content:center; margin-top:20px;" class="row">
+    @foreach (var item in Model)
+    {
+        <div class="column">
+            <figure class="snip1493" style="height:500px">
+                <div class="image">
+                    <img src="~/Nuotraukos/@item.pradine_nuotrauka" alt="ls-sample1" />
+                </div>
+                <figcaption>
+                    <div class="date"><span class="day">@item.diena</span><span class="month">@item.menuo</span></div>
+                    <h3>@item.pavadinimas</h3>
+                    <p>
+                        @Html.Raw(item.aprasymas)
+                    </p>
+                    <footer>
+                        <div class="love"><i class="ion-heart"></i>@item.ivertinimas</div>
+                        <div class="comments"><i class="ion-chatboxes"></i>@item.komenetarai</div>
+                        <div class="comments"><i class="fa-solid fa-check"></i>@item.busena</div>
+                    </footer>
+                </figcaption>
+                <a>@Html.ActionLink(" ", "ProjektoInformacija", "Projektas", new { id = item.id_Projektas }, new { @class = "action", @type = "button" })</a>
+            </figure>
+        </div>
+    }
+</div>
+
+<div id="pager" style="text-align:center">
+    @Html.PagedListPager(Model, page => Url.Action("Naujienos", new { page }))
+</div>
+
+<div class="row" style="margin-top:2vh;margin-left:20px;margin-bottom:10px; float:left">
+    <input type="submit" value="< Atgal" onclick="@("window.location.href='" + @Url.Action("Index", "Home") + "'");" class="btn btn-info" />
+</div>
+<script>
+
+</script>

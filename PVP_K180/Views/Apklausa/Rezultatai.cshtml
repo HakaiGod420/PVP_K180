@@ -1,0 +1,109 @@
+﻿@model PVP_K180.Models.Apklausa
+@{
+    ViewBag.Title = "Apklausos rezultatai";
+}
+
+<h2 style="text-align:center">Apklausų išklotinė</h2>
+
+<style>
+    .boxShadow {
+        box-shadow: 0 1px 10px rgb(0 0 0 / 0.2);
+        margin: auto;
+        border-radius: 5px;
+        width: 75%;
+        text-align: center;
+        padding: 10px;
+        margin-top: 30px;
+        position: relative;
+    }
+</style>
+
+@Styles.Render("~/Styles/tableStyle.css")
+<div>
+    <div class="boxShadow">
+        <p style="text-align:left;font-size:20px; font-weight:bold">@Model.aprasymas</p>
+        <hr />
+        <p style="text-align:left">
+            Iš viso dalyvavo apklausoje: <b>@Model.dalyviu_skaicius</b>
+            <span style="float:right;">
+                Balsavimo pradžia: <b>@Convert.ToDateTime(Model.sukurimo_data).ToString("yyyy-MM-dd")</b>
+            </span>
+        </p>
+    </div>
+
+    @foreach (var item in Model.klausimai)
+    {
+        <div class="boxShadow" style="text-align:left;font-size:15px;">
+            @item.klausimo_tekstas
+            <hr />
+            <p style="text-align:left">
+                Atsakė: <b>@item.atsakymai.Count</b>
+                <span style="float:right;">
+                    <a class="open-list btn btn-success" data-toggle="modal" data-id="@item.id_Klausimas" data-target=".boostrapmodal" style="margin-bottom:5px; padding:1px 40px">Atsakymai(@item.atsakymai.Count)</a>
+                </span>
+            </p>
+
+        </div>
+    }
+
+    <div class="modal fade boostrapmodal">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <b>Atsakymų sąrašas</b>
+                </div>
+
+                <div class="modal-body">
+                    <div id="add_to_me">
+
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Uždaryti</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div style="margin-top: 30px;">
+    <input type="submit" value="< Atgal" onclick="@("window.location.href='" + @Url.Action("ZiuretiApklausas") + "'");" class="btn btn-info" />
+</div>
+
+
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>
+    $(document).on("click", ".open-list", function () {
+        var id = $(this).data('id');
+        document.getElementById("add_to_me").innerHTML = "";
+        var model = '@Html.Raw(Json.Encode(Model))';
+        var model2 = JSON.parse(model);
+        console.log(id);
+        //console.log(model2.klausimai);
+        var klausimai = model2.klausimai;
+
+        for (let x in klausimai) {
+
+            if (model2.klausimai[x].id_Klausimas == id) {
+                var true_Klausimas = model2.klausimai[x];
+            }
+        }
+
+        $('<table class="table-fill">').append('<thead>').appendTo('#add_to_me');
+        $('<tr>').appendTo('thead');
+        $('<th "text-left>').text('Atsakymas').appendTo('tr');
+        $('<th "text-left>').text('Atsakovas').appendTo('tr');
+        $('<tbody class="table-hover">').appendTo('table');
+
+        for (let x in true_Klausimas.atsakymai) {
+            $('<tr id=partial'+x+'>').appendTo('tbody');
+            $('<td "text-left>').text(true_Klausimas.atsakymai[x].atsakymo_tekstas).appendTo('#partial'+x);
+            $('<td "text-left>').text(true_Klausimas.atsakymai[x].slapyvardis).appendTo('#partial'+x);
+        }
+
+    });
+</script>   

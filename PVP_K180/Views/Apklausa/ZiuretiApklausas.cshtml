@@ -1,63 +1,94 @@
-﻿@model IEnumerable<PVP_K180.Models.Apklausa>
-
+﻿
+@model PagedList.IPagedList<PVP_K180.Models.Apklausa>
+@using PagedList;
+@using PagedList.Mvc;
 @{
     ViewBag.Title = "ZiuretiApklausas";
 }
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#myInput").on("keyup", function () {
+            var value = $(this).val().toLowerCase();
+            $("#myTable tr").filter(function () {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+    });
+</script>
 
-<h2>ZiuretiApklausas</h2>
+<h2>Apklausų sąrašas</h2>
 
+<input id="myInput" type="text" placeholder="Įveskit pagal ką filtruosit">
+<br>
+<br>
+
+@Styles.Render("~/Styles/tableStyle.css")
 <p>
-    @Html.ActionLink("Sukurti nauja apklausa", "KurtiApklausa")
+    @Html.ActionLink("Sukurti nauja apklausa", "KurtiApklausa", new { }, new { @class = "btn btn-primary", @type = "button" })
 </p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.aprasymas)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.dalyviu_skaicius)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.sukurimo_data)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.pabaigos_data)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Sukurejas)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.busenos_pavadinimas)
-        </th>
-        <th></th>
-    </tr>
-
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.aprasymas)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.dalyviu_skaicius)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.sukurimo_data)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.pabaigos_data)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Sukurejas)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.busenos_pavadinimas)
-        </td>
-        <td>
-            @Html.ActionLink("Redaguoti", "RedaguotiApklausa", new { id = item.id_Apklausa}) |
-            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-            @Html.ActionLink("Ištrinti", "TrintiApklausa", new { id = item.id_Apklausa })
-        </td>
-    </tr>
-}
+<table class="table-fill">
+    <thead>
+        <tr>
+            <th class="text-left">
+                @Html.DisplayNameFor(model => model.FirstOrDefault().aprasymas)
+            </th>
+            <th class="text-left">
+                @Html.DisplayNameFor(model => model.FirstOrDefault().dalyviu_skaicius)
+            </th>
+            <th class="text-left">
+                @Html.DisplayNameFor(model => model.FirstOrDefault().sukurimo_data)
+            </th>
+            <th class="text-left">
+                @Html.DisplayNameFor(model => model.FirstOrDefault().pabaigos_data)
+            </th>
+            <th class="text-left">
+                @Html.DisplayNameFor(model => model.FirstOrDefault().Sukurejas)
+            </th>
+            <th class="text-left">
+                @Html.DisplayNameFor(model => model.FirstOrDefault().busenos_pavadinimas)
+            </th>
+            <th class="text-left">Funkcijos</th>
+        </tr>
+    </thead>
+    <tbody class="table-hover" , id="myTable">
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td class="text-left">
+                    @Html.DisplayFor(modelItem => item.aprasymas)
+                </td>
+                <td class="text-left">
+                    @Html.DisplayFor(modelItem => item.dalyviu_skaicius)
+                </td>
+                <td class="text-left">
+                    @Html.DisplayFor(modelItem => item.sukurimo_data)
+                </td>
+                <td class="text-left">
+                    @Html.DisplayFor(modelItem => item.pabaigos_data)
+                </td>
+                <td class="text-left">
+                    @Html.DisplayFor(modelItem => item.Sukurejas)
+                </td>
+                <td class="text-left">
+                    @Html.DisplayFor(modelItem => item.busenos_pavadinimas)
+                </td>
+                <td class="text-left">
+                    @Html.ActionLink("Rezultatai", "Rezultatai", new { id = item.id_Apklausa }) |
+                    @Html.ActionLink("Redaguoti", "RedaguotiApklausa", new { id = item.id_Apklausa }) |
+                    @Html.ActionLink("Trinti", "TrintiApklausa", new { id = item.id_Apklausa })
+                    @Html.ActionLink("Keisti būseną", "KeistiApklausosBusena", new { id = item.id_Apklausa })
+                </td>
+            </tr>
+        }
+    </tbody>
 
 </table>
+
+<div id="pager">
+    @Html.PagedListPager(Model, page => Url.Action("ZiuretiApklausas", new { page }))
+</div>
+
+<div style="margin-top: 30px;">
+    <input type="submit" value="< Atgal" onclick="@("window.location.href='" + @Url.Action("AdminValdymas", "Vartotojas") + "'");" class="btn btn-info" />
+</div>

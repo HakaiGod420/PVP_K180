@@ -1,0 +1,157 @@
+﻿@model PagedList.IPagedList<PVP_K180.Models.Atsitikimas>
+@using PagedList;
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "Atsitikų sąrašas";
+
+    List<SelectListItem> listItems = new List<SelectListItem>();
+    listItems.Add(new SelectListItem
+    {
+        Text = "Neperžiūrėtas",
+        Value = "1"
+    });
+    listItems.Add(new SelectListItem
+    {
+        Text = "Peržiūrėtas",
+        Value = "2",
+    });
+    listItems.Add(new SelectListItem
+    {
+        Text = "Patvirtintas",
+        Value = "3"
+    });
+    listItems.Add(new SelectListItem
+    {
+        Text = "Užbaigtas",
+        Value = "4"
+    });
+    listItems.Add(new SelectListItem
+    {
+        Text = "Atmestas",
+        Value = "5"
+    });
+
+    List<SelectListItem> listItemsTipas = new List<SelectListItem>();
+    listItemsTipas.Add(new SelectListItem
+    {
+        Text = "Duobė",
+        Value = "1"
+    });
+    listItemsTipas.Add(new SelectListItem
+    {
+        Text = "Nuvirtęs medis",
+        Value = "2",
+    });
+    listItemsTipas.Add(new SelectListItem
+    {
+        Text = "Nukritę elektros laidai",
+        Value = "3"
+    });
+    listItemsTipas.Add(new SelectListItem
+    {
+        Text = "Kitą",
+        Value = "4"
+    });
+}
+<link href="~/Styles/tableStyle.css" rel="stylesheet" />
+<h2>Atsitikimų sąrašas</h2>
+
+<style>
+    .grid-item {
+        margin: 10px;
+    }
+
+    .grid-container {
+        display: grid;
+        grid-template-columns: auto auto;
+    }
+</style>
+
+@using (Html.BeginForm())
+{
+    <div class="filter grid-container">
+        <div class="grid-item">
+            <b>Atsitikimo Būsena</b>
+            @Html.DropDownList("busena", listItems, "-- Rodyti visus --", new { @class = "form-control" })
+        </div>
+        <div class="grid-item">
+            <b>Atsitikimo Tipas</b>
+            @Html.DropDownList("tipas", listItemsTipas, "-- Rodyti visus --", new { @class = "form-control" })
+        </div>
+        <div class="grid-item">
+            <b>Atistikimo paskelbimo pradžios data</b>
+            @Html.TextBox("nuo", "", new { @class = "form-control", @type = "date", @placeholder = "yyyy-MM-dd" })
+        </div>
+        <div class="grid-item">
+            <b>Atistikimo paskelbimo Renginių pabaigos data</b>
+            @Html.TextBox("iki", "", new { @class = "form-control", @type = "date" })
+        </div>
+        <div class="grid-item">
+            <input type="submit" value="Filtruoti" />
+        </div>
+    </div>
+}
+
+
+<table class="table-fill">
+    <thead>
+        <tr>
+            <th class="text-left">
+                @Html.DisplayNameFor(model => model.FirstOrDefault().paskelbimo_data)
+            </th>
+            <th class="text-left">
+                @Html.DisplayNameFor(model => model.FirstOrDefault().tvirtintojas)
+            </th>
+            <th class="text-left">
+                @Html.DisplayNameFor(model => model.FirstOrDefault().pranesejas)
+            </th>
+            <th class="text-left">
+                @Html.DisplayNameFor(model => model.FirstOrDefault().tipas)
+            </th>
+            <th class="text-left">
+                @Html.DisplayNameFor(model => model.FirstOrDefault().busena)
+            </th>
+            <th class="text-left">Papildomos funkcijos</th>
+        </tr>
+    </thead>
+
+    <tbody class="table-hover">
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td class="text-left">
+                    @Html.DisplayFor(modelItem => item.paskelbimo_data)
+                </td>
+                <td class="text-left">
+                    @if (item.tvirtintojas != null)
+                    {
+                        @Html.DisplayFor(modelItem => item.tvirtintojas)
+                    }
+                    else
+                    { <p>-</p>}
+                </td>
+                <td class="text-left">
+                    @Html.DisplayFor(modelItem => item.pranesejas)
+                </td>
+                <td class="text-left">
+                    @Html.DisplayFor(modelItem => item.tipas)
+                </td>
+                <td class="text-left">
+                    @Html.DisplayFor(modelItem => item.busena)
+                </td>
+                <td class="text-left">
+                    @Html.ActionLink("Detali informacija", "DetaliInformacija", new { id = item.id_Atstikimas })
+                </td>
+            </tr>
+        }
+    </tbody>
+
+</table>
+
+<div id="pager">
+    @Html.PagedListPager(Model, page => Url.Action("AtsitikimuSarasas", new { page }))
+</div>
+
+<div style="margin-top: 30px;">
+    <input type="submit" value="< Atgal" onclick="@("window.location.href='" + @Url.Action("AdminValdymas", "Vartotojas") + "'");" class="btn btn-info" />
+</div>

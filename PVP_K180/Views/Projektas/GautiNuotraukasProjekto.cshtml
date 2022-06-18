@@ -1,0 +1,56 @@
+﻿@model IEnumerable<PVP_K180.Models.Nuotrauka>
+
+@{
+    ViewBag.Title = "GautiNuotraukasProjekto";
+}
+
+<h2>Nuotraukų sąrašas</h2>
+
+
+<style>
+    .boxShadow {
+        box-shadow: 0 1px 10px rgb(0 0 0 / 0.2);
+        border-radius: 5px;
+        width: 100%;
+        padding: 10px;
+        position: relative;
+        background-color: white;
+    }
+
+    .img{
+        max-width:200px;
+        max-height:200px;
+    }
+</style>
+
+
+<div style="margin-top:20px" class="boxShadow">
+
+
+    <table class="table">
+        <tr>
+            <th>
+                Nuotrauka
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <img class="img" src="@(item.nuotraukos_nuoroda)" />
+                </td>
+                <td>
+                    @Html.ActionLink("Ištrinti", "TrintiNuotrauka", new { id = item.id_Nuotrauka }, new { @class="btn btn-danger"})
+                </td>
+            </tr>
+
+        }
+
+
+    </table>
+</div>
+<div style="margin-top: 30px;">
+    <input type="submit" value="< Atgal" onclick="@("window.location.href='" + @Url.Action("GautiProjektus") + "'");" class="btn btn-info" />
+</div>

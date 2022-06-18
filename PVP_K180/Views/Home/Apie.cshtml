@@ -4,13 +4,130 @@
     ViewBag.Title = "Apie";
 }
 
-<h2>Apie @Model.seniunyjos_pavadinimas</h2>
+<h2>Pagrindinė informacija apie "@Model.seniunyjos_pavadinimas"</h2>
 
-<div>
-    <hr />
-    <dl class="dl-horizontal">
-        <dd>
-            @Html.Raw(Model.aprasymas);
-        </dd>
-    </dl>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css"
+      integrity="sha512-hoalWLoI8r4UszCkZ5kL8vayOGVae1oxXe/2A4AO6J9+580uKHDO3JdHb7NzwwzK5xr/Fs0W40kiNHxM9vyTtQ=="
+      crossorigin="" />
+
+<script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js"
+        integrity="sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ=="
+        crossorigin=""></script>
+<style>
+    /* Create two equal columns that floats next to each other */
+    .column {
+        float: left;
+        width: 50%;
+        padding: 5px;
+    }
+
+    /* Clear floats after the columns */
+    .row:after {
+        content: "";
+        display: table;
+        clear: both;
+    }
+
+    .boxShadow2 {
+        box-shadow: 0 1px 5px rgb(0 0 0 / 0.2);
+        margin: auto;
+        border-radius: 4px;
+        width: 100%;
+        padding: 10px;
+        margin-top: 10px;
+        position: relative;
+        background-color: white;
+    }
+
+    .customImg {
+        max-height: 200px;
+        max-width: 300px;
+        padding-top: 1vh;
+    }
+
+    #map {
+        height: 300px;
+    }
+
+    .customImg {
+        max-height: 100px;
+        max-width: 200px;
+        padding-top: 1vh;
+    }
+
+    .marker-position {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        z-index: 999;
+        padding: 10px;
+        font-weight: 700;
+        background-color: #fff;
+    }
+</style>
+<script src="https://kit.fontawesome.com/2e7ea6ec96.js" crossorigin="anonymous"></script>
+
+<div class="row">
+    <div class="column">
+        <div class="boxShadow2">
+            <dd>
+                @Html.Raw(Model.aprasymas)
+            </dd>
+        </div>
+
+    </div>
+    <div class="column">
+        <div class="boxShadow2">
+            <h4><i class="fa-solid fa-location-dot"></i> Adresas:</h4>
+            <p>@Model.adresas</p>
+            <hr />
+            <div class="mapStyle">
+
+                <div id="map"></div>
+            </div>
+        </div>
+        <div class="boxShadow2">
+            <h4>Informacija gyventojams:</h4>
+            <p><span style="font-weight:bold"><i class="fa-solid fa-phone"></i> Tel. Nr. </span>@Model.tel_nr</p>
+            <p><span style="font-weight:bold"><i class="fa-solid fa-envelope"></i> El. paštas: </span>@Model.el_pastas</p>
+
+        </div>
+    </div>
 </div>
+
+<div style="margin-top: 40px; margin-bottom: 20px;">
+    <input type="submit" value="< Atgal" onclick="@("window.location.href='" + @Url.Action("Index", "Home") + "'");" class="btn btn-info" />
+</div>
+
+
+<script>
+
+    var arGaliPrideti = true;
+    /* eslint-disable no-undef */
+    /**
+     * add move and delete marker
+     */
+
+    // config map
+    let config = {
+        minZoom: 3,
+        maxZoom: 18,
+    };
+    // magnification with which the map will start
+    const zoom = 15;
+    // co-ordinates
+    const lat = '@Model.zemelapis_ilguma'.replace(",", ".");
+    const lng = '@Model.zemelapis_platuma'.replace(",", ".");
+
+    // calling map
+    const map = L.map("map", config).setView([lat, lng], zoom);
+    var main = L.marker([lat, lng]).addTo(map).bindPopup('@Model.seniunyjos_pavadinimas');
+
+    // Used to load and display tile layers on the map
+    // Most tile servers require attribution, which you can set under `Layer`
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        attribution:
+            '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    }).addTo(map);
+
+</script>

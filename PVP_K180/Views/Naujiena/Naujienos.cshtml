@@ -1,0 +1,57 @@
+﻿
+@model PagedList.IPagedList<PVP_K180.ModelView.NaujienuSarasas>
+@using PagedList;
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "Naujienos";
+}
+
+
+@Styles.Render("~/Styles/cardNews.css")
+
+<link href="~/Styles/newsStyle2.0.css" rel="stylesheet" />
+
+
+<style>
+    .content {
+        max-width: 500px;
+        margin: auto;
+    }
+</style>
+<header>
+    <h1>Seniūnijos naujienos</h1>
+</header>
+<div class="band">
+    <div class="item-1">
+        <a href="@(@Url.Action("SkaitytiNaujiena", "Naujiena", new { id = Model.First().naujienos_id }))" class="card">
+            <div class="thumb" style="background-image: url(../../Nuotraukos/@Model.First().pirma_nuotrauka)"></div>
+            <article>
+                <h1>@Model.First().naujienos_antraste</h1>
+                <span>@Model.First().menesioPav @Model.First().data.Day</span>
+            </article>
+        </a>
+    </div>
+
+    @for (var i = 1; i < Model.Count(); i++)
+    {
+        <div class="item-2">
+            <a href="@(@Url.Action("SkaitytiNaujiena", "Naujiena", new { id = Model.ElementAt(i).naujienos_id }))" class="card">
+                <div class="thumb" style="background-image: url(../../Nuotraukos/@Model.ElementAt(i).pirma_nuotrauka);"></div>
+                <article>
+                    <h1>@Model.ElementAt(i).naujienos_antraste</h1>
+                    <p>@Html.Raw(Model.ElementAt(i).trumpasAprasas)</p>
+                    <span>@Model.ElementAt(i).menesioPav @Model.ElementAt(i).data.Day</span>
+                </article>
+            </a>
+        </div>
+    }
+</div>
+
+
+<div id="pager" style="text-align:center">
+    @Html.PagedListPager(Model, page => Url.Action("Naujienos", new { page }))
+</div>
+
+<div class="row" style="margin-top:2vh;margin-left:50px;margin-bottom:10px; float:left">
+    <input type="submit" value="< Atgal" onclick="@("window.location.href='" + @Url.Action("Index", "Home") + "'");" class="btn btn-info" />
+</div>

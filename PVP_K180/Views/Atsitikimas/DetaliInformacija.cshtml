@@ -1,0 +1,184 @@
+﻿@model PVP_K180.Models.Atsitikimas
+
+@{
+    ViewBag.Title = "DetaliInformacija";
+}
+
+<link href="~/Styles/photoStyle.css" rel="stylesheet" />
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css"
+      integrity="sha512-hoalWLoI8r4UszCkZ5kL8vayOGVae1oxXe/2A4AO6J9+580uKHDO3JdHb7NzwwzK5xr/Fs0W40kiNHxM9vyTtQ=="
+      crossorigin="" />
+<link href="~/Styles/lightbox.css" rel="stylesheet" />
+<script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js"
+        integrity="sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ=="
+        crossorigin=""></script>
+<style>
+    #map {
+        height: 580px;
+    }
+
+    .marker-position {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        z-index: 999;
+        padding: 10px;
+        font-weight: 700;
+        background-color: #fff;
+    }
+
+    .mapStyle {
+        position: relative;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+        min-height: 100%;
+        margin: 0;
+        padding: 0;
+        background-color: #f1f1f1;
+        margin-top:20px;
+    }
+</style>
+
+<style>
+    .boxShadow {
+        box-shadow: 0 1px 10px rgb(0 0 0 / 0.2);
+        margin: auto;
+        border-radius: 5px;
+        background-color:white;
+        width: 75%;
+        text-align: center;
+        padding: 10px;
+        margin-top: 30px;
+        position: relative;
+        word-wrap: break-word;
+    }
+</style>
+
+<h2 style="text-align:center">Detali informacija</h2>
+
+<div>
+
+    <div class="boxShadow">
+        <p style="text-align:left;font-size:20px; font-weight:bold">
+            Atsitikimas #@Model.id_Atstikimas
+            @if (Session["Role"].Equals("Administratorius"))
+            {
+            <span style="float:right;">
+                @Html.ActionLink("Atnaujinti atsitikimą", "KeistiAtsitikimoBusena", "Atsitikimas", new { id = Model.id_Atstikimas }, new { @class = "lnkGetReward btn btn-default btn-sm" })
+            </span>
+            }
+        </p>
+        <hr />
+        <p style="text-align:left">
+            Atsitikimo tipas: <b>@Model.tipas</b>
+            <span style="float:right;">
+                Atsitikimo būsena: <b>@Model.busena</b>
+            </span>
+        </p>
+    </div>
+
+    <div class="boxShadow" style="text-align:left;font-size:15px;">
+        <p style="text-align: left; font-size: 20px; font-weight: bold">@Html.DisplayNameFor(model => model.aprasymas)</p>
+        <hr />
+        <p>@Html.DisplayFor(model => model.aprasymas)</p>
+    </div>
+
+    <div class="boxShadow" style="text-align:left;font-size:15px;">
+        <p style="text-align: left; font-size: 20px; font-weight: bold">@Html.DisplayNameFor(model => model.komentaras)</p>
+        <hr />
+        <p> @Html.DisplayFor(model => model.komentaras)</p>
+    </div>
+
+    <div class="boxShadow" style="text-align:left;font-size:15px;">
+        <p style="text-align: left; font-size: 20px; font-weight: bold">@Html.DisplayNameFor(model => model.pranesejas)</p>
+        <hr />
+        <p>@Html.DisplayFor(model => model.pranesejas)</p>
+    </div>
+
+    <div class="boxShadow" style="text-align:left;font-size:15px;">
+        <p style="text-align: left; font-size: 20px; font-weight: bold"> @Html.DisplayNameFor(model => model.tvirtintojas)</p>
+        <hr />
+        <p> @Html.DisplayFor(model => model.tvirtintojas)</p>
+    </div>
+
+    <div class="boxShadow">
+        <p style="text-align: left; font-size: 20px; font-weight: bold">Lokacija</p>
+        <hr />
+        <div class="mapStyle">
+
+            <div id="map"></div>
+        </div>
+    </div>
+
+    <script src="~/Scripts/lightbox.js"></script>
+    <div class="boxShadow">
+
+        <p style="text-align: left; font-size: 20px; font-weight: bold">Nuotraukos</p>
+        <hr />
+        @if (Model.gautosNuotraukos.Count != 0)
+        {
+            <div class="containerPhoto">
+                <div class="gallery">
+                    @foreach (var item in Model.gautosNuotraukos)
+                    {
+                        <a href="~/Nuotraukos/@item.nuotraukos_nuoroda" data-lightbox="models" data-title="@item.nuotraukos_nuoroda">
+                            <img src="~/Nuotraukos/@item.nuotraukos_nuoroda" />
+                        </a>
+                    }
+                </div>
+            </div>
+        }
+        else
+        {
+            <p>Nuotraukų nebuvo pridėta</p>
+        }
+
+    </div>
+</div>
+<p style="margin-top:20px">
+    @if (Convert.ToBoolean(TempData["AdminMenu"]) == true)
+    {
+        <div style="margin-left:9vh">
+            <input type="submit" value="< Atgal" onclick="@("window.location.href='" + @Url.Action("AtsitikimuSarasas") + "'");" class="btn btn-info" />
+        </div>
+
+    }
+    else
+    {
+        <div style="margin-left:9vh">
+            <input type="submit" value="< Atgal" onclick="@("window.location.href='" + @Url.Action("AtsitikimuIstorija") + "'");" class="btn btn-info" />
+        </div>
+    }
+
+</p>
+
+
+<script>
+
+    /* eslint-disable no-undef */
+    /**
+     * add move and delete marker
+     */
+
+    // config map
+    let config = {
+        minZoom: 3,
+        maxZoom: 18,
+    };
+    // magnification with which the map will start
+    const zoom = 15;
+    // co-ordinates
+    const lat = '@Model.zemelapio_ilguma'.replace(",", ".");
+    const lng = '@Model.zemelapio_platuma'.replace(",", ".");
+
+    // calling map
+    const map = L.map("map", config).setView([lat, lng], zoom);
+    var main = L.marker([lat, lng]).addTo(map).bindPopup('@Model.tipas');
+
+    // Used to load and display tile layers on the map
+    // Most tile servers require attribution, which you can set under `Layer`
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        attribution:
+            '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    }).addTo(map);
+
+</script>

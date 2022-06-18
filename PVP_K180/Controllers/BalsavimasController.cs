@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Newtonsoft.Json;
+using PagedList;
 using PVP_K180.Models;
 using PVP_K180.ModelView;
 using PVP_K180.Repos;
@@ -12,7 +14,8 @@ namespace PVP_K180.Controllers
     public class BalsavimasController : Controller
     {
         Balsavimas_Repos balsavimas_Repos = new Balsavimas_Repos();
- 
+        private const int pageSize = 5;
+
 
         public ActionResult KurtiBalsavima()
         {
@@ -42,13 +45,13 @@ namespace PVP_K180.Controllers
                 }
                 if (count <= 1)
                 {
-                    Response.Write("<script type='text/javascript' language='javascript'> alert('Balsavimų variantų turi būti daugiau nei vienas')</script>");
+                    TempData["Fail"] = "Balsavimų variantų turi būti daugiau nei vienas";
                     return View();
                 }
             }
             else
             {
-                Response.Write("<script type='text/javascript' language='javascript'> alert('Balsavimų variantų turi būti daugiau nei vienas')</script>");
+                TempData["Fail"] = "Balsavimų variantų turi būti daugiau nei vienas";
                 return View();
             }
             balsavimas.sukurimo_data = DateTime.Now;
@@ -63,11 +66,11 @@ namespace PVP_K180.Controllers
 
                 balsavimas_Repos.Prideti_Varianta(item);
             }
-            Response.Write("<script type='text/javascript' language='javascript'> alert('Balsavimas sėkmingai sukurtas')</script>");
+            TempData["Succ"] = "Balsavimas sėkmingai sukurtas";
             return View();
         }
 
-        public ActionResult ZiuretiBalsavimus()
+        public ActionResult ZiuretiBalsavimus(int? page)
         {
             if (Session["UserID"] == null)
             {
@@ -93,7 +96,8 @@ namespace PVP_K180.Controllers
             }
 
             List <Balsavimas> balsavimai = balsavimas_Repos.GautiBalsavimus();
-            return View(balsavimai);
+            int pageNumber = (page ?? 1);
+            return View(balsavimai.ToPagedList(pageNumber, pageSize));
 
         }
 
@@ -173,16 +177,16 @@ namespace PVP_K180.Controllers
                 }
                 else
                 {
-                    Response.Write("<script type='text/javascript' language='javascript'> alert('Balsavime turi būti bent du pasirinkimai')</script>");
+                    TempData["Fail"] = "Balsavime turi būti bent du pasirinkimai";
                     return View(balsavimas);
                 }
             }
             else
             {
-                Response.Write("<script type='text/javascript' language='javascript'> alert('Balsavime turi būti bent du pasirinkimai')</script>");
+                TempData["Fail"] = "Balsavime turi būti bent du pasirinkimai";
                 return View(balsavimas);
             }
-            Response.Write("<script type='text/javascript' language='javascript'> alert('Balsavimas sėkmingai redaguotas')</script>");
+            TempData["Succ"] = "Balsavimas sėkmingai redaguotas";
             return View(balsavimas);
         }
 
@@ -285,6 +289,35 @@ namespace PVP_K180.Controllers
                 busenosList.Add(new SelectListItem { Value = item.id_Balsavimo_busena.ToString(), Text = item.name });
             }
             balsavimoBusenaPerziura.Busenos = busenosList;
+        }
+
+        public ActionResult Rezultatai(int id)
+        {
+            if (Session["UserID"] == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            else if (!Session["Role"].Equals("Administratorius"))
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            Balsavimas balsavimas = balsavimas_Repos.Gauti_Balsavima(id);
+            balsavimas.balsavimo_variantai = balsavimas_Repos.GautiVariantus(id);
+
+            BalsavimuDiagrama diagrama = new BalsavimuDiagrama();
+
+            foreach(var item in balsavimas.balsavimo_variantai)
+            {
+                var random = new Random(Guid.NewGuid().GetHashCode());
+                var color = String.Format("#{0:X6}", random.Next(0x1000000)); // = "#A197B9"
+                diagrama.labels.Add(item.balsavimo_variantas);
+                diagrama.colors.Add(color);
+                diagrama.values.Add(item.pasirinkusiu_skaicius);
+            }
+
+            balsavimas.diagramosData = diagrama;
+            return View(balsavimas);
         }
     }
 }

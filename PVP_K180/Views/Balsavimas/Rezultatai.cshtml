@@ -1,0 +1,163 @@
+﻿@model PVP_K180.Models.Balsavimas
+@{
+    ViewBag.Title = "Balsavimo rezultatai";
+}
+
+<h2 style="text-align:center">Rezultatų išklotinė</h2>
+
+<style>
+    .boxShadow {
+        box-shadow: 0 1px 10px rgb(0 0 0 / 0.2);
+        margin: auto;
+        border-radius: 5px;
+        width: 75%;
+        text-align: center;
+        padding: 10px;
+        margin-top: 30px;
+        position: relative;
+    }
+</style>
+
+@Styles.Render("~/Styles/slideCss.css")
+<script src="~/Scripts/Chart.js"></script>
+<script src="~/Scripts/Chart.min.js"></script>
+<div>
+    <div class="boxShadow">
+        <p style="text-align:left;font-size:20px; font-weight:bold">@Model.klausimas</p>
+        <hr />
+        <p style="text-align:left">
+            Iš viso balsavavo: <b>@Model.dalyviu_skaicius</b>
+            <span style="float:right;">
+                Balsavimo pradžia: <b>@Convert.ToDateTime(Model.sukurimo_data).ToString("yyyy-MM-dd")</b>
+            </span>
+        </p>
+    </div>
+
+    @foreach (var item in Model.balsavimo_variantai)
+    {
+        <div class="boxShadow" style="text-align:left;font-size:15px;">
+            @item.balsavimo_variantas
+            <hr />
+            <p>Pasirinko: <b>@item.pasirinkusiu_skaicius</b></p>
+        </div>
+    }
+    <div class="slideshow-container">
+        <div class="mySlides fade">
+            <div class="numbertext">1 / 2</div>
+            <div class="">
+                <canvas id="pie_chart"></canvas>
+            </div>
+        </div>
+        <div class="mySlides fade">
+            <div class="numbertext">2 / 2</div>
+            <div class="">
+                <canvas style="" id="diagram_char"></canvas>
+            </div>
+        </div>
+
+        <a class="prev" onclick="plusSlides(-1)">❮</a>
+        <a class="next" onclick="plusSlides(1)">❯</a>
+    </div>
+
+    <div style="text-align:center; margin-top:10px">
+        <span class="dot" onclick="currentSlide(1)"></span>
+        <span class="dot" onclick="currentSlide(2)"></span>
+    </div>
+</div>
+
+
+<div style="margin-top: 30px;">
+    <input type="submit" value="< Atgal" onclick="@("window.location.href='" + @Url.Action("ZiuretiBalsavimus") + "'");" class="btn btn-info" />
+</div>
+
+<script>
+    var chartLebels = @Html.Raw(Json.Encode(Model.diagramosData.labels));
+    var chartColors = @Html.Raw(Json.Encode(Model.diagramosData.colors));
+    var chartValues = @Html.Raw(Json.Encode(Model.diagramosData.values));
+    var ctx = document.getElementById('pie_chart').getContext('2d');
+    var myPieChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: chartLebels,
+            datasets: [{
+                backgroundColor: chartColors,
+                data: chartValues
+            }]
+        },
+        options: {
+            title: {
+                display: true,
+                text: '@Model.klausimas',
+                font: {
+                    fontColor: '#ffffff'
+                }
+            },
+            legend: {
+                position: 'bottom'
+            },
+        }
+    });
+
+    var ctx2 = document.getElementById('diagram_char').getContext('2d');
+    var myPieChart = new Chart(ctx2, {
+        type: 'bar',
+        data: {
+            labels: chartLebels,
+            datasets: [{
+                backgroundColor: chartColors,
+                data: chartValues
+            }]
+        },
+        options: {
+            title: {
+                display: true,
+                text: '@Model.klausimas',
+                font: {
+                    fontColor: '#ffffff'
+                }
+            },
+            legend: {
+                position: 'bottom',
+                display: false
+            },
+            scales: {
+                xAxes: [{
+                    display: true
+                }],
+                yAxes: [{
+                    display: true
+                }],
+            }
+        }
+    });
+
+
+
+    let slideIndex = 1;
+    showSlides(slideIndex);
+
+    function plusSlides(n) {
+        showSlides(slideIndex += n);
+    }
+
+    function currentSlide(n) {
+        showSlides(slideIndex = n);
+    }
+
+    function showSlides(n) {
+        let i;
+        let slides = document.getElementsByClassName("mySlides");
+        let dots = document.getElementsByClassName("dot");
+        if (n > slides.length) { slideIndex = 1 }
+        if (n < 1) { slideIndex = slides.length }
+        for (i = 0; i < slides.length; i++) {
+            slides[i].style.display = "none";
+        }
+        for (i = 0; i < dots.length; i++) {
+            dots[i].className = dots[i].className.replace(" active", "");
+        }
+        slides[slideIndex - 1].style.display = "block";
+        dots[slideIndex - 1].className += " active";
+    }
+
+</script>

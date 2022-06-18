@@ -1,114 +1,146 @@
 ﻿@model PVP_K180.Models.Balsavimas
 
 @{
-    ViewBag.Title = "Balsuoti";
+    ViewBag.Title = "Balsavimas";
 }
 
-<h2>Balsuoti</h2>
-
-<div>
-    <h4>Balsavimas</h4>
-    @if (TempData["SuccessVote"] != null)
-    {
-        <p class="alert alert-success" id="successMessage">@Convert.ToString(TempData["SuccessVote"])</p>
+<style>
+    .boxShadow {
+        box-shadow: 0 1px 10px rgb(0 0 0 / 0.2);
+        border-radius: 5px;
+        width: 100%;
+        padding: 10px;
+        position: relative;
+        background-color: white;
     }
-    <hr />
 
-    @if (Model.sukurimo_data != null)
-    {
-        <dl class="dl-horizontal">
+    .column {
+        float: left;
+        width: 50%;
+        padding: 5px;
+    }
 
-            <dt>
-                @Html.DisplayNameFor(model => model.klausimas)
-            </dt>
+    /* Clear floats after the columns */
+    .row:after {
+        content: "";
+        display: table;
+        clear: both;
+    }
 
-            <dd>
-                @Html.DisplayFor(model => model.klausimas)
-            </dd>
+    .customImg {
+        max-height: 200px;
+        max-width: 300px;
+        padding-top: 1vh;
+    }
+</style>
+<h2>Balsavimas</h2>
+<hr />
+@if (TempData["SuccessVote"] != null)
+{
+    <p class="alert alert-success" id="successMessage">@Convert.ToString(TempData["SuccessVote"])</p>
+}
+<div class="row">
+<div class="column">
+    <div class="boxShadow">
 
-            @if (Model.balsavimo_aprasymas != "")
-            {
+        @if (Model.sukurimo_data != null)
+        {
+            <dl class="dl-horizontal">
 
-                <dt>
-                    @Html.DisplayNameFor(model => model.balsavimo_aprasymas)
-                </dt>
-                <dd>
-                    @Html.DisplayFor(model => model.balsavimo_aprasymas)
-                </dd>
-            }
+                <h3 style="">Klausimas</h3>
+                <p style="font-weight:bold;font-size:20px">@Model.klausimas</p>
+                <hr />
 
-            <dt>
-                @Html.DisplayNameFor(model => model.dalyviu_skaicius)
-            </dt>
-
-            <dd>
-                @Html.DisplayFor(model => model.dalyviu_skaicius)
-            </dd>
-
-            <dt>
-                @Html.DisplayNameFor(model => model.sukurimo_data)
-            </dt>
-
-            <dd>
-                @Html.DisplayFor(model => model.sukurimo_data)
-            </dd>
-
-            <dt>
-                @Html.DisplayNameFor(model => model.pabaigos_data)
-            </dt>
-
-            <dd>
-                @Html.DisplayFor(model => model.pabaigos_data)
-            </dd>
-
-            @using (Html.BeginForm())
-            {
-                <dd>
-                    <p style="">Balsavimo variantai</p>
-                </dd>
-                if (Session["UserID"] != null && Convert.ToBoolean(TempData["Voted"]) == false)
+                @using (Html.BeginForm())
                 {
-                    foreach (var item in Model.balsavimo_variantai)
-                    {
 
-                        <dd>
-                            <form>
-                                <a href="@Url.Action("RinktisVarianta", "Balsavimas", new { id = item.id_Balsavimo_Variantas })" class="btn btn-default btn-xs">
+                    <p style="font-size:15px">Galimi balsavimo variantai:</p>
+                    <hr/>
+
+                    if (Session["UserID"] != null && Convert.ToBoolean(TempData["Voted"]) == false)
+                    {
+                        foreach (var item in Model.balsavimo_variantai)
+                        {
+
+
+                            <form style="display:flex">
+                                <a href="@Url.Action("RinktisVarianta", "Balsavimas", new { id = item.id_Balsavimo_Variantas })" style="margin-top:5px; width:100%" class="btn btn-info">
                                     <i class="fa fa-plus"></i>@item.balsavimo_variantas
                                 </a>
                             </form>
-                        </dd>
 
+
+                        }
                     }
+                    else
+                    {
+            <table>
+                <thead>
+                    <tr>
+                    </tr>
+                </thead>
+                @if (Session["UserID"] != null)
+                {
+                    <tbody>
+                        @foreach (var item in Model.balsavimo_variantai)
+                        {
+
+                        <tr>
+                            @if ((Convert.ToInt32(TempData["ChosenNumb"]) == item.id_Balsavimo_Variantas))
+                            {
+                                <a href="" style="margin-top: 5px; width: 100%; pointer-events: none;" class="btn btn-danger">@item.balsavimo_variantas</a>
+                            }
+                            else
+                            {
+                                <a href="" style="margin-top: 5px; width: 100%; pointer-events: none;" class="btn btn-info">@item.balsavimo_variantas</a>
+                            }
+                        </tr>
+
+                        }
+
+
+
+                    </tbody>
                 }
                 else
                 {
-                    foreach (var item in Model.balsavimo_variantai)
-                    {
+                    <tr>Norint balsuoti reikia: <span style="color:red">Prisijungti</span></tr>
+                }
 
-                        <dd>
-                            @if (!(Convert.ToInt32(TempData["ChosenNumb"]) == item.id_Balsavimo_Variantas))
-                            {
-                                <p>
-                                    @item.balsavimo_variantas | Pasirininkusių skaičius: @item.pasirinkusiu_skaicius
-                                </p> }
-                            else
-                            {
-                                <p>✔️  @item.balsavimo_variantas | Pasirininkusių skaičius: @item.pasirinkusiu_skaicius </p>
-                            }
-                        </dd>
-
+            </table>
                     }
                 }
 
-            }
-        </dl>
-    }
-    else
+            </dl>
+        }
+        else
+        {
+            <p style="color:red;font-size:20px">Aktyvaus balsavimo dabar nėra</p>
+        }
+    </div>
+    </div>
+
+    @if (Model.sukurimo_data != null)
     {
-        <p>Aktyvaus balsavimo dabar nėra</p>
+    <div class="column">
+        <div class="boxShadow">
+            <h4>Balsavimo informacija</h4>
+            <hr/>
+            <div>
+                <p style="text-align:left">
+                    Balsavimo pradžios tada: <b>@Convert.ToDateTime(Model.sukurimo_data).ToString("yyyy-MM-dd")</b>
+                    <span style="float:right;">
+                        Balsavimo pabaigos data: <b>@Convert.ToDateTime(Model.pabaigos_data).ToString("yyyy-MM-dd")</b>
+                    </span>
+                </p>
+
+            </div>
+            <hr />
+            <p>Dalyvių skaičius: <spam style="font-weight:bold">@Model.dalyviu_skaicius</spam></p>
+        </div>
+    </div>
     }
 </div>
-<p>
-    @Html.ActionLink("Atgal", "Index", "Home")
-</p>
+<div style="margin-left:-10px">
+    <input type="submit" value="< Atgal" onclick="@("window.location.href='" + @Url.Action("Index", "Home") + "'");" class="btn btn-info" />
+</div>

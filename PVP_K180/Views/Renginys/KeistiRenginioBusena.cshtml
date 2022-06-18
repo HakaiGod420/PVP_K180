@@ -1,0 +1,53 @@
+﻿@model PVP_K180.ModelView.RenginioBusenaPerziura
+
+@{
+    ViewBag.Title = "KeistiRenginioBusena";
+}
+
+
+
+
+
+<style>
+    .boxShadow {
+        box-shadow: 0 1px 10px rgb(0 0 0 / 0.2);
+        border-radius: 5px;
+        width: 100%;
+        padding: 10px;
+        position: relative;
+        background-color: white;
+    }
+</style>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div style="margin-top:20px" class="form-horizontal boxShadow">
+        <h2>Keisti renginio būsena</h2>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.renginio_Busena, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.renginio_Busena, Model.Busenos, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.renginio_Busena, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Išsaugoti" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div style="margin-top: 30px;">
+    <input type="submit" value="< Atgal" onclick="@("window.location.href='" + @Url.Action("GautiRenginius") + "'");" class="btn btn-info" />
+</div>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

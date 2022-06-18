@@ -1,0 +1,71 @@
+﻿
+@{
+    ViewBag.Title = "Naujienlaiškio aktyvavimas";
+}
+
+<h2>Naujienlaiškio aktyvavimas</h2>
+@if (TempData["SuccsessSubs"] != null)
+{
+    <p class="alert alert-success" id="successMessage">@Convert.ToString(TempData["SuccsessSubs"])</p>
+}
+<style>
+    .textbox {
+        box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
+        padding: 0px 20px;
+        box-sizing: border-box;
+        border-radius: 10px;
+        font-size: 16px;
+        resize: none;
+        display: block;
+        margin: 20px;
+    }
+
+    .button {
+        text-align: center;
+    }
+
+    .btn-success {
+        border-radius: 20px;
+        max-width: 500px;
+        min-width: 350px;
+    }
+
+    .btn-danger {
+        border-radius: 20px;
+        max-width: 500px;
+        min-width: 350px;
+    }
+</style>
+<div class="textbox">
+    <p>Pasiekti naujausius naujienas ir kas vyksta mūsų seniūnijoje yra rekomenduoja užprenumeruoti mūsų mėnesinį naujienlaiškį.</p>
+    <p>Kiekvieno mėnesio pabaigoje gausite į savo elektoronį paštą visas naujausias naujienas, kurios įvyko seniūnijoje.</p>
+    <p>
+        Šiuo metu esate:
+        @if (Convert.ToBoolean(TempData["Aktyvacija"]))
+        {
+            <b>Naujienlaiškis užprenumeruotas</b>
+        }
+        else
+        {
+            <b>Naujienlaiškis neužprenumeruotas</b>
+        }
+    </p>
+    <div class="button">
+        @if (!Convert.ToBoolean(TempData["Aktyvacija"]))
+        {
+            <input style="margin:2vh" type="submit" value="Užprenumeruoti" onclick="@("window.location.href='" + @Url.Action("AktyvuotiPrenumerata", "Vartotojas") + "'");" class="btn btn-success" />
+        }
+        else
+        {
+            <input  style="margin:2vh" type="submit" value="Atšaukti prenumeratą" onclick="@("window.location.href='" + @Url.Action("SalintiPrenumerata", "Vartotojas") + "'");" class="btn btn-danger" />
+        }
+    </div>
+</div>
+
+
+
+
+<div style="margin:2vh">
+    <input type="submit" value="< Atgal" onclick="@("window.location.href='" + @Url.Action("ProfilioValdymas", "Vartotojas") + "'");" class="btn btn-info" />
+</div>
+

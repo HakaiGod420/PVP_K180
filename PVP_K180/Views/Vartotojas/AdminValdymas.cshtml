@@ -2,74 +2,110 @@
 @{
     ViewBag.Title = "Administratoriaus pultas";
 }
+@Styles.Render("~/Styles/dropdownMenu.css")
+<h2 >Admin Valdymo Pultas</h2>
 
-<h2 style="text-align:center;">Admin Valdymo Pultas</h2>
+<script src="https://kit.fontawesome.com/2e7ea6ec96.js" crossorigin="anonymous"></script>
+<div>
 
-<td style="border:1px solid black">
-    <h3>-Naujienų valdymas-</h3>
-    @Html.ActionLink("Kurti naujieną", "NaujienosKurimas", "Naujiena")
-</td>
+    <ul id="accordion" class="accordion">
+        <li>
+            <div class="link"><i class="fa fa-newspaper-o" aria-hidden="true"></i>Naujienų valdymas<i class="fa fa-chevron-down"></i></div>
+            <ul class="submenu">
+                <li><a href="@(@Url.Action("GautiNaujienas", "Naujiena"))">Peržiųrėti naujienų sarašą</a></li>
+                <li><a href="@(@Url.Action("NaujienosKurimas", "Naujiena"))">Kurti naujieną</a></li>
+            </ul>
+        </li>
+        <li>
+            <div class="link"><i class="fa fa-envelope" aria-hidden="true"></i>Naujienlaiškis<i class="fa fa-chevron-down"></i></div>
+            <ul class="submenu">
+                <li><a href="@(@Url.Action("SiustiNaujienlaiski", "Admin"))">Siųsti naujienlaiškį</a></li>
+            </ul>
+        </li>
+        <li>
+            <div class="link"><i class="fa fa-check-square-o" aria-hidden="true"></i>Balsavimų valdymas<i class="fa fa-chevron-down"></i></div>
+            <ul class="submenu">
+                <li><a href="@(@Url.Action("KurtiBalsavima", "Balsavimas"))">Kurti balsavimą</a></li>
+                <li><a href="@(@Url.Action("ZiuretiBalsavimus", "Balsavimas"))">Peržiūrėti balsavimų sąrašą</a></li>
+            </ul>
+        </li>
+        <li>
+            <div class="link"><i class="fa-solid fa-check-to-slot"></i>Apklausų valdymas<i class="fa fa-chevron-down"></i></div>
+            <ul class="submenu">
+                <li><a href="@(@Url.Action("KurtiApklausa", "Apklausa"))">Kurti apklausą</a></li>
+                <li><a href="@(@Url.Action("ZiuretiApklausas", "Apklausa"))">Peržiūrėti apklausų sąrašą</a></li>
+            </ul>
+        </li>
+        <li>
+            <div class="link"><i class="fa fa-map" aria-hidden="true"></i>Seniūnijos valdymas<i class="fa fa-chevron-down"></i></div>
+            <ul class="submenu">
+                <li><a href="@(@Url.Action("AtnaujintiInfoSeniunija", "Admin"))">Atnaujinti seniunijos informaciją</a></li>
+            </ul>
+        </li>
+        <li>
+            <div class="link"><i class="fa-solid fa-mountain-sun"></i>Projektų valdymas<i class="fa fa-chevron-down"></i></div>
+            <ul class="submenu">
+                <li><a href="@(@Url.Action("ProjektoKurimas", "Projektas"))">Kurti naują projektą</a></li>
+                <li><a href="@(@Url.Action("GautiProjektus", "Projektas"))">Projektų sąrašas</a></li>
+            </ul>
+        </li>
+        <li>
+            <div class="link"><i class="fa-solid fa-calendar-days"></i>Renginių valdymas<i class="fa fa-chevron-down"></i></div>
+            <ul class="submenu">
+                <li><a href="@(@Url.Action("RenginioKurimas", "Renginys"))">Kurti naują renginį</a></li>
+                <li><a href="@(@Url.Action("GautiRenginius", "Renginys"))">Renginių sąrašas</a></li>
+            </ul>
+        </li>
+        <li>
+            <div class="link"><i class="fa-solid fa-users"></i>Vartotojų valdymas<i class="fa fa-chevron-down"></i></div>
+            <ul class="submenu">
+                <li><a href="@(@Url.Action("VartotojuSarasas", "Admin"))">Žiūrėti vartotojų sąrašą</a></li>
+            </ul>
+        </li>
 
-<hr style="border-top: none; margin-top: 0 !important;" />
+        <li>
+            <div class="link"><i class="fa-solid fa-circle-exclamation"></i>Skubūs atsitikimai seniūnijoje<i class="fa fa-chevron-down"></i></div>
+            <ul class="submenu">
+                <li><a href="@(@Url.Action("AtsitikimuSarasas", "Atsitikimas"))">Atsitikimų sąrašas</a></li>
+            </ul>
+        </li>
+    </ul>
+</div>
 
-<td style="margin-top:20px">
-    @Html.ActionLink("Peržiųrėti naujienų sarašą", "GautiNaujienas", "Naujiena")
-</td>
+<div style="margin-top:50px;">
 
-<td>
-    <h3>-Balsavimų valdymas-</h3>
-    @Html.ActionLink("Kurti balsavimą", "KurtiBalsavima", "Balsavimas")
-</td>
-
-<hr style="border-top: none; margin-top: 0 !important;" />
-
-<td style="margin-top:20px">
-    @Html.ActionLink("Peržiūrėti balsavimų sąrašą", "ZiuretiBalsavimus", "Balsavimas")
-</td>
-
-<hr style="border-top: none; margin-top: 0 !important;" />
-
-<h3>-Seniunijos valdymas-</h3>
-
-<td style="margin-top:20px">
-    @Html.ActionLink("Atnaujinti seniunijos informaciją", "AtnaujintiInfoSeniunija", "Admin")
-</td>
-
-<h3>-Projektų valdymas-</h3>
-
-<td style="margin-top:20px">
-    @Html.ActionLink("Projektų sąrašas", "GautiProjektus", "Projektas")
-</td>
-<hr style="border-top: none; margin-top: 0 !important;" />
-<td style="margin-top:20px">
-    @Html.ActionLink("Kurti naują projektą", "ProjektoKurimas", "Projektas")
-</td>
-
-
-<hr style="border-top: none; margin-top: 0 !important;" />
-
-<h3>-Vartotojų valdymas-</h3>
-
-<td style="margin-top:20px">
-    @Html.ActionLink("Žiūrėti vartotojų sąrašą", "VartotojuSarasas", "Admin")
-</td>
-
-
-<h3>-Apklausų valdymas-</h3>
-
-<td style="margin-top:20px">
-    @Html.ActionLink("Kurti apklausą", "KurtiApklausa", "Apklausa")
-</td>
-
-<hr style="border-top: none; margin-top: 0 !important;" />
-
-<td style="margin-top:20px">
-    @Html.ActionLink("Peržiūrėti apklausųš sąrašą", "ZiuretiApklausas", "Apklausa")
-</td>
-
-<div style="margin-top:20px">
-    <div style="margin-top:20px; padding-top: 20px;">
-        <p>
-            @Html.ActionLink("Atgal", "Index", "Home")
-        </p>
+    <div>
+        <input type="submit" value="< Atgal" onclick="@("window.location.href='" + @Url.Action("Index", "Home") + "'");" class="btn btn-info" />
     </div>
+</div>
+
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>
+    $(function () {
+        var Accordion = function (el, multiple) {
+            this.el = el || {};
+            this.multiple = multiple || false;
+
+            // Variables privadas
+            var links = this.el.find('.link');
+            // Evento
+            links.on('click', { el: this.el, multiple: this.multiple }, this.dropdown)
+        }
+
+        Accordion.prototype.dropdown = function (e) {
+            var $el = e.data.el;
+            $this = $(this),
+                $next = $this.next();
+
+            $next.slideToggle();
+            $this.parent().toggleClass('open');
+
+            if (!e.data.multiple) {
+                $el.find('.submenu').not($next).slideUp().parent().removeClass('open');
+            };
+        }
+
+        var accordion = new Accordion($('#accordion'), false);
+    });
+</script>

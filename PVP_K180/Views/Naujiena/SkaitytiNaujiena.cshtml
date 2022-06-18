@@ -1,0 +1,65 @@
+﻿@model PVP_K180.Models.Naujiena
+
+@{
+    ViewBag.Title = Model.pavadinimas;
+}
+
+<script src="~/Scripts/lightbox.js"></script>
+<link href="~/Styles/lightbox.css" rel="stylesheet" />
+
+<style>
+    .boxShadow2 {
+        box-shadow: 0 1px 5px rgb(0 0 0 / 0.2);
+        margin: auto;
+        border-radius: 4px;
+        width: 100%;
+        padding: 10px;
+        margin-top: 30px;
+        position: relative;
+        background-color:white;
+    }
+    .customImg{
+        max-height:200px;
+        max-width:300px;
+        padding-top:1vh;
+    
+    }
+</style>
+
+<div class="boxShadow2">
+    <p style="text-align:right">
+        Publikuota: @Model.naujienos_sukurimo_data.ToString("yyyy-MM-dd")
+        <span style="float:left">
+            Autorius: <span style="font-weight:bold">Gytis Šneideraitis</span>
+        </span>
+    </p>
+    <hr />
+    <p style="font-size:30px">@Model.pavadinimas</p>
+    <hr />
+    <p>@Html.Raw(Model.naujienos_tekstas)</p>
+</div>
+<div style="align-items:center" class="boxShadow2">
+    <H4>Nuotraukų galerija</H4>
+    <hr />
+    @if (Model.nuotraukos.Count != 0)
+    {
+        <div class="containerPhoto">
+            <div class="gallery">
+                @foreach (var item in Model.nuotraukos)
+                {
+                    <a href="~/Nuotraukos/@item.nuotraukos_nuoroda" data-lightbox="models" data-title="@item.nuotraukos_nuoroda">
+                        <img class="customImg" src="~/Nuotraukos/@item.nuotraukos_nuoroda" />
+                    </a>
+                }
+            </div>
+        </div>
+    }
+    else
+    {
+        <p>Nuotraukų nebuvo pridėta</p>
+    }
+</div>
+<div style="margin:2vh">
+    <input type="submit" value="< Atgal" onclick="@("window.location.href='" + @Url.Action("Naujienos", "Naujiena") + "'");" class="btn btn-info" />
+</div>
+

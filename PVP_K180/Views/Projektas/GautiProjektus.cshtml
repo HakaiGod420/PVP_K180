@@ -1,62 +1,76 @@
-﻿@model IEnumerable<PVP_K180.Models.Projektas>
+﻿
+@model PagedList.IPagedList<PVP_K180.Models.Projektas>
+@using PagedList;
+@using PagedList.Mvc;
 
 @{
     ViewBag.Title = "GautiProjektus";
 }
 
-<h2>GautiProjektus</h2>
-
+<h2>Esami projektai</h2>
+@Styles.Render("~/Styles/tableStyle.css")
 <p>
-    @Html.ActionLink("Sukurti naują projektą", "ProjektoKurimas")
+    @Html.ActionLink("Sukurti naują projektą", "ProjektoKurimas", new { }, new { @class = "btn btn-primary", @type = "button" })
 </p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.id_Projektas)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.pavadinimas)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.aprasymas)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.busena)
-        </th>
-        <th></th>
-    </tr>
+<table class="table-fill">
+    <thead>
+        <tr>
+            <th class="text-left">
+                @Html.DisplayNameFor(model => model.FirstOrDefault().id_Projektas)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().pavadinimas)
+            </th>
+            <th class="text-left">
+                @Html.DisplayNameFor(model => model.FirstOrDefault().projekto_busena)
+            </th>
+            <th>Funckijos</th>
+        </tr>
+    </thead>
 
-@foreach (var item in Model) {
-<tr>
-    <td>
-        @Html.DisplayFor(modelItem => item.id_Projektas)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.pavadinimas)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.aprasymas)
-    </td>
-    <td>
-        @if (item.busena == 1)
+    <tbody class="table-hover">
+        @foreach (var item in Model)
         {
-            @Html.DisplayName("Bus vykdomas")
+            <tr>
+                <td class="text-left">
+                    @Html.DisplayFor(modelItem => item.id_Projektas)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.pavadinimas)
+                </td>
+                <td class="text-left">
+                    @if (item.projekto_busena == 1)
+                    {
+                        @Html.DisplayName("Pradėtas")
+                    }
+                    else if (item.projekto_busena == 2)
+                    {
+                        @Html.DisplayName("Atšauktas")
+                    }
+                    else if (item.projekto_busena == 3)
+                    {
+                        @Html.DisplayName("Pabaigtas")
+                    }
+                </td>
+                <td class="text-left">
+                    @Html.ActionLink("Redaguoti", "RedaguotiProjekta", new { id = item.id_Projektas }) |
+                    @Html.ActionLink("Pašalinti", "TrintiProjekta", new { id = item.id_Projektas }) |
+                    @Html.ActionLink("Pridėti nuotraukų", "PridetiNuotraukuProjektui", new { id = item.id_Projektas }) |
+                    @Html.ActionLink("Nuotraukos", "GautiNuotraukasProjekto", new { id = item.id_Projektas }) |
+                    @Html.ActionLink("Rašyti komentarą", "Komentarai", new { id = item.id_Projektas }) |
+                    @Html.ActionLink("Detali informacija", "DetaliInformacijaProjektas", new { id = item.id_Projektas })
+                </td>
+            </tr>
         }
-        else if (item.busena == 2)
-        {
-            @Html.DisplayName("Įvykdytas")
-        }
-        else if (item.busena == 3)
-        {
-            @Html.DisplayName("Vykdomas")
-        }
-    </td>
-    <td>
-        @Html.ActionLink("Redaguoti", "RedaguotiProjekta", new { id = item.id_Projektas }) |
-        @Html.ActionLink("Pašalinti", "TrintiProjekta", new { id = item.id_Projektas }) |
-        @Html.ActionLink("Rašyti komentarą", "Komentarai", new { id = item.id_Projektas })
-    </td>
-</tr>
-}
+    </tbody>
+
 
 </table>
+
+<div id="pager">
+    @Html.PagedListPager(Model, page => Url.Action("GautiProjektus", new { page }))
+</div>
+
+<div style="margin-top: 30px;">
+    <input type="submit" value="< Atgal" onclick="@("window.location.href='" + @Url.Action("AdminValdymas", "Vartotojas") + "'");" class="btn btn-info" />
+</div>

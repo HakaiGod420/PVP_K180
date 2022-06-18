@@ -379,6 +379,125 @@ namespace PVP_K180.Repos
             return true;
         }
 
+        public List<Atsakymas> GautiAtsakymus(int klausimoID)
+        {
+            try
+            {
+                List<Atsakymas> atsakymai = new List<Atsakymas>();
+                string conn = ConfigurationManager.ConnectionStrings["MysqlConnection"].ConnectionString;
+                MySqlConnection mySqlConnection = new MySqlConnection(conn);
+                string sqlquery = "SELECT id_Atsakymas,atsakymo_tekstas,fk_Vartotojasid_Vartotojas,fk_Klausimasid_Klausimas, " +
+                    "Vartotojas.slapyvardis FROM `Atsakymas` LEFT JOIN Vartotojas ON Vartotojas.id_Vartotojas = Atsakymas.fk_Vartotojasid_Vartotojas WHERE fk_Klausimasid_Klausimas=" + klausimoID;
+                MySqlCommand mySqlCommand = new MySqlCommand(sqlquery, mySqlConnection);
+                mySqlConnection.Open();
+                MySqlDataAdapter mda = new MySqlDataAdapter(mySqlCommand);
+                DataTable dt = new DataTable();
+                mda.Fill(dt);
+                mySqlConnection.Close();
+
+                foreach (DataRow item in dt.Rows)
+                {
+                    atsakymai.Add(new Atsakymas
+                    {
+
+                        id_Atsakymas = Convert.ToInt32(item["id_Atsakymas"]),
+                        atsakymo_tekstas = Convert.ToString(item["atsakymo_tekstas"]),
+                        fk_Vartotojasid_Varotojas = Convert.ToInt32(item["fk_Vartotojasid_Vartotojas"]),
+                        fk_Klausimasid_Klausimas = Convert.ToInt32(item["fk_Klausimasid_Klausimas"]),
+                        slapyvardis = Convert.ToString(item["slapyvardis"]),
+                    }); ;
+                }
+                return atsakymai;
+            }
+
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+
+        public IEnumerable<Apklausos_Busena> GautiBusenas()
+        {
+            try
+            {
+                List<Apklausos_Busena> apklausos_Busenas = new List<Apklausos_Busena>();
+                string conn = ConfigurationManager.ConnectionStrings["MysqlConnection"].ConnectionString;
+                MySqlConnection mySqlConnection = new MySqlConnection(conn);
+                string sqlquery = "SELECT * FROM `Apklausos_Busena` WHERE 1";
+                MySqlCommand mySqlCommand = new MySqlCommand(sqlquery, mySqlConnection);
+                mySqlConnection.Open();
+                MySqlDataAdapter mda = new MySqlDataAdapter(mySqlCommand);
+                DataTable dt = new DataTable();
+                mda.Fill(dt);
+                mySqlConnection.Close();
+
+                foreach (DataRow item in dt.Rows)
+                {
+                    apklausos_Busenas.Add(new Apklausos_Busena
+                    {
+
+                        id_Apklausos_busena = Convert.ToInt32(item["id_Apklausos_Busena"]),
+                        name = Convert.ToString(item["name"])
+                    }); ;
+                }
+                return apklausos_Busenas;
+            }
+
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+
+        public bool Atnaujinti_Apklausos_Busena(int apklausos_id, int busenos_id)
+        {
+            try
+            {
+                string conn = ConfigurationManager.ConnectionStrings["MysqlConnection"].ConnectionString;
+                MySqlConnection mySqlConnection = new MySqlConnection(conn);
+                string sqlquery = "UPDATE `Apklausa` SET `busena`=?busena WHERE id_Apklausa=" + apklausos_id;
+                MySqlCommand mySqlCommand = new MySqlCommand(sqlquery, mySqlConnection);
+                mySqlCommand.Parameters.Add("?busena", MySqlDbType.Int32).Value = busenos_id;
+                mySqlConnection.Open();
+                mySqlCommand.ExecuteNonQuery();
+                mySqlConnection.Close();
+                return true;
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+        }
+
+        public int GautiAktyviuSkaiciu()
+        {
+            int count = -1;
+            try
+            {
+                List<Apklausos_Busena> apklausos_Busenas = new List<Apklausos_Busena>();
+                string conn = ConfigurationManager.ConnectionStrings["MysqlConnection"].ConnectionString;
+                MySqlConnection mySqlConnection = new MySqlConnection(conn);
+                string sqlquery = "SELECT COUNT(*) as 'count' FROM `Apklausa` WHERE busena=2";
+                MySqlCommand mySqlCommand = new MySqlCommand(sqlquery, mySqlConnection);
+                mySqlConnection.Open();
+                MySqlDataAdapter mda = new MySqlDataAdapter(mySqlCommand);
+                DataTable dt = new DataTable();
+                mda.Fill(dt);
+                mySqlConnection.Close();
+
+                foreach (DataRow item in dt.Rows)
+                {
+                    count = Convert.ToInt32(item["count"]);
+                }
+                return count;
+            }
+
+            catch (Exception ex)
+            {
+                return -1;
+            }
+        }
 
     }
+
 }

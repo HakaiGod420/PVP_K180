@@ -4,34 +4,56 @@
     ViewBag.Title = "Keisti vartotojo rolę";
 }
 
-<h2>Keisti vartotojo rolę</h2>
+
+<style>
+    .boxShadow {
+        box-shadow: 0 1px 10px rgb(0 0 0 / 0.2);
+        border-radius: 5px;
+        width: 100%;
+        padding: 10px;
+        position: relative;
+        background-color: white;
+    }
+</style>
+
+
 
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
 
-    <div class="form-horizontal">
-        <h4>Vartotojo rolės keitimas</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+<div style="margin-top:20px" class="form-horizontal boxShadow">
+    <h2>Keisti vartotojo rolę</h2>
+    @if (TempData["Fail"] != null)
+    {
+        <p class="alert alert-danger" id="successMessage">@Convert.ToString(TempData["Fail"])</p>
+    }
+
+    @if (TempData["Succ"] != null)
+    {
+        <p class="alert alert-success" id="successMessage">@Convert.ToString(TempData["Succ"])</p>
+    }
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.role, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownListFor(model => model.vartotojo_role, Model.role, new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.role, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
-            </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.role, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownListFor(model => model.vartotojo_role, Model.role, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.role, "", new { @class = "text-danger" })
         </div>
     </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Išsaugoti rolę" class="btn btn-default" />
+        </div>
+    </div>
+</div>
 }
 
-<div>
-    @Html.ActionLink("Atgal", "VartotojuSarasas", "Admin")
+<div style="margin-top: 30px;">
+    <input type="submit" value="< Atgal" onclick="@("window.location.href='" + @Url.Action("VartotojuSarasas", "Admin") + "'");" class="btn btn-info" />
 </div>
+

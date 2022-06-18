@@ -24,11 +24,13 @@ namespace PVP_K180.Models
 
         [DisplayName("Naujienos sukurimo data")]
         [DisplayFormat(DataFormatString = "{0:yyyy-dd-MM}", ApplyFormatInEditMode = true)]
-        public DateTime? naujienos_sukurimo_data { get; set; }
+        public DateTime naujienos_sukurimo_data { get; set; }
 
         [DisplayName("Sukurta vartotojo")]
         public int naujienos_kurejo_ID { get; set; }
 
-        List<Nuotrauka> nuotraukos { get; set; }
+
+
+        public List<Nuotrauka> nuotraukos { get; set; }
     }
 }

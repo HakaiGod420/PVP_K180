@@ -5,76 +5,93 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - My ASP.NET Application</title>
     @Styles.Render("~/Content/css")
+    @Styles.Render("~/Styles/navbar.css")
     @Scripts.Render("~/bundles/modernizr")
     @RenderSection("Styles", false)
 </head>
 <body>
 
-    <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                @Html.ActionLink("Pradinis seniūnijos puslapis", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+    <section class="navigation">
+        <div class="nav-container">
+            <div class="brand">
+                <a href="@(@Url.Action("Index", "Home"))">seniūnijos puslapis</a>
             </div>
-
-            <div class="navbar-collapse collapse">
-
-                <ul class="nav navbar-nav">
-
-                    <li>@Html.ActionLink("Apie seniūnija", "Apie", "Home")</li>
-
-                    <li>@Html.ActionLink("Naujienos", "GautiNaujienas", "Naujiena")</li>
-                    @if (Session["UserID"] != null)
-                    {
-                        <li>@Html.ActionLink("Apklausa", "DalyvautiApklausoje", "Apklausa")</li>
-                    }
-                    <li>@Html.ActionLink("Balsavimas", "Balsuoti", "Balsavimas")</li>
-
-                    <li>@Html.ActionLink("Projektai", "GautiProjektus", "Projektas")</li>
-                </ul>
-
-                @if (Convert.ToString(Session["UserID"]) == "")
-                {
-                    <ul style="float: right;margin-right:100px; font-size: 15px" class="nav navbar-nav navbar-right">
-                        <li><a href="@(@Url.Action("Registracija", "Home"))">Registracija</a></li>
-                        <li><a href="@(@Url.Action("Prisijungti", "Home"))">Prisijungimas</a></li>
-                        <li class="dropdown">
-                        </li>
-                    </ul>
-                }
-                else
-                {
-                    <div class="btn-group navbar-header" style="float: right;text-align: center">
-                        <button type="button" style="font-size: 15px;" class="btn btn-lg btn-default ">Sveiki, @Session["UserName"]</button>
-                        <button type="button" style="font-size: 15px" class="btn btn-lg btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="caret"></span><span class="sr-only">Toggle Dropdown</span></button>
-                        <ul class="dropdown-menu">
-                            <li role="presentation"><a href="@(@Url.Action("ProfilioPerziura", "Vartotojas", new { id = Session["UserID"] }))">Mano profilis</a></li>
-
-                            <li role="presentation"><a href="@(@Url.Action("ProfilioValdymas", "Vartotojas"))">Profilio Valdymas</a></li>
-
-                            @if (Convert.ToString(Session["Role"]) == "Administratorius")
-                            {
-                                <li role="presentation" class="divider"></li>
-                                <li role="presentation"><a href="@(@Url.Action("AdminValdymas", "Vartotojas"))">Svetainės kontrolė</a></li>
-                            }
-                            <li role="presentation" class="divider"></li>
-                            <li role="presentation"><a href="@(@Url.Action("Atsijungti", "Home"))">Atsijungti</a></li>
+            <nav>
+                <div class="nav-mobile"><a id="nav-toggle" href="#!"><span></span></a></div>
+                <ul class="nav-list">
+                    <li>
+                        <a href="@(@Url.Action("Apie", "Home"))">Apie seniūniją</a>
+                    </li>
+                    <li>
+                        <a href="#!">Aktualijos</a>
+                        <ul class="nav-dropdown">
+                            <li>
+                                <a href="@(@Url.Action("Naujienos", "Naujiena"))">Naujienos</a>
+                            </li>
+                            <li>
+                                <a href="@(@Url.Action("Projektai", "Projektas"))">Projektai</a>
+                            </li>
+                            <li>
+                                <a href="@(@Url.Action("Renginiai", "Renginys"))">Renginiai</a>
+                            </li>
                         </ul>
-                    </div>
-                }
-            </div>
+                    </li>
+                    <li>
+                        <a href="#!">Gyventojų balsas</a>
+                        <ul class="nav-dropdown">
+                            <li>
+                                <a href="@(@Url.Action("Balsuoti", "Balsavimas"))">Aktyvus balsavimas</a>
+                            </li>
+                            <li>
+                                <a href="@(@Url.Action("DalyvautiApklausoje", "Apklausa"))">Aktyvi apklausa</a>
+                            </li>
+                        </ul>
+                    </li>
+                    @if (Convert.ToString(Session["UserID"]) == "")
+                    {
+
+
+                        <li>
+                            <a href="@(@Url.Action("Registracija", "Home"))">Registracija</a>
+                        </li>
+
+
+                        <li>
+                            <a href="@(@Url.Action("Prisijungti", "Home"))">Prisijungimas</a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li>
+                            <a href="#!">Sveiki, @Session["UserName"]</a>
+                            <ul class="nav-dropdown">
+                                <li>
+                                    <a href="@(@Url.Action("ProfilioPerziura", "Vartotojas", new { id = Session["UserID"] }))">Mano profilis</a>
+                                </li>
+                                <li>
+                                    <a href="@(@Url.Action("ProfilioValdymas", "Vartotojas"))">Profilio valdymas</a>
+                                </li>
+                                @if (Convert.ToString(Session["Role"]) == "Administratorius")
+                                {
+                                    <li role="presentation" class="divider"></li>
+                                    <li>
+                                        <a href="@(@Url.Action("AdminValdymas", "Vartotojas"))">Svetainės kontrolė</a>
+                                    </li>
+                                }
+                                <li>
+                                    <a href="@(@Url.Action("Atsijungti", "Home"))">Atsijungti</a>
+                                </li>
+                            </ul>
+                        </li>
+                    }
+                </ul>
+            </nav>
         </div>
-    </div>
+    </section>   
+
     <div class="container body-content">
         @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year  K180 - Ką veikia seniūnijos</p>
-        </footer>
+        
     </div>
 
     @Scripts.Render("~/bundles/jquery")
@@ -83,3 +100,29 @@
     @RenderSection("scripts", required: false)
 </body>
 </html>
+
+<script>
+    (function ($) { // Begin jQuery
+        $(function () { // DOM ready
+            // If a link has a dropdown, add sub menu toggle.
+            $('nav ul li a:not(:only-child)').click(function (e) {
+                $(this).siblings('.nav-dropdown').toggle();
+                // Close one dropdown when selecting another
+                $('.nav-dropdown').not($(this).siblings()).hide();
+                e.stopPropagation();
+            });
+            // Clicking away from dropdown will remove the dropdown class
+            $('html').click(function () {
+                $('.nav-dropdown').hide();
+            });
+            // Toggle open and close nav styles on click
+            $('#nav-toggle').click(function () {
+                $('nav ul').slideToggle();
+            });
+            // Hamburger to X toggle
+            $('#nav-toggle').on('click', function () {
+                this.classList.toggle('active');
+            });
+        }); // end DOM ready
+    })(jQuery); // end jQuery
+</script>
