@@ -27,7 +27,9 @@
 }
 
     .img-container img {
-        
+        width:200%;
+        display:block;
+        margin-right:50%;
     }
 
 .body-container {
